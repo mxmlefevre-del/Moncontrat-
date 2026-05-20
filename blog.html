@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog moncontrat — Conseils juridiques, assurances et contrats</title>
+<meta name="description" content="Conseils pratiques sur vos contrats d'assurance, droits des consommateurs, clauses abusives et démarches juridiques. Le blog de moncontrat.app.">
+<meta name="keywords" content="assurance, contrat, droits consommateurs, clauses abusives, résiliation, franchise, garanties">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; max-width:100%; }
+:root { --red: #FF2D55; --light: #EBEBEB; --off: #FAFAFA; --red-pale: #FFF0F3; --gray: #888; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light); padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn {
+  background:transparent; border:2px solid var(--light); color:#888;
+  padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:inline-block;
+}
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+/* HERO */
+.blog-hero {
+  padding:120px 40px 60px; text-align:center; background:#fff;
+  border-bottom:2px solid var(--light);
+}
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.blog-title { font-size:clamp(36px,5vw,56px); font-weight:900; letter-spacing:-1px; color:#111; margin-bottom:12px; }
+.blog-sub { font-size:16px; color:#888; max-width:500px; margin:0 auto; line-height:1.6; }
+
+/* CATEGORIES */
+.cat-bar {
+  padding:24px 40px; border-bottom:2px solid var(--light);
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+}
+.cat-pill {
+  padding:7px 16px; border-radius:100px; border:2px solid var(--light);
+  background:#fff; font-family:'Figtree',sans-serif; font-size:13px;
+  font-weight:700; color:#888; cursor:pointer; transition:all 0.2s; text-decoration:none;
+}
+.cat-pill:hover, .cat-pill.active { background:var(--red); border-color:var(--red); color:#fff; }
+
+/* GRID */
+.blog-wrap { max-width:1100px; margin:0 auto; padding:60px 40px 80px; }
+.featured-article {
+  display:grid; grid-template-columns:1fr 1fr; gap:40px;
+  background:var(--off); border:2px solid var(--light); border-radius:24px;
+  padding:40px; margin-bottom:48px; cursor:pointer; transition:all 0.3s;
+  text-decoration:none; color:inherit;
+}
+.featured-article:hover { border-color:var(--red); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.08); }
+.featured-badge {
+  display:inline-block; background:var(--red); color:#fff;
+  font-size:11px; font-weight:700; padding:4px 12px; border-radius:100px;
+  letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px;
+}
+.featured-title { font-size:28px; font-weight:900; color:#111; letter-spacing:-0.5px; line-height:1.15; margin-bottom:12px; }
+.featured-excerpt { font-size:15px; color:#888; line-height:1.6; margin-bottom:20px; }
+.featured-meta { display:flex; align-items:center; gap:16px; }
+.meta-tag { font-size:12px; font-weight:700; color:var(--red); }
+.meta-date { font-size:12px; color:#aaa; font-weight:600; }
+.meta-read { font-size:12px; color:#aaa; font-weight:600; }
+.featured-visual {
+  background:linear-gradient(135deg, var(--red-pale), #FFE8ED);
+  border-radius:16px; display:flex; align-items:center; justify-content:center;
+  font-size:80px; min-height:200px;
+}
+
+.articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.article-card {
+  border:2px solid var(--light); border-radius:20px; overflow:hidden;
+  cursor:pointer; transition:all 0.3s; text-decoration:none; color:inherit;
+  display:flex; flex-direction:column;
+}
+.article-card:hover { border-color:var(--red); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.08); }
+.article-visual {
+  background:linear-gradient(135deg, var(--off), #fff);
+  padding:32px; text-align:center; font-size:48px; border-bottom:2px solid var(--light);
+}
+.article-body { padding:24px; flex:1; display:flex; flex-direction:column; }
+.article-tag { font-size:11px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; }
+.article-title { font-size:17px; font-weight:700; color:#111; line-height:1.3; margin-bottom:10px; letter-spacing:-0.3px; }
+.article-excerpt { font-size:13px; color:#888; line-height:1.6; flex:1; margin-bottom:16px; }
+.article-footer { display:flex; align-items:center; justify-content:space-between; }
+.article-date { font-size:12px; color:#aaa; font-weight:600; }
+.article-read { font-size:12px; color:var(--red); font-weight:700; }
+
+/* NEWSLETTER */
+.newsletter {
+  background:var(--red); border-radius:24px; padding:48px 40px;
+  text-align:center; margin:60px 0;
+}
+.newsletter-title { font-size:28px; font-weight:900; color:#fff; margin-bottom:8px; letter-spacing:-0.5px; }
+.newsletter-sub { font-size:15px; color:rgba(255,255,255,0.75); margin-bottom:28px; }
+.newsletter-form { display:flex; gap:10px; max-width:400px; margin:0 auto; }
+.newsletter-input {
+  flex:1; border:none; border-radius:100px; padding:14px 20px;
+  font-family:'Figtree',sans-serif; font-size:14px; outline:none;
+}
+.newsletter-btn {
+  background:#111; color:#fff; border:none; padding:14px 24px;
+  border-radius:100px; font-family:'Figtree',sans-serif; font-size:14px;
+  font-weight:700; cursor:pointer; white-space:nowrap; transition:background 0.2s;
+}
+.newsletter-btn:hover { background:#333; }
+.newsletter-note { font-size:11px; color:rgba(255,255,255,0.5); margin-top:12px; }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; }
+footer a { color:var(--red); text-decoration:none; }
+
+/* ARTICLE PAGE */
+.article-page { display:none; max-width:720px; margin:0 auto; padding:100px 40px 80px; }
+.article-page.show { display:block; }
+.blog-list { display:block; }
+.blog-list.hide { display:none; }
+
+.art-back { display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color:#888; cursor:pointer; margin-bottom:32px; transition:color 0.2s; background:none; border:none; font-family:'Figtree',sans-serif; }
+.art-back:hover { color:var(--red); }
+.art-tag { font-size:11px; font-weight:700; color:var(--red); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:12px; display:block; }
+.art-title { font-size:clamp(28px,4vw,44px); font-weight:900; color:#111; letter-spacing:-1px; line-height:1.1; margin-bottom:16px; }
+.art-meta { display:flex; gap:16px; align-items:center; margin-bottom:40px; padding-bottom:24px; border-bottom:2px solid var(--light); flex-wrap:wrap; }
+.art-meta span { font-size:13px; color:#aaa; font-weight:600; }
+.art-content h2 { font-size:22px; font-weight:700; color:#111; margin:32px 0 12px; }
+.art-content h3 { font-size:18px; font-weight:700; color:#111; margin:24px 0 10px; }
+.art-content p { font-size:15px; color:#444; line-height:1.8; margin-bottom:16px; }
+.art-content ul, .art-content ol { padding-left:24px; margin-bottom:16px; }
+.art-content li { font-size:15px; color:#444; line-height:1.7; margin-bottom:6px; }
+.art-content strong { color:#111; font-weight:700; }
+.art-highlight {
+  background:var(--red-pale); border-left:4px solid var(--red);
+  border-radius:0 12px 12px 0; padding:18px 22px; margin:24px 0;
+  font-size:15px; color:#444; line-height:1.7;
+}
+.art-cta {
+  background:var(--off); border:2px solid var(--light); border-radius:20px;
+  padding:32px; text-align:center; margin-top:48px;
+}
+.art-cta-title { font-size:20px; font-weight:900; color:#111; margin-bottom:8px; }
+.art-cta-sub { font-size:14px; color:#888; margin-bottom:20px; }
+.art-cta-btn {
+  display:inline-block; background:var(--red); color:#fff;
+  padding:14px 28px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:15px; font-weight:700; text-decoration:none; transition:all 0.2s;
+}
+.art-cta-btn:hover { background:#E0002A; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .blog-hero, .cat-bar { padding:90px 20px 32px; }
+  .cat-bar { padding:20px; }
+  .blog-wrap { padding:40px 20px 60px; }
+  .featured-article { grid-template-columns:1fr; gap:20px; padding:24px; }
+  .featured-visual { min-height:120px; }
+  .articles-grid { grid-template-columns:1fr; }
+  .newsletter { padding:32px 20px; }
+  .newsletter-form { flex-direction:column; }
+  .article-page { padding:90px 20px 60px; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<!-- BLOG LIST -->
+<div class="blog-list" id="blogList">
+
+  <div class="blog-hero">
+    <span class="page-tag">Le Blog</span>
+    <h1 class="blog-title">Comprends tes droits.<br>Protège-toi mieux.</h1>
+    <p class="blog-sub">Conseils pratiques sur tes contrats, assurances et démarches juridiques. En clair, sans jargon.</p>
+  </div>
+
+  <div class="cat-bar">
+    <a class="cat-pill active">Tous</a>
+    <a class="cat-pill">Assurance</a>
+    <a class="cat-pill">Contrats</a>
+    <a class="cat-pill">Droits consommateurs</a>
+    <a class="cat-pill">Réclamations</a>
+  </div>
+
+  <div class="blog-wrap">
+
+    <!-- FEATURED -->
+    <a class="featured-article" onclick="showArticle('art1')">
+      <div>
+        <span class="featured-badge">⭐ À la une</span>
+        <div class="featured-title">Ces 7 clauses dans ton contrat d'assurance que tu n'as jamais lues (et qui peuvent tout changer)</div>
+        <div class="featured-excerpt">80% des assurés ne lisent jamais leur contrat en entier. Résultat : au moment du sinistre, la surprise est souvent mauvaise. Voici les 7 clauses les plus importantes à vérifier absolument.</div>
+        <div class="featured-meta">
+          <span class="meta-tag">Assurance</span>
+          <span class="meta-date">Mai 2026</span>
+          <span class="meta-read">⏱ 5 min de lecture</span>
+        </div>
+      </div>
+      <div class="featured-visual">📋</div>
+    </a>
+
+    <!-- GRID -->
+    <div class="articles-grid">
+
+      <a class="article-card" onclick="showArticle('art2')">
+        <div class="article-visual">🚗</div>
+        <div class="article-body">
+          <div class="article-tag">Assurance</div>
+          <div class="article-title">Vendre sa voiture entre particuliers : les erreurs qui coûtent cher</div>
+          <div class="article-excerpt">Un contrat mal rédigé, une garantie oubliée, et c'est le litige assuré. Voici comment vendre votre véhicule en toute sécurité.</div>
+          <div class="article-footer">
+            <span class="article-date">Mai 2026</span>
+            <span class="article-read">4 min →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="article-card" onclick="showArticle('art3')">
+        <div class="article-visual">💰</div>
+        <div class="article-body">
+          <div class="article-tag">Droits consommateurs</div>
+          <div class="article-title">Prêter de l'argent à un ami : comment se protéger légalement</div>
+          <div class="article-excerpt">Un prêt entre amis sans contrat, c'est la recette d'une amitié brisée. Voici ce que dit la loi et comment se protéger.</div>
+          <div class="article-footer">
+            <span class="article-date">Mai 2026</span>
+            <span class="article-read">3 min →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="article-card" onclick="showArticle('art4')">
+        <div class="article-visual">🏠</div>
+        <div class="article-body">
+          <div class="article-tag">Assurance</div>
+          <div class="article-title">Dégât des eaux : ce que ton assurance habitation couvre vraiment</div>
+          <div class="article-excerpt">Fuite, inondation, humidité... Les dégâts des eaux sont la première cause de sinistres en France. Mais êtes-vous vraiment couvert ?</div>
+          <div class="article-footer">
+            <span class="article-date">Avril 2026</span>
+            <span class="article-read">5 min →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="article-card" onclick="showArticle('art5')">
+        <div class="article-visual">⚖️</div>
+        <div class="article-body">
+          <div class="article-tag">Réclamations</div>
+          <div class="article-title">Comment rédiger une lettre de réclamation qui obtient des résultats</div>
+          <div class="article-excerpt">Une mise en demeure bien rédigée obtient une réponse dans 80% des cas. Voici la méthode et les formules qui fonctionnent.</div>
+          <div class="article-footer">
+            <span class="article-date">Avril 2026</span>
+            <span class="article-read">4 min →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="article-card" onclick="showArticle('art6')">
+        <div class="article-visual">📱</div>
+        <div class="article-body">
+          <div class="article-tag">Contrats</div>
+          <div class="article-title">Résilier son abonnement téléphonique sans frais : le guide complet</div>
+          <div class="article-excerpt">La loi Hamon vous permet de résilier à tout moment après 12 mois. Mais les opérateurs ne le rendent pas facile. Voici comment faire.</div>
+          <div class="article-footer">
+            <span class="article-date">Avril 2026</span>
+            <span class="article-read">3 min →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="article-card" onclick="showArticle('art7')">
+        <div class="article-visual">🏥</div>
+        <div class="article-body">
+          <div class="article-tag">Assurance</div>
+          <div class="article-title">Mutuelle santé : comment lire ton tableau de garanties sans se perdre</div>
+          <div class="article-excerpt">Taux de remboursement, reste à charge, médecin référent... Le vocabulaire des mutuelles est un labyrinthe. On vous guide.</div>
+          <div class="article-footer">
+            <span class="article-date">Mars 2026</span>
+            <span class="article-read">6 min →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="newsletter">
+      <div class="newsletter-title">Un conseil juridique par semaine</div>
+      <div class="newsletter-sub">Inscris-toi pour recevoir nos meilleurs conseils directement dans ta boîte mail.</div>
+      <div class="newsletter-form">
+        <input class="newsletter-input" type="email" placeholder="ton@email.com">
+        <button class="newsletter-btn" onclick="subscribeNewsletter()">S'inscrire →</button>
+      </div>
+      <div class="newsletter-note">Désinscription en 1 clic · Pas de spam</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ARTICLE PAGES -->
+<div class="article-page" id="artPage">
+  <button class="art-back" onclick="hideArticle()">← Retour au blog</button>
+  <div id="artContent"></div>
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="legal.html">Mentions légales</a> · <a href="cgv.html">CGV</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a>
+</footer>
+
+<script>
+const articles = {
+  art1: {
+    tag: 'Assurance',
+    title: 'Ces 7 clauses dans ton contrat d\'assurance que tu n\'as jamais lues (et qui peuvent tout changer)',
+    date: 'Mai 2026',
+    read: '5 min de lecture',
+    content: `
+      <p>80% des assurés avouent ne jamais avoir lu leur contrat en entier. C'est compréhensible : un contrat d'assurance habitation fait en moyenne 80 pages de jargon juridique incompréhensible. Mais cette ignorance peut coûter très cher au moment du sinistre.</p>
+      <p>Voici les 7 clauses que tu dois absolument vérifier dans ton contrat.</p>
+
+      <h2>1. La franchise — le montant que tu paieras toujours toi-même</h2>
+      <p>La franchise est le montant qui reste à ta charge en cas de sinistre. Elle peut être <strong>absolue</strong> (tu paies X€ quoi qu'il arrive) ou <strong>relative</strong> (tu paies tout si le sinistre est inférieur à X€, rien sinon).</p>
+      <div class="art-highlight">Exemple : avec une franchise de 300€, si ton sinistre est évalué à 800€, tu recevras seulement 500€. Vérifie toujours le montant exact dans ton contrat.</div>
+
+      <h2>2. Les exclusions de garantie — ce qui n'est PAS couvert</h2>
+      <p>C'est la clause la plus importante et la moins lue. Les exclusions définissent les situations où ton assureur ne paiera pas. Les plus courantes :</p>
+      <ul>
+        <li><strong>Négligence caractérisée</strong> : fenêtre ouverte pendant une tempête, porte non fermée à clé</li>
+        <li><strong>Vétusté</strong> : si ton installation a plus de X ans, elle n'est pas couverte</li>
+        <li><strong>Catastrophes naturelles</strong> : souvent une garantie optionnelle</li>
+        <li><strong>Objets de valeur</strong> : bijoux, œuvres d'art, souvent limités ou exclus</li>
+      </ul>
+
+      <h2>3. Le plafond de garantie — le maximum que l'assureur versera</h2>
+      <p>Même si ton sinistre est évalué à 50 000€, ton contrat peut plafonner l'indemnisation à 20 000€. Vérifie les plafonds pour chaque type de garantie.</p>
+
+      <h2>4. La vétusté — la dépréciation de tes biens</h2>
+      <p>Ton assureur peut appliquer un coefficient de vétusté qui réduit l'indemnisation en fonction de l'âge de tes biens. Un télévision de 5 ans ne sera pas remboursée à sa valeur d'achat.</p>
+
+      <h2>5. Le délai de déclaration — le délai pour déclarer ton sinistre</h2>
+      <p>En France, tu as généralement <strong>5 jours ouvrés</strong> pour déclarer un sinistre (2 jours pour un vol). Dépasser ce délai peut entraîner la déchéance de garantie.</p>
+      <div class="art-highlight">⚠️ Important : ces délais partent du moment où tu as connaissance du sinistre, pas de sa survenance.</div>
+
+      <h2>6. La subrogation — quand ton assureur se retourne contre quelqu'un</h2>
+      <p>Après t'avoir indemnisé, ton assureur peut se retourner contre le responsable du sinistre. Cette clause a des implications importantes si le responsable est un proche.</p>
+
+      <h2>7. La clause d'indexation — comment évolue ta prime</h2>
+      <p>Ta prime augmente automatiquement chaque année selon un indice (ICC, IRL...). Certains contrats prévoient des augmentations de 3 à 8% par an sans que tu en sois informé clairement.</p>
+
+      <h2>La solution simple</h2>
+      <p>Plutôt que de lire 80 pages de jargon, laisse moncontrat analyser ton contrat en 30 secondes et te dire exactement ce qui est important pour ta situation.</p>
+    `
+  },
+  art2: {
+    tag: 'Assurance',
+    title: 'Vendre sa voiture entre particuliers : les erreurs qui coûtent cher',
+    date: 'Mai 2026',
+    read: '4 min de lecture',
+    content: `
+      <p>En France, plus de 5 millions de véhicules changent de mains entre particuliers chaque année. Pourtant, beaucoup de vendeurs et d'acheteurs commettent des erreurs qui peuvent coûter très cher.</p>
+
+      <h2>Erreur n°1 : Ne pas rédiger de contrat de vente</h2>
+      <p>Un simple accord oral ou un SMS ne constitue pas une preuve suffisante en cas de litige. Le contrat de vente entre particuliers doit mentionner :</p>
+      <ul>
+        <li>L'identité complète du vendeur et de l'acheteur</li>
+        <li>La description précise du véhicule (marque, modèle, année, immatriculation, kilométrage)</li>
+        <li>Le prix de vente en toutes lettres</li>
+        <li>La mention "vendu en l'état" si applicable</li>
+        <li>La date et le lieu de la transaction</li>
+        <li>Les signatures des deux parties</li>
+      </ul>
+
+      <h2>Erreur n°2 : Oublier le certificat de cession</h2>
+      <p>Le formulaire Cerfa n°15776 est obligatoire. Il doit être complété en deux exemplaires, signé par les deux parties, et déclaré sur le site de l'ANTS dans les 15 jours.</p>
+      <div class="art-highlight">⚠️ Si tu ne déclares pas la cession, tu resteras responsable des infractions commises avec le véhicule après la vente.</div>
+
+      <h2>Erreur n°3 : Ne pas vérifier le contrôle technique</h2>
+      <p>Pour les véhicules de plus de 4 ans, le contrôle technique doit dater de moins de 6 mois (moins de 2 mois si la contre-visite est défavorable). Sans ça, impossible d'immatriculer le véhicule.</p>
+
+      <h2>Erreur n°4 : Mal gérer le paiement</h2>
+      <p>Méfie-toi des chèques (peuvent être sans provision) et des virements instantanés falsifiés. Préfère un virement bancaire classique dont tu vérifies la réception avant de remettre les clés.</p>
+
+      <h2>Erreur n°5 : Oublier l'assurance</h2>
+      <p>Dès que le véhicule change de propriétaire, l'assurance du vendeur ne couvre plus l'acheteur. L'acheteur doit avoir une assurance avant de prendre possession du véhicule.</p>
+    `
+  },
+  art3: {
+    tag: 'Droits consommateurs',
+    title: 'Prêter de l\'argent à un ami : comment se protéger légalement',
+    date: 'Mai 2026',
+    read: '3 min de lecture',
+    content: `
+      <p>"Entre amis, on n'a pas besoin d'un contrat." C'est l'une des phrases les plus dangereuses qui soit. En France, les litiges liés aux prêts entre particuliers représentent des milliers de procédures judiciaires chaque année.</p>
+
+      <h2>Ce que dit la loi</h2>
+      <p>En France, pour tout prêt supérieur à <strong>1 500€</strong>, la loi exige un écrit pour que la dette soit prouvable en justice (article 1359 du Code civil). En dessous de ce seuil, un écrit reste fortement conseillé.</p>
+
+      <h2>Reconnaissance de dette ou contrat de prêt ?</h2>
+      <h3>La reconnaissance de dette</h3>
+      <p>Elle est rédigée uniquement par l'emprunteur, à la main, avec la somme en chiffres et en lettres. C'est la forme la plus simple mais elle doit contenir :</p>
+      <ul>
+        <li>La somme prêtée en chiffres ET en lettres</li>
+        <li>La date de remboursement</li>
+        <li>Les éventuels intérêts</li>
+        <li>La signature de l'emprunteur</li>
+      </ul>
+
+      <h3>Le contrat de prêt</h3>
+      <p>Plus complet, il est signé par les deux parties et détaille les modalités de remboursement (mensualités, intérêts, pénalités de retard).</p>
+      <div class="art-highlight">💡 Pour les prêts importants, fais enregistrer le document auprès du service des impôts. Cela lui donne une date certaine opposable aux tiers.</div>
+
+      <h2>Les intérêts : attention à l'usure</h2>
+      <p>Si tu prêtes de l'argent avec intérêts entre particuliers, le taux ne peut pas dépasser le taux d'usure fixé par la Banque de France chaque trimestre. Un taux trop élevé est passible de sanctions pénales.</p>
+
+      <h2>En cas de non-remboursement</h2>
+      <p>Avec un écrit, tu peux saisir le tribunal judiciaire. Sans écrit au-delà de 1 500€, la preuve devient très difficile à apporter. La prescription est de 5 ans à compter de la date de remboursement prévue.</p>
+    `
+  },
+  art4: {
+    tag: 'Assurance',
+    title: 'Dégât des eaux : ce que ton assurance habitation couvre vraiment',
+    date: 'Avril 2026',
+    read: '5 min de lecture',
+    content: `
+      <p>Le dégât des eaux est le sinistre le plus fréquent en France : il représente plus d'un sinistre sur trois déclaré aux assurances habitation. Pourtant, beaucoup d'assurés découvrent au moment du sinistre que leur couverture est moins étendue qu'ils ne le croyaient.</p>
+
+      <h2>Ce qui est généralement couvert</h2>
+      <ul>
+        <li><strong>Les fuites de canalisations</strong> : rupture, débordement, gel des conduites</li>
+        <li><strong>Les infiltrations par la toiture</strong> : à la suite d'un événement climatique</li>
+        <li><strong>Les débordements d'appareils ménagers</strong> : machine à laver, lave-vaisselle</li>
+        <li><strong>Les refoulements de canalisations</strong> : dans certains contrats</li>
+      </ul>
+
+      <h2>Ce qui est souvent exclu</h2>
+      <div class="art-highlight">
+        <strong>⚠️ Attention à ces exclusions fréquentes :</strong><br><br>
+        • Les infiltrations par <strong>défaut d'étanchéité</strong> (joints usés, fenêtre mal fermée)<br>
+        • Les dommages dus à la <strong>condensation</strong> ou à l'humidité<br>
+        • Les dégâts causés par des <strong>travaux non déclarés</strong><br>
+        • Les sinistres résultant d'un <strong>manque d'entretien</strong>
+      </div>
+
+      <h2>La procédure à suivre en cas de sinistre</h2>
+      <ol style="padding-left:20px;margin-bottom:16px;">
+        <li style="margin-bottom:8px;font-size:15px;color:#444;line-height:1.7;"><strong>Couper l'eau</strong> immédiatement</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;line-height:1.7;"><strong>Prévenir le voisin</strong> si le dégât vient de chez lui</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;line-height:1.7;"><strong>Déclarer à ton assureur</strong> dans les 5 jours ouvrés</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;line-height:1.7;"><strong>Photographier les dommages</strong> avant tout nettoyage</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;line-height:1.7;"><strong>Remplir un constat amiable</strong> si un voisin est impliqué</li>
+      </ol>
+
+      <h2>La convention IRSI</h2>
+      <p>Depuis 2018, la convention IRSI simplifie les relations entre assureurs en cas de dégât des eaux impliquant plusieurs parties. Elle fixe des règles claires sur qui prend en charge quoi selon le montant des dommages.</p>
+      <p>Pour les dommages inférieurs à <strong>5 000€ HT</strong>, c'est l'assureur du sinistré qui prend en charge sans recherche de responsabilité.</p>
+    `
+  },
+  art5: {
+    tag: 'Réclamations',
+    title: 'Comment rédiger une lettre de réclamation qui obtient des résultats',
+    date: 'Avril 2026',
+    read: '4 min de lecture',
+    content: `
+      <p>Une lettre de réclamation bien rédigée obtient une réponse favorable dans 80% des cas selon les associations de consommateurs. La clé : être factuel, précis, et connaître ses droits.</p>
+
+      <h2>Les 5 règles d'or d'une réclamation efficace</h2>
+
+      <h3>1. Être factuel et chronologique</h3>
+      <p>Raconte les faits dans l'ordre chronologique, avec les dates précises. Évite les formulations émotionnelles. "Le 15 mars 2026, j'ai constaté que..." est bien plus efficace que "Depuis des mois, vous me faites subir..."</p>
+
+      <h3>2. Citer les textes de loi</h3>
+      <p>Une lettre qui cite les articles de loi applicables montre que tu connais tes droits et est prise beaucoup plus au sérieux. Pour une réclamation à un assureur, cite l'article L113-1 du Code des assurances.</p>
+
+      <h3>3. Formuler une demande précise</h3>
+      <p>Ne laisse pas le destinataire décider de la suite. Formule une demande claire :</p>
+      <ul>
+        <li>"Je vous demande de me rembourser la somme de X€ dans un délai de 15 jours"</li>
+        <li>"Je vous mets en demeure de procéder à..."</li>
+      </ul>
+
+      <h3>4. Fixer un délai</h3>
+      <p>Donne un délai de réponse raisonnable (8 à 15 jours ouvrés) et précise ce que tu feras si tu n'obtiens pas satisfaction : saisine du médiateur, tribunal, signalement à la DGCCRF...</p>
+
+      <h3>5. Envoyer en recommandé</h3>
+      <p>L'envoi en recommandé avec accusé de réception crée une preuve de la date d'envoi et de réception. C'est indispensable si tu envisages des recours ultérieurs.</p>
+
+      <div class="art-highlight">
+        💡 <strong>Astuce :</strong> moncontrat génère automatiquement des courriers de réclamation adaptés à ta situation, avec les bonnes formules juridiques et les textes de loi applicables.
+      </div>
+
+      <h2>Structure type d'une lettre de réclamation</h2>
+      <p><strong>En-tête :</strong> Tes coordonnées, date, coordonnées du destinataire<br>
+      <strong>Objet :</strong> Réclamation relative à [sujet précis] — Contrat n°[référence]<br>
+      <strong>Corps :</strong> Rappel des faits + références contractuelles + ta demande + délai<br>
+      <strong>Clôture :</strong> Formule assertive + signature</p>
+    `
+  },
+  art6: {
+    tag: 'Contrats',
+    title: 'Résilier son abonnement téléphonique sans frais : le guide complet',
+    date: 'Avril 2026',
+    read: '3 min de lecture',
+    content: `
+      <p>La loi Hamon (2014) et la loi Chatel (2008) ont considérablement renforcé les droits des consommateurs en matière de résiliation. Mais les opérateurs ne rendent pas la chose facile. Voici tout ce que tu dois savoir.</p>
+
+      <h2>Quand peut-on résilier sans frais ?</h2>
+      <ul>
+        <li><strong>Après 12 mois d'engagement</strong> : résiliation possible à tout moment, avec un préavis de 10 jours</li>
+        <li><strong>En cas de modification des conditions contractuelles</strong> : l'opérateur doit te prévenir 1 mois avant. Tu as 4 mois pour résilier sans frais</li>
+        <li><strong>En cas de déménagement dans une zone non couverte</strong> : résiliation immédiate sans frais</li>
+        <li><strong>En cas de décès de l'abonné</strong> : résiliation par les héritiers sans frais ni préavis</li>
+      </ul>
+
+      <h2>Les frais de résiliation en engagement</h2>
+      <p>Si tu résilie avant la fin de ton engagement, les frais sont plafonnés par la loi :</p>
+      <ul>
+        <li>Dans les 12 premiers mois : 100% des mensualités restantes</li>
+        <li>Après 12 mois : 25% des mensualités restantes</li>
+      </ul>
+      <div class="art-highlight">⚠️ Attention : les frais de résiliation s'appliquent sur l'abonnement seul, pas sur les options ou le téléphone subventionné.</div>
+
+      <h2>La procédure de résiliation</h2>
+      <ol style="padding-left:20px;margin-bottom:16px;">
+        <li style="margin-bottom:8px;font-size:15px;color:#444;">Envoie ta demande par <strong>lettre recommandée avec AR</strong> ou via l'espace client</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;">Conserve l'accusé de réception</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;">Le numéro est <strong>portables gratuitement</strong> chez le nouvel opérateur (RIO)</li>
+        <li style="margin-bottom:8px;font-size:15px;color:#444;">Vérifie ta dernière facture : les opérateurs facturent parfois des frais indus</li>
+      </ol>
+
+      <h2>En cas de litige</h2>
+      <p>Si l'opérateur refuse de résilier ou facture des frais injustifiés, tu peux saisir le <strong>Médiateur des communications électroniques</strong> gratuitement sur mediation-telecom.fr</p>
+    `
+  },
+  art7: {
+    tag: 'Assurance',
+    title: 'Mutuelle santé : comment lire ton tableau de garanties sans se perdre',
+    date: 'Mars 2026',
+    read: '6 min de lecture',
+    content: `
+      <p>Le tableau de garanties d'une mutuelle santé est l'un des documents les plus complexes à déchiffrer. Taux de remboursement, base de remboursement, reste à charge... Voici un guide pour s'y retrouver.</p>
+
+      <h2>Les termes clés à connaître</h2>
+
+      <h3>La base de remboursement (BR)</h3>
+      <p>C'est le tarif de référence fixé par la Sécurité sociale pour chaque acte médical. Toutes les mutuelles calculent leurs remboursements par rapport à cette base.</p>
+
+      <h3>Le taux de remboursement Sécu</h3>
+      <p>La Sécurité sociale rembourse un pourcentage de la BR. Pour une consultation chez un généraliste, c'est généralement 70% de la BR.</p>
+
+      <h3>Le ticket modérateur</h3>
+      <p>C'est la part non remboursée par la Sécu (30% dans notre exemple). C'est ce que ta mutuelle peut prendre en charge.</p>
+
+      <h3>Le dépassement d'honoraires</h3>
+      <p>Les médecins secteur 2 et 3 peuvent facturer au-delà de la BR. Ta mutuelle peut rembourser tout ou partie de ce dépassement selon ton contrat.</p>
+
+      <div class="art-highlight">
+        <strong>Exemple concret :</strong><br>
+        Consultation chez un cardiologue secteur 2 à 80€<br>
+        Base de remboursement Sécu : 23€<br>
+        Remboursement Sécu (70%) : 16,10€<br>
+        Dépassement : 80 - 23 = 57€<br>
+        Ta mutuelle rembourse : ticket modérateur (6,90€) + dépassements selon contrat
+      </div>
+
+      <h2>Les postes qui font vraiment la différence</h2>
+
+      <h3>L'optique</h3>
+      <p>Depuis la réforme 100% Santé, une paire de lunettes "panier A" est intégralement remboursée. Vérifie le plafond annuel et le délai de renouvellement dans ton contrat.</p>
+
+      <h3>Le dentaire</h3>
+      <p>Les soins courants sont peu remboursés par la Sécu. La mutuelle fait vraiment la différence sur les prothèses. Regarde le plafond annuel et le pourcentage sur les prothèses.</p>
+
+      <h3>L'hospitalisation</h3>
+      <p>Vérifie la prise en charge du forfait hospitalier (actuellement 20€/jour) et des dépassements d'honoraires en établissement.</p>
+
+      <h2>Comment comparer deux mutuelles</h2>
+      <p>Ne compare pas seulement les prix. Compare le rapport garanties/prix. Une mutuelle à 50€/mois avec des remboursements limités peut vous coûter plus cher qu'une à 80€/mois avec de meilleures garanties si vous avez des besoins importants en optique ou dentaire.</p>
+    `
+  }
+};
+
+function showArticle(id) {
+  const art = articles[id];
+  if (!art) return;
+  document.getElementById('artContent').innerHTML = `
+    <span class="art-tag">${art.tag}</span>
+    <h1 class="art-title">${art.title}</h1>
+    <div class="art-meta">
+      <span>📅 ${art.date}</span>
+      <span>⏱ ${art.read}</span>
+    </div>
+    <div class="art-content">${art.content}</div>
+    <div class="art-cta">
+      <div class="art-cta-title">Analyse ton contrat maintenant</div>
+      <div class="art-cta-sub">moncontrat te dit exactement ce qui compte pour ta situation. En 30 secondes.</div>
+      <a href="index.html" class="art-cta-btn">Essayer gratuitement →</a>
+    </div>
+  `;
+  document.getElementById('blogList').classList.add('hide');
+  document.getElementById('artPage').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Update meta for SEO
+  document.title = `${art.title} — moncontrat blog`;
+}
+
+function hideArticle() {
+  document.getElementById('blogList').classList.remove('hide');
+  document.getElementById('artPage').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.title = 'Blog moncontrat — Conseils juridiques, assurances et contrats';
+}
+
+function subscribeNewsletter() {
+  const input = document.querySelector('.newsletter-input');
+  if (!input.value || !input.value.includes('@')) { input.focus(); return; }
+  input.value = '';
+  alert('✅ Merci ! Tu recevras nos conseils chaque semaine.');
+}
+</script>
+</body>
+</html>

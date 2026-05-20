@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>moncontrat — Mentions légales, CGU & Confidentialité</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body, * { background-color: inherit; }
+html { background:#fff !important; }
+body { background:#fff !important; }
+
+:root { --red: #FF2D55; --dark: #111; --gray: #888; --light: #EBEBEB; --off: #FAFAFA; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light);
+  padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn {
+  background:transparent; border:2px solid var(--light); color:#888;
+  padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:13px; font-weight:700; cursor:pointer; text-decoration:none;
+  transition:all 0.2s;
+}
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-container {
+  max-width:800px; margin:0 auto; padding:100px 40px 80px;
+}
+
+/* TABS */
+.tabs {
+  display:flex; gap:8px; margin-bottom:48px; flex-wrap:wrap;
+  border-bottom:2px solid var(--light); padding-bottom:0;
+}
+.tab {
+  padding:12px 20px; font-size:14px; font-weight:700; color:#888;
+  cursor:pointer; border:none; background:none; font-family:'Figtree',sans-serif;
+  border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s;
+}
+.tab:hover { color:#111; }
+.tab.active { color:var(--red); border-bottom-color:var(--red); }
+
+.tab-content { display:none; }
+.tab-content.active { display:block; animation:fadeIn 0.3s ease; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* CONTENT STYLES */
+.legal-title {
+  font-size:36px; font-weight:900; color:#111; letter-spacing:-1px;
+  margin-bottom:8px; line-height:1.1;
+}
+.legal-date {
+  font-size:13px; color:#888; margin-bottom:40px; font-weight:600;
+}
+.legal-section {
+  margin-bottom:36px;
+}
+.legal-section h2 {
+  font-size:18px; font-weight:700; color:#111; margin-bottom:12px;
+  padding-bottom:8px; border-bottom:2px solid var(--light);
+}
+.legal-section h3 {
+  font-size:15px; font-weight:700; color:#111; margin:16px 0 8px;
+}
+.legal-section p {
+  font-size:14px; color:#444; line-height:1.8; margin-bottom:10px;
+}
+.legal-section ul {
+  padding-left:20px; margin-bottom:10px;
+}
+.legal-section ul li {
+  font-size:14px; color:#444; line-height:1.7; margin-bottom:4px;
+}
+.legal-highlight {
+  background:var(--off); border-left:4px solid var(--red);
+  border-radius:0 12px 12px 0; padding:16px 20px; margin:16px 0;
+  font-size:14px; color:#444; line-height:1.7;
+}
+.legal-highlight strong { color:#111; }
+.contact-box {
+  background:var(--off); border:2px solid var(--light); border-radius:16px;
+  padding:24px; margin-top:24px;
+}
+.contact-box h3 { font-size:16px; font-weight:700; margin-bottom:12px; }
+.contact-box p { font-size:14px; color:#444; line-height:1.7; }
+.contact-box a { color:var(--red); text-decoration:none; }
+
+/* FOOTER */
+.legal-footer {
+  text-align:center; padding:32px 40px;
+  border-top:2px solid var(--light); margin-top:60px;
+  font-size:13px; color:#aaa;
+}
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-container { padding:90px 20px 60px; }
+  .legal-title { font-size:28px; }
+  .tab { padding:10px 14px; font-size:13px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-container">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('mentions')">Mentions légales</button>
+    <button class="tab" onclick="showTab('cgu')">CGU</button>
+    <button class="tab" onclick="showTab('confidentialite')">Confidentialité</button>
+    <button class="tab" onclick="showTab('cookies')">Cookies</button>
+  </div>
+
+  <!-- MENTIONS LÉGALES -->
+  <div class="tab-content active" id="tab-mentions">
+    <div class="legal-title">Mentions légales</div>
+    <div class="legal-date">Dernière mise à jour : Mai 2026</div>
+
+    <div class="legal-section">
+      <h2>1. Éditeur du site</h2>
+      <p>Le site moncontrat.app est édité par :</p>
+      <div class="legal-highlight">
+        <strong>Maxime Lefèvre</strong><br>
+        Adresse : Nice, Côte d'Azur, France<br>
+        Contact : <a href="contact.html" style="color:#1a3fd4;">Formulaire de contact</a><br>
+        Statut : Entrepreneur individuel
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>2. Hébergement</h2>
+      <p>Le site est hébergé par :</p>
+      <div class="legal-highlight">
+        <strong>GitHub Pages / Vercel Inc.</strong><br>
+        340 Pine Street, Suite 800, San Francisco, CA 94104, États-Unis<br>
+        Site : vercel.com
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>3. Propriété intellectuelle</h2>
+      <p>L'ensemble du contenu du site moncontrat.app (textes, graphiques, logos, images, interface) est la propriété exclusive de Maxime Lefèvre et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle.</p>
+      <p>Toute reproduction, représentation, modification ou exploitation non autorisée de tout ou partie du site est strictement interdite.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>4. Limitation de responsabilité</h2>
+      <p>moncontrat.app est un outil d'aide à la compréhension des documents juridiques et contractuels. Les informations générées par l'intelligence artificielle sont fournies à titre indicatif uniquement et ne constituent en aucun cas un conseil juridique professionnel.</p>
+      <div class="legal-highlight">
+        <strong>⚠️ Important :</strong> L'éditeur décline toute responsabilité quant aux décisions prises par les utilisateurs sur la base des informations générées. Nous vous recommandons de consulter un professionnel du droit pour toute décision importante.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>5. Droit applicable</h2>
+      <p>Le présent site et ses mentions légales sont soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
+    </div>
+
+    <div class="contact-box">
+      <h3>📬 Contact</h3>
+      <p>Pour toute question relative aux mentions légales : <a href="contact.html" style="color:var(--red);text-decoration:none;">Nous contacter →</a></p>
+    </div>
+  </div>
+
+  <!-- CGU -->
+  <div class="tab-content" id="tab-cgu">
+    <div class="legal-title">Conditions Générales d'Utilisation</div>
+    <div class="legal-date">Dernière mise à jour : Mai 2026</div>
+
+    <div class="legal-section">
+      <h2>1. Objet</h2>
+      <p>Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions d'utilisation du service moncontrat.app, accessible à l'adresse moncontrat.app.</p>
+      <p>En accédant au service, l'utilisateur accepte sans réserve les présentes CGU.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>2. Description du service</h2>
+      <p>moncontrat.app est un assistant juridique basé sur l'intelligence artificielle permettant de :</p>
+      <ul>
+        <li>Analyser et simplifier des documents contractuels (assurances, baux, mutuelles...)</li>
+        <li>Comparer deux contrats garantie par garantie</li>
+        <li>Générer des contrats entre particuliers</li>
+        <li>Rédiger des courriers de réclamation</li>
+        <li>Calculer un score de protection familiale</li>
+        <li>Retranscrire des documents manuscrits</li>
+        <li>Répondre à des questions juridiques générales via chatbot</li>
+      </ul>
+      <div class="legal-highlight">
+        <strong>⚠️ Avertissement important :</strong> moncontrat.app est un outil d'aide à la compréhension et ne se substitue pas à un conseil juridique professionnel. Les résultats générés sont produits par une intelligence artificielle et doivent être vérifiés avant toute action.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>3. Accès au service</h2>
+      <h3>3.1 Offre gratuite</h3>
+      <p>L'accès gratuit comprend 3 crédits offerts à l'inscription, sans carte bancaire requise. Au-delà, l'utilisateur doit souscrire à une offre payante.</p>
+      <h3>3.2 Offre Particulier</h3>
+      <p>Abonnement à 9,99€/mois (soit 2,49€/semaine), incluant 50 crédits mensuels. Résiliable à tout moment.</p>
+      <h3>3.3 Offre Pro</h3>
+      <p>Abonnement à 29,99€/mois (soit 7,49€/semaine), incluant des crédits illimités et des fonctionnalités avancées. Résiliable à tout moment.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>4. Obligations de l'utilisateur</h2>
+      <p>L'utilisateur s'engage à :</p>
+      <ul>
+        <li>Fournir des informations exactes lors de l'inscription</li>
+        <li>Ne pas utiliser le service à des fins illicites ou frauduleuses</li>
+        <li>Ne pas tenter de contourner les limitations du service</li>
+        <li>Vérifier l'exactitude des documents générés avant toute utilisation</li>
+        <li>Ne pas partager ses identifiants de connexion</li>
+        <li>Respecter les droits de propriété intellectuelle</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>5. Responsabilité</h2>
+      <p>moncontrat.app s'engage à fournir un service de qualité mais ne peut garantir l'exactitude absolue des informations générées par l'intelligence artificielle.</p>
+      <p>L'utilisateur reconnaît utiliser le service sous sa seule responsabilité et s'engage à vérifier les informations produites avant toute décision ou action juridique.</p>
+      <p>moncontrat.app ne pourra être tenu responsable des dommages directs ou indirects résultant de l'utilisation du service.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>6. Paiement et résiliation</h2>
+      <p>Les abonnements sont facturés mensuellement via Stripe, prestataire de paiement sécurisé. L'utilisateur peut résilier son abonnement à tout moment depuis son espace personnel, sans frais ni préavis. La résiliation prend effet à la fin de la période en cours.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>7. Modification des CGU</h2>
+      <p>moncontrat.app se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront informés par email de tout changement significatif. La poursuite de l'utilisation du service vaut acceptation des nouvelles CGU.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>8. Droit applicable</h2>
+      <p>Les présentes CGU sont soumises au droit français. Tout litige sera soumis aux tribunaux compétents de Nice (France).</p>
+    </div>
+
+    <div class="contact-box">
+      <h3>📬 Questions sur les CGU</h3>
+      <p>Pour toute question : <a href="contact.html" style="color:var(--red);text-decoration:none;">Nous contacter →</a></p>
+    </div>
+  </div>
+
+  <!-- CONFIDENTIALITÉ -->
+  <div class="tab-content" id="tab-confidentialite">
+    <div class="legal-title">Politique de confidentialité</div>
+    <div class="legal-date">Dernière mise à jour : Mai 2026 · Conforme RGPD</div>
+
+    <div class="legal-section">
+      <h2>1. Responsable du traitement</h2>
+      <div class="legal-highlight">
+        <strong>Maxime Lefèvre</strong><br>
+        Contact : <a href="contact.html" style="color:#1a3fd4;">Formulaire de contact</a><br>
+        Site : moncontrat.app
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>2. Données collectées</h2>
+      <h3>2.1 Données d'inscription</h3>
+      <ul>
+        <li>Prénom</li>
+        <li>Adresse email</li>
+        <li>Numéro de téléphone (optionnel)</li>
+        <li>Date d'inscription</li>
+      </ul>
+      <h3>2.2 Données d'utilisation</h3>
+      <ul>
+        <li>Documents uploadés pour analyse (traités et non conservés)</li>
+        <li>Historique des analyses effectuées</li>
+        <li>Données de navigation (pages visitées, durée)</li>
+      </ul>
+      <h3>2.3 Données de paiement</h3>
+      <p>Les données de paiement sont traitées exclusivement par Stripe et ne sont jamais stockées sur nos serveurs.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>3. Finalités du traitement</h2>
+      <p>Vos données sont utilisées pour :</p>
+      <ul>
+        <li>Fournir et améliorer le service moncontrat.app</li>
+        <li>Gérer votre compte et vos abonnements</li>
+        <li>Vous envoyer des communications relatives au service</li>
+        <li>Vous proposer des offres d'assurance adaptées (avec votre consentement explicite)</li>
+        <li>Assurer la sécurité et prévenir la fraude</li>
+        <li>Respecter nos obligations légales</li>
+      </ul>
+      <div class="legal-highlight">
+        <strong>Bouton "Trouve moi mieux & moins cher" :</strong> En cliquant sur ce bouton, vous consentez explicitement au partage de vos données contractuelles avec des partenaires assureurs afin de recevoir des propositions personnalisées. Ce consentement est révocable à tout moment.
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>4. Durée de conservation</h2>
+      <ul>
+        <li>Données de compte : durée de l'abonnement + 3 ans</li>
+        <li>Documents analysés : non conservés après traitement</li>
+        <li>Données de paiement : 5 ans (obligation légale)</li>
+        <li>Données de navigation : 13 mois maximum</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>5. Vos droits (RGPD)</h2>
+      <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
+      <ul>
+        <li><strong>Droit d'accès</strong> : obtenir une copie de vos données</li>
+        <li><strong>Droit de rectification</strong> : corriger vos données inexactes</li>
+        <li><strong>Droit à l'effacement</strong> : supprimer vos données ("droit à l'oubli")</li>
+        <li><strong>Droit à la portabilité</strong> : recevoir vos données dans un format structuré</li>
+        <li><strong>Droit d'opposition</strong> : vous opposer au traitement de vos données</li>
+        <li><strong>Droit de limitation</strong> : limiter le traitement de vos données</li>
+      </ul>
+      <p>Pour exercer ces droits : <a href="contact.html" style="color:var(--red);text-decoration:none;">Nous contacter →</a></p>
+      <p>Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> (cnil.fr).</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>6. Partage des données</h2>
+      <p>Vos données ne sont jamais vendues à des tiers. Elles peuvent être partagées uniquement avec :</p>
+      <ul>
+        <li><strong>Stripe</strong> : traitement des paiements</li>
+        <li><strong>Anthropic</strong> : traitement des requêtes IA (documents non conservés)</li>
+        <li><strong>Partenaires assureurs</strong> : uniquement avec votre consentement explicite via le bouton "Trouve moi mieux & moins cher"</li>
+      </ul>
+    </div>
+
+    <div class="contact-box">
+      <h3>📬 Délégué à la protection des données</h3>
+      <p>Pour toute question relative à la protection de vos données : <a href="contact.html" style="color:var(--red);text-decoration:none;">Nous contacter →</a></p>
+    </div>
+  </div>
+
+  <!-- COOKIES -->
+  <div class="tab-content" id="tab-cookies">
+    <div class="legal-title">Politique de cookies</div>
+    <div class="legal-date">Dernière mise à jour : Mai 2026</div>
+
+    <div class="legal-section">
+      <h2>1. Qu'est-ce qu'un cookie ?</h2>
+      <p>Un cookie est un petit fichier texte déposé sur votre appareil lors de la visite d'un site web. Il permet de mémoriser des informations sur votre navigation.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>2. Cookies utilisés par moncontrat.app</h2>
+      <h3>2.1 Cookies essentiels (obligatoires)</h3>
+      <ul>
+        <li><strong>Session utilisateur</strong> : maintien de votre connexion</li>
+        <li><strong>Préférences</strong> : mémorisation de vos choix (ton, langue)</li>
+        <li><strong>Crédits utilisés</strong> : suivi de vos analyses gratuites</li>
+      </ul>
+      <p>Ces cookies sont indispensables au fonctionnement du service. Ils ne peuvent pas être désactivés.</p>
+
+      <h3>2.2 Cookies analytiques (optionnels)</h3>
+      <ul>
+        <li><strong>Google Analytics</strong> : mesure d'audience anonymisée</li>
+        <li><strong>Données de navigation</strong> : pages visitées, durée des sessions</li>
+      </ul>
+      <p>Ces cookies nous aident à améliorer le service. Vous pouvez les refuser.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>3. Durée de conservation</h2>
+      <ul>
+        <li>Cookies de session : supprimés à la fermeture du navigateur</li>
+        <li>Cookies persistants : maximum 13 mois</li>
+        <li>LocalStorage : jusqu'à suppression manuelle</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>4. Gestion des cookies</h2>
+      <p>Vous pouvez gérer vos préférences de cookies depuis les paramètres de votre navigateur :</p>
+      <ul>
+        <li><strong>Chrome</strong> : Paramètres → Confidentialité → Cookies</li>
+        <li><strong>Safari</strong> : Préférences → Confidentialité</li>
+        <li><strong>Firefox</strong> : Options → Vie privée et sécurité</li>
+      </ul>
+      <div class="legal-highlight">
+        La désactivation de certains cookies peut affecter le bon fonctionnement du service.
+      </div>
+    </div>
+
+    <div class="contact-box">
+      <h3>📬 Questions sur les cookies</h3>
+      <p>Pour toute question : <a href="contact.html" style="color:var(--red);text-decoration:none;">Nous contacter →</a></p>
+    </div>
+  </div>
+
+</div>
+
+<div class="legal-footer">
+  © 2026 moncontrat.app · Tous droits réservés · <a href="index.html" style="color:var(--red);text-decoration:none;">Retour au site</a>
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Handle URL hash
+const hash = window.location.hash.replace('#', '');
+if (hash && document.getElementById('tab-' + hash)) {
+  showTab(hash);
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.textContent.toLowerCase().includes(hash)) t.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>

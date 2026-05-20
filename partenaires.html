@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partenaires & Affiliation — moncontrat.app</title>
+<meta name="description" content="Accédez à des leads qualifiés en assurance, devenez partenaire assureur ou affilié moncontrat. Contactez-nous pour en savoir plus.">
+<meta property="og:title" content="Partenaires & Affiliation — moncontrat.app">
+<meta property="og:description" content="Leads qualifiés assurance, partenariat assureur, programme d'affiliation influenceurs.">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; }
+:root { --red:#FF2D55; --light:#EBEBEB; --off:#FAFAFA; --red-pale:#FFF0F3; --blue:#1a3fd4; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light); padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn { background:transparent; border:2px solid var(--light); color:#888; padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-wrap { max-width:1000px; margin:0 auto; padding:120px 40px 80px; }
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.page-title { font-size:clamp(36px,5vw,58px); font-weight:900; letter-spacing:-1.5px; color:#111; line-height:1.05; margin-bottom:16px; }
+.page-title em { font-style:italic; color:var(--red); }
+.page-sub { font-size:17px; color:#888; line-height:1.7; max-width:600px; margin-bottom:72px; }
+
+/* PARTNER CARDS */
+.partners-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:80px; }
+
+.partner-card {
+  border:2px solid var(--light); border-radius:24px; padding:40px;
+  transition:all 0.3s; position:relative; overflow:hidden;
+}
+.partner-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  transform:scaleX(0); transform-origin:left; transition:transform 0.3s;
+}
+.partner-card.blue::before { background:var(--blue); }
+.partner-card.red::before { background:var(--red); }
+.partner-card.green::before { background:#22C55E; }
+.partner-card.purple::before { background:#8B5CF6; }
+.partner-card:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(0,0,0,0.08); }
+.partner-card:hover::before { transform:scaleX(1); }
+
+.card-icon { font-size:44px; margin-bottom:20px; display:block; }
+.card-badge {
+  display:inline-block; font-size:11px; font-weight:700; padding:4px 12px;
+  border-radius:100px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px;
+}
+.badge-blue { background:#EEF2FF; color:var(--blue); }
+.badge-red { background:var(--red-pale); color:var(--red); }
+.badge-green { background:#DCFCE7; color:#15803D; }
+.badge-purple { background:#F3E8FF; color:#7C3AED; }
+
+.card-title { font-size:22px; font-weight:900; color:#111; letter-spacing:-0.5px; margin-bottom:12px; line-height:1.2; }
+.card-text { font-size:14px; color:#888; line-height:1.7; margin-bottom:24px; }
+
+.card-features { list-style:none; margin-bottom:28px; display:flex; flex-direction:column; gap:8px; }
+.card-features li { font-size:13px; color:#444; font-weight:500; display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+.card-features li::before { content:'✓'; color:var(--red); font-weight:900; flex-shrink:0; }
+
+.card-btn {
+  display:inline-block; padding:13px 24px; border-radius:100px;
+  font-family:'Figtree',sans-serif; font-size:14px; font-weight:700;
+  text-decoration:none; transition:all 0.2s; width:100%; text-align:center;
+}
+.btn-blue { background:var(--blue); color:#fff; }
+.btn-blue:hover { background:#1530b0; }
+.btn-red { background:var(--red); color:#fff; }
+.btn-red:hover { background:#E0002A; }
+.btn-green { background:#22C55E; color:#fff; }
+.btn-green:hover { background:#16A34A; }
+.btn-purple { background:#8B5CF6; color:#fff; }
+.btn-purple:hover { background:#7C3AED; }
+
+/* CHARTE */
+.charte-section {
+  background:var(--off); border:2px solid var(--light); border-radius:24px;
+  padding:48px; margin-bottom:60px;
+}
+.charte-title { font-size:24px; font-weight:900; color:#111; margin-bottom:8px; }
+.charte-sub { font-size:15px; color:#888; margin-bottom:32px; line-height:1.6; }
+.charte-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.charte-item { background:#fff; border:2px solid var(--light); border-radius:16px; padding:20px; text-align:center; }
+.charte-icon { font-size:28px; margin-bottom:10px; }
+.charte-name { font-size:14px; font-weight:700; color:#111; margin-bottom:6px; }
+.charte-text { font-size:12px; color:#888; line-height:1.5; }
+
+/* STATS */
+.stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:60px; }
+.stat-box { background:var(--red); border-radius:20px; padding:28px 20px; text-align:center; }
+.stat-num { font-size:36px; font-weight:900; color:#fff; letter-spacing:-1px; line-height:1; margin-bottom:6px; }
+.stat-label { font-size:12px; font-weight:700; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:0.08em; }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-wrap { padding:90px 20px 60px; }
+  .partners-grid { grid-template-columns:1fr; }
+  .charte-grid { grid-template-columns:1fr; }
+  .stats-row { grid-template-columns:1fr; }
+  .charte-section { padding:28px; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-wrap">
+  <span class="page-tag">Partenariats & Affiliation</span>
+  <h1 class="page-title">Travaillons<br><em>ensemble.</em></h1>
+  <p class="page-sub">moncontrat génère chaque jour des leads qualifiés en assurance et des opportunités de partenariat. Voici comment collaborer avec nous.</p>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">6 200+</div><div class="stat-label">Utilisateurs actifs</div></div>
+    <div class="stat-box"><div class="stat-num">340€</div><div class="stat-label">Économies moyennes trouvées</div></div>
+    <div class="stat-box"><div class="stat-num">100%</div><div class="stat-label">Leads opt-in consentis</div></div>
+  </div>
+
+  <!-- PARTNER CARDS -->
+  <div class="partners-grid">
+
+    <!-- LEADS ASSUREURS -->
+    <div class="partner-card blue">
+      <span class="card-icon">🏢</span>
+      <span class="card-badge badge-blue">Assureurs & Courtiers</span>
+      <div class="card-title">Accédez à des leads assurance ultra-qualifiés</div>
+      <div class="card-text">Nos utilisateurs analysent leurs contrats et consentent explicitement à être recontactés pour une meilleure offre. Ce sont des prospects chauds, en démarche active de comparaison.</div>
+      <ul class="card-features">
+        <li>Leads 100% opt-in avec consentement RGPD explicite</li>
+        <li>Profil complet : garanties actuelles, prime, assureur, date d'échéance</li>
+        <li>Prospect en démarche active — taux de conversion élevé</li>
+        <li>Ciblage possible par type de contrat (auto, habitation, santé...)</li>
+        <li>Notre charte qualité : vous ne recevez un lead que si vous êtes en mesure de proposer mieux et moins cher</li>
+      </ul>
+      <a href="contact.html" class="card-btn btn-blue">Nous contacter pour en savoir plus →</a>
+    </div>
+
+    <!-- AFFILIATION INFLUENCEURS -->
+    <div class="partner-card red">
+      <span class="card-icon">📱</span>
+      <span class="card-badge badge-red">Influenceurs & Créateurs</span>
+      <div class="card-title">Devenez affilié moncontrat</div>
+      <div class="card-text">Vous avez une audience qui parle de droit, d'assurance, de finances personnelles ou de consommation ? Monétisez votre influence en recommandant un produit qui apporte une vraie valeur.</div>
+      <ul class="card-features">
+        <li>Commission attractive sur chaque abonnement généré</li>
+        <li>Lien de tracking personnalisé avec tableau de bord</li>
+        <li>Contenu clé en main : visuels, scripts, exemples</li>
+        <li>Paiement mensuel automatique</li>
+        <li>Produit viral par nature — facile à démontrer en vidéo</li>
+      </ul>
+      <a href="contact.html" class="card-btn btn-red">Nous contacter pour discuter des conditions →</a>
+    </div>
+
+    <!-- PRESCRIPTEURS -->
+    <div class="partner-card green">
+      <span class="card-icon">🤝</span>
+      <span class="card-badge badge-green">Prescripteurs & Pros</span>
+      <div class="card-title">Recommandez moncontrat à vos clients</div>
+      <div class="card-text">Vous êtes notaire, expert-comptable, agent immobilier ou conseiller ? Offrez à vos clients un outil qui les aide à comprendre leurs contrats. Une vraie valeur ajoutée pour fidéliser.</div>
+      <ul class="card-features">
+        <li>Accès Pro à tarif préférentiel pour vos clients</li>
+        <li>Co-branding possible avec votre cabinet</li>
+        <li>Commission sur les abonnements de vos clients</li>
+        <li>Formation et support dédié</li>
+      </ul>
+      <a href="contact.html" class="card-btn btn-green">Discutons de votre situation →</a>
+    </div>
+
+    <!-- MÉDIAS -->
+    <div class="partner-card purple">
+      <span class="card-icon">📰</span>
+      <span class="card-badge badge-purple">Presse & Médias</span>
+      <div class="card-title">Kit presse & informations médias</div>
+      <div class="card-text">Vous couvrez l'actualité tech, juridique ou consommateur ? Nous sommes disponibles pour des interviews, des démonstrations et des éléments de contexte sur l'IA juridique en France.</div>
+      <ul class="card-features">
+        <li>Logo et charte graphique disponibles</li>
+        <li>Données d'usage et statistiques</li>
+        <li>Disponible pour interviews et démonstrations</li>
+        <li>Communiqués de presse sur demande</li>
+      </ul>
+      <a href="contact.html" class="card-btn btn-purple">Contacter le fondateur →</a>
+    </div>
+
+  </div>
+
+  <!-- CHARTE QUALITÉ -->
+  <div class="charte-section">
+    <div class="charte-title">🛡️ Notre charte qualité — leads assurance</div>
+    <div class="charte-sub">moncontrat ne transmet un lead à un partenaire assureur que sous des conditions strictes. C'est notre engagement envers nos utilisateurs et la condition de notre réputation.</div>
+    <div class="charte-grid">
+      <div class="charte-item">
+        <div class="charte-icon">✅</div>
+        <div class="charte-name">Consentement explicite</div>
+        <div class="charte-text">L'utilisateur a cliqué sur "Trouve moi mieux & moins cher" et consenti explicitement au partage de ses données.</div>
+      </div>
+      <div class="charte-item">
+        <div class="charte-icon">📊</div>
+        <div class="charte-name">Offre réellement meilleure</div>
+        <div class="charte-text">Le partenaire doit être en mesure de proposer des garanties au minimum équivalentes à un prix inférieur.</div>
+      </div>
+      <div class="charte-item">
+        <div class="charte-icon">🚫</div>
+        <div class="charte-name">Zéro démarchage abusif</div>
+        <div class="charte-text">Les leads ne peuvent pas être utilisés pour du démarchage téléphonique agressif ou des offres non sollicitées.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="apropos.html">À propos</a> · <a href="blog.html">Blog</a> · <a href="contact.html">Contact</a>
+</footer>
+</body>
+</html>

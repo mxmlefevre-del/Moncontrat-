@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>moncontrat — Foire aux questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; max-width:100%; }
+:root { --red: #FF2D55; --light: #EBEBEB; --off: #FAFAFA; --red-pale: #FFF0F3; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light);
+  padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn {
+  background:transparent; border:2px solid var(--light); color:#888;
+  padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s;
+  display:inline-block;
+}
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-wrap { max-width:720px; margin:0 auto; padding:120px 40px 80px; }
+
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.page-title { font-size:clamp(32px,5vw,52px); font-weight:900; letter-spacing:-1px; color:#111; line-height:1.05; margin-bottom:12px; }
+.page-sub { font-size:16px; color:#888; line-height:1.6; margin-bottom:48px; }
+
+/* CATEGORIES */
+.cat-tabs { display:flex; gap:8px; margin-bottom:32px; flex-wrap:wrap; }
+.cat-tab {
+  padding:8px 16px; border-radius:100px; border:2px solid var(--light);
+  background:#fff; font-family:'Figtree',sans-serif; font-size:13px;
+  font-weight:700; color:#888; cursor:pointer; transition:all 0.2s;
+}
+.cat-tab:hover { border-color:var(--red); color:var(--red); }
+.cat-tab.active { background:var(--red); border-color:var(--red); color:#fff; }
+
+/* FAQ ITEMS */
+.faq-group { margin-bottom:40px; }
+.faq-group-title {
+  font-size:13px; font-weight:700; color:#888; text-transform:uppercase;
+  letter-spacing:0.12em; margin-bottom:12px; padding-bottom:10px;
+  border-bottom:2px solid var(--light);
+}
+.faq-item {
+  border:2px solid var(--light); border-radius:16px; margin-bottom:8px;
+  overflow:hidden; transition:border-color 0.2s;
+}
+.faq-item:hover { border-color:rgba(255,45,85,0.3); }
+.faq-item.open { border-color:var(--red); }
+.faq-question {
+  width:100%; background:#fff; border:none; padding:18px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:'Figtree',sans-serif; font-size:15px; font-weight:700;
+  color:#111; cursor:pointer; text-align:left; gap:12px;
+  transition:background 0.2s;
+}
+.faq-question:hover { background:var(--off); }
+.faq-item.open .faq-question { background:var(--red-pale); color:var(--red); }
+.faq-chevron { font-size:18px; flex-shrink:0; transition:transform 0.3s; color:#888; }
+.faq-item.open .faq-chevron { transform:rotate(180deg); color:var(--red); }
+.faq-answer {
+  display:none; padding:0 20px 18px; font-size:14px; color:#444;
+  line-height:1.7; background:#fff;
+}
+.faq-answer.show { display:block; animation:fadeDown 0.25s ease; }
+.faq-answer a { color:var(--red); text-decoration:none; font-weight:600; }
+.faq-answer strong { color:#111; }
+
+@keyframes fadeDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+/* CTA */
+.faq-cta {
+  background:var(--off); border:2px solid var(--light); border-radius:20px;
+  padding:32px; text-align:center; margin-top:48px;
+}
+.faq-cta-title { font-size:20px; font-weight:900; color:#111; margin-bottom:8px; }
+.faq-cta-sub { font-size:14px; color:#888; margin-bottom:20px; }
+.faq-cta-btn {
+  display:inline-block; background:var(--red); color:#fff;
+  padding:13px 28px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:14px; font-weight:700; text-decoration:none; transition:all 0.2s;
+}
+.faq-cta-btn:hover { background:#E0002A; }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-wrap { padding:90px 20px 60px; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-wrap">
+  <span class="page-tag">Aide & Support</span>
+  <h1 class="page-title">Foire aux<br>questions</h1>
+  <p class="page-sub">Tu trouveras ici les réponses aux questions les plus fréquentes. Si tu ne trouves pas ta réponse, <a href="contact.html" style="color:var(--red);text-decoration:none;font-weight:700;">contacte-nous</a>.</p>
+
+  <!-- GENERAL -->
+  <div class="faq-group">
+    <div class="faq-group-title">🌐 Général</div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        C'est quoi moncontrat exactement ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        moncontrat est un assistant juridique basé sur l'intelligence artificielle. Il te permet d'analyser tes contrats d'assurance, de bail ou de mutuelle en langage simple, de créer des contrats entre particuliers, de rédiger des courriers de réclamation, et bien plus. Tout ça en 30 secondes, sans jargon.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Est-ce que moncontrat remplace un avocat ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        <strong>Non.</strong> moncontrat est un outil d'aide à la compréhension, pas un cabinet juridique. Les informations générées sont produites par une intelligence artificielle et fournies à titre indicatif. Pour toute décision juridique importante, nous te recommandons de consulter un professionnel du droit.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Est-ce que mes documents sont stockés ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Non. Les documents que tu uploades sont analysés puis immédiatement supprimés. Ils ne sont jamais conservés sur nos serveurs. Seules tes informations de compte (prénom, email) sont stockées.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Dans quelles langues fonctionne le service ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        moncontrat est disponible uniquement en français pour l'instant. Le service est conçu pour le droit français et les contrats régis par la loi française.
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTILS -->
+  <div class="faq-group">
+    <div class="faq-group-title">🛠️ Les outils</div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Quels types de contrats peut-on analyser ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Tu peux analyser n'importe quel type de contrat : assurance habitation, auto, santé, mutuelle, bail locatif, contrat de travail, contrat de prestation... Si c'est un document PDF ou une image lisible, moncontrat peut l'analyser.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Qu'est-ce que le "Danger Score" ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Le Danger Score est une note de 0 à 10 calculée automatiquement après chaque analyse. Il mesure le niveau de risque de ton contrat :
+        <br><br>
+        <strong>0-3 🟢</strong> — Contrat sain, peu de risques détectés<br>
+        <strong>4-6 🟡</strong> — Contrat moyen, quelques points d'attention<br>
+        <strong>7-10 🔴</strong> — Contrat risqué, clauses problématiques détectées
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Les contrats générés sont-ils légalement valides ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Les contrats générés par moncontrat sont rédigés selon le droit français et contiennent toutes les clauses essentielles. Cependant, leur validité dépend de la précision des informations que tu fournis et de ta situation spécifique. Nous te recommandons de vérifier le document avant signature, idéalement avec un professionnel pour les contrats importants.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Comment fonctionne le scan de documents manuscrits ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Tu prends une photo de ton document écrit à la main, tu l'uploades dans l'outil "Scan manuscrit", et moncontrat le retranscrit automatiquement. Pour de meilleurs résultats, assure-toi que l'image est nette, bien éclairée, et que le texte est lisible.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Que signifie "Trouve moi mieux & moins cher" ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Après analyse de ton contrat, si nous détectons qu'il est perfectible, tu peux cliquer sur ce bouton. Avec ton consentement explicite, nous transmettons les informations de ton contrat à des partenaires assureurs qui analyseront si une meilleure offre existe pour toi. Tu recevras une réponse sous 2-3 jours ouvrés. Ce service est gratuit et sans engagement.
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPTE & ABONNEMENT -->
+  <div class="faq-group">
+    <div class="faq-group-title">💳 Compte & Abonnement</div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        C'est quoi un "crédit" ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Un crédit correspond à une utilisation d'un outil : une analyse de contrat, une génération de contrat, un courrier rédigé, une comparaison, un score famille ou un scan. Chaque action consomme 1 crédit. L'offre gratuite inclut 3 crédits. L'offre Particulier donne 50 crédits par mois, et l'offre Pro des crédits illimités.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Comment résilier mon abonnement ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Tu peux résilier à tout moment depuis ton espace personnel, sans frais ni préavis. La résiliation prend effet à la fin de la période en cours — tu gardes l'accès jusqu'à la fin du mois payé. Pour toute aide : <a href="contact.html">nous contacter</a>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Les 7 jours d'essai sont-ils vraiment gratuits ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Oui, complètement gratuits. Tu peux utiliser toutes les fonctionnalités Premium pendant 7 jours sans être prélevé. Si tu ne résiles pas avant la fin de la période d'essai, l'abonnement démarre automatiquement à 9,99€/mois.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Mes crédits non utilisés sont-ils reportés ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Non. Les crédits mensuels sont remis à zéro chaque mois. Ils ne se cumulent pas d'un mois sur l'autre. C'est pourquoi l'offre Pro avec crédits illimités est recommandée pour les utilisateurs intensifs.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Quels moyens de paiement acceptez-vous ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Nous acceptons Apple Pay, Google Pay, Visa, Mastercard et American Express. Les paiements sont sécurisés et traités par Stripe, leader mondial du paiement en ligne. Nous n'avons jamais accès à tes coordonnées bancaires.
+      </div>
+    </div>
+  </div>
+
+  <!-- TECHNIQUE -->
+  <div class="faq-group">
+    <div class="faq-group-title">⚙️ Technique</div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Quels formats de fichiers sont acceptés ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        moncontrat accepte les fichiers <strong>PDF</strong>, <strong>JPG</strong> et <strong>PNG</strong>. La taille maximum est de 10 Mo par fichier. Pour les PDFs scannés ou les photos de documents, assure-toi que le texte est lisible.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Pourquoi l'analyse prend parfois plus de 30 secondes ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Le temps d'analyse dépend de la taille du document et de la charge de nos serveurs. Les gros contrats (80+ pages) peuvent prendre jusqu'à 60 secondes. Si l'analyse dépasse 2 minutes, essaie de recharger la page et de relancer l'analyse.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        Le service fonctionne-t-il sur mobile ?
+        <span class="faq-chevron">↓</span>
+      </button>
+      <div class="faq-answer">
+        Oui, moncontrat est entièrement optimisé pour mobile. Tu peux prendre une photo de ton contrat directement depuis l'outil "Scan manuscrit" sur ton téléphone. Le service fonctionne sur tous les navigateurs modernes (Safari, Chrome, Firefox).
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-cta">
+    <div class="faq-cta-title">Tu n'as pas trouvé ta réponse ?</div>
+    <div class="faq-cta-sub">Notre équipe répond sous 24h ouvrées.</div>
+    <a href="contact.html" class="faq-cta-btn">Nous contacter →</a>
+  </div>
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="legal.html">Mentions légales</a> · <a href="legal.html#confidentialite">Confidentialité</a> · <a href="contact.html">Contact</a>
+</footer>
+
+<script>
+function toggle(btn) {
+  const item = btn.parentElement;
+  const answer = item.querySelector('.faq-answer');
+  const isOpen = item.classList.contains('open');
+  
+  // Close all
+  document.querySelectorAll('.faq-item').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-answer').classList.remove('show');
+  });
+  
+  // Open clicked if was closed
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.classList.add('show');
+  }
+}
+</script>
+</body>
+</html>

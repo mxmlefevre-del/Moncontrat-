@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>moncontrat — Conditions Générales de Vente</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; max-width:100%; }
+:root { --red: #FF2D55; --light: #EBEBEB; --off: #FAFAFA; --red-pale: #FFF0F3; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; overflow-x:hidden; }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light);
+  padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn {
+  background:transparent; border:2px solid var(--light); color:#888;
+  padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s;
+  display:inline-block;
+}
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-wrap { max-width:760px; margin:0 auto; padding:120px 40px 80px; }
+
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.page-title { font-size:clamp(32px,5vw,52px); font-weight:900; letter-spacing:-1px; color:#111; line-height:1.05; margin-bottom:8px; }
+.page-date { font-size:13px; color:#888; margin-bottom:48px; font-weight:600; }
+
+.section { margin-bottom:40px; }
+.section h2 {
+  font-size:18px; font-weight:700; color:#111; margin-bottom:14px;
+  padding-bottom:10px; border-bottom:2px solid var(--light);
+  display:flex; align-items:center; gap:10px;
+}
+.section h3 { font-size:15px; font-weight:700; color:#111; margin:18px 0 8px; }
+.section p { font-size:14px; color:#444; line-height:1.8; margin-bottom:10px; }
+.section ul { padding-left:20px; margin-bottom:12px; }
+.section ul li { font-size:14px; color:#444; line-height:1.7; margin-bottom:6px; }
+
+.highlight {
+  background:var(--red-pale); border-left:4px solid var(--red);
+  border-radius:0 12px 12px 0; padding:16px 20px; margin:16px 0;
+  font-size:14px; color:#444; line-height:1.7;
+}
+.highlight strong { color:#111; }
+
+.pricing-table {
+  width:100%; border-collapse:collapse; margin:16px 0 20px;
+  border-radius:16px; overflow:hidden; border:2px solid var(--light);
+}
+.pricing-table th {
+  background:var(--off); padding:12px 16px; font-size:13px;
+  font-weight:700; color:#111; text-align:left; border-bottom:2px solid var(--light);
+}
+.pricing-table td {
+  padding:12px 16px; font-size:13px; color:#444;
+  border-bottom:1px solid var(--light);
+}
+.pricing-table tr:last-child td { border-bottom:none; }
+.pricing-table tr:hover td { background:var(--off); }
+.badge-red {
+  background:var(--red); color:#fff; font-size:10px; font-weight:700;
+  padding:2px 8px; border-radius:100px; letter-spacing:0.08em;
+}
+
+.toc {
+  background:var(--off); border:2px solid var(--light); border-radius:16px;
+  padding:24px; margin-bottom:48px;
+}
+.toc-title { font-size:14px; font-weight:700; color:#111; margin-bottom:12px; }
+.toc-list { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.toc-list li a {
+  font-size:13px; color:#888; text-decoration:none; font-weight:600;
+  transition:color 0.2s;
+}
+.toc-list li a:hover { color:var(--red); }
+.toc-list li::before { content:'→ '; color:var(--red); }
+
+.contact-box {
+  background:var(--off); border:2px solid var(--light); border-radius:16px;
+  padding:24px; margin-top:24px; display:flex; align-items:center;
+  justify-content:space-between; gap:16px; flex-wrap:wrap;
+}
+.contact-box-text h3 { font-size:16px; font-weight:700; margin-bottom:4px; }
+.contact-box-text p { font-size:13px; color:#888; }
+.contact-link {
+  background:var(--red); color:#fff; padding:11px 22px; border-radius:100px;
+  font-family:'Figtree',sans-serif; font-size:13px; font-weight:700;
+  text-decoration:none; white-space:nowrap; transition:background 0.2s;
+}
+.contact-link:hover { background:#E0002A; }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; margin-top:60px; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-wrap { padding:90px 20px 60px; }
+  .contact-box { flex-direction:column; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-wrap">
+  <span class="page-tag">Documents légaux</span>
+  <h1 class="page-title">Conditions Générales<br>de Vente</h1>
+  <div class="page-date">Version en vigueur au 1er mai 2026 · Applicable à tous les abonnements moncontrat</div>
+
+  <!-- TABLE DES MATIÈRES -->
+  <div class="toc">
+    <div class="toc-title">📋 Sommaire</div>
+    <ul class="toc-list">
+      <li><a href="#art1">Article 1 — Objet et champ d'application</a></li>
+      <li><a href="#art2">Article 2 — Identification du vendeur</a></li>
+      <li><a href="#art3">Article 3 — Offres et tarifs</a></li>
+      <li><a href="#art4">Article 4 — Commande et souscription</a></li>
+      <li><a href="#art5">Article 5 — Paiement</a></li>
+      <li><a href="#art6">Article 6 — Droit de rétractation</a></li>
+      <li><a href="#art7">Article 7 — Résiliation</a></li>
+      <li><a href="#art8">Article 8 — Description du service</a></li>
+      <li><a href="#art9">Article 9 — Responsabilité</a></li>
+      <li><a href="#art10">Article 10 — Protection des données</a></li>
+      <li><a href="#art11">Article 11 — Propriété intellectuelle</a></li>
+      <li><a href="#art12">Article 12 — Litiges et droit applicable</a></li>
+    </ul>
+  </div>
+
+  <!-- ARTICLE 1 -->
+  <div class="section" id="art1">
+    <h2>📌 Article 1 — Objet et champ d'application</h2>
+    <p>Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre moncontrat.app (ci-après "le Vendeur") et toute personne physique ou morale (ci-après "le Client") souhaitant souscrire à l'un des abonnements proposés sur le site moncontrat.app.</p>
+    <p>Toute souscription à un abonnement implique l'acceptation pleine et entière des présentes CGV. Ces conditions prévalent sur tout autre document émanant du Client.</p>
+    <div class="highlight">
+      <strong>⚠️ Important :</strong> Le service moncontrat.app est un outil d'assistance juridique basé sur l'intelligence artificielle. Il ne constitue pas un conseil juridique professionnel et ne remplace pas l'intervention d'un avocat ou d'un juriste qualifié.
+    </div>
+  </div>
+
+  <!-- ARTICLE 2 -->
+  <div class="section" id="art2">
+    <h2>🏢 Article 2 — Identification du vendeur</h2>
+    <p><strong>Raison sociale :</strong> Maxime Lefèvre (entrepreneur individuel)</p>
+    <p><strong>Siège social :</strong> Nice, Côte d'Azur, France</p>
+    <p><strong>Site web :</strong> moncontrat.app</p>
+    <p><strong>Contact :</strong> <a href="contact.html" style="color:var(--red);text-decoration:none;">Formulaire de contact</a></p>
+  </div>
+
+  <!-- ARTICLE 3 -->
+  <div class="section" id="art3">
+    <h2>💰 Article 3 — Offres et tarifs</h2>
+    <p>moncontrat.app propose les offres suivantes :</p>
+
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Offre</th>
+          <th>Tarif</th>
+          <th>Crédits</th>
+          <th>Engagement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gratuit</strong></td>
+          <td>0€</td>
+          <td>3 crédits offerts</td>
+          <td>Sans engagement</td>
+        </tr>
+        <tr>
+          <td><strong>Particulier</strong> <span class="badge-red">POPULAIRE</span></td>
+          <td>9,99€/mois<br><small style="color:#888;">soit 2,49€/semaine</small></td>
+          <td>50 crédits/mois</td>
+          <td>Sans engagement · résiliable à tout moment</td>
+        </tr>
+        <tr>
+          <td><strong>Pro</strong></td>
+          <td>29,99€/mois<br><small style="color:#888;">soit 7,49€/semaine</small></td>
+          <td>Illimités</td>
+          <td>Sans engagement · résiliable à tout moment</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Tous les prix sont indiqués TTC (TVA applicable selon la réglementation en vigueur). Le Vendeur se réserve le droit de modifier ses tarifs à tout moment. Les nouvelles conditions tarifaires seront communiquées au Client par email au moins 30 jours avant leur entrée en vigueur.</p>
+
+    <h3>Période d'essai</h3>
+    <p>L'offre Particulier bénéficie d'une période d'essai gratuite de 7 jours. Si le Client ne résilie pas avant la fin de cette période, l'abonnement démarre automatiquement et le premier prélèvement est effectué.</p>
+  </div>
+
+  <!-- ARTICLE 4 -->
+  <div class="section" id="art4">
+    <h2>🛒 Article 4 — Commande et souscription</h2>
+    <p>La souscription à un abonnement payant s'effectue exclusivement en ligne sur moncontrat.app. Pour souscrire, le Client doit :</p>
+    <ul>
+      <li>Créer un compte avec une adresse email valide</li>
+      <li>Choisir l'offre souhaitée</li>
+      <li>Renseigner ses coordonnées de paiement</li>
+      <li>Valider la commande après avoir accepté les présentes CGV</li>
+    </ul>
+    <p>La confirmation de souscription est envoyée par email à l'adresse fournie lors de l'inscription. La souscription prend effet immédiatement après confirmation du paiement.</p>
+  </div>
+
+  <!-- ARTICLE 5 -->
+  <div class="section" id="art5">
+    <h2>💳 Article 5 — Paiement</h2>
+    <h3>5.1 Moyens de paiement acceptés</h3>
+    <ul>
+      <li>Apple Pay</li>
+      <li>Google Pay</li>
+      <li>Carte bancaire (Visa, Mastercard, American Express)</li>
+    </ul>
+
+    <h3>5.2 Sécurité des paiements</h3>
+    <p>Les paiements sont traités par <strong>Stripe</strong>, prestataire de paiement sécurisé conforme aux normes PCI-DSS. Le Vendeur n'a jamais accès aux coordonnées bancaires du Client. Toutes les transactions sont chiffrées via le protocole SSL.</p>
+
+    <h3>5.3 Facturation</h3>
+    <p>Les abonnements sont facturés mensuellement à la date anniversaire de la souscription. Une facture est envoyée par email à chaque renouvellement.</p>
+
+    <h3>5.4 Défaut de paiement</h3>
+    <p>En cas d'échec du prélèvement, le Vendeur se réserve le droit de suspendre l'accès au service jusqu'à régularisation de la situation.</p>
+  </div>
+
+  <!-- ARTICLE 6 -->
+  <div class="section" id="art6">
+    <h2>↩️ Article 6 — Droit de rétractation</h2>
+    <p>Conformément à l'article L221-18 du Code de la consommation, le Client dispose d'un délai de <strong>14 jours</strong> à compter de la souscription pour exercer son droit de rétractation, sans avoir à justifier de motifs.</p>
+    <div class="highlight">
+      <strong>Exception :</strong> Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne peut être exercé pour les services pleinement exécutés avant la fin du délai de rétractation et dont l'exécution a commencé après accord préalable exprès du consommateur. Si le Client a utilisé des crédits, le remboursement sera calculé au prorata des crédits non utilisés.
+    </div>
+    <p>Pour exercer ce droit, le Client doit nous contacter via le <a href="contact.html" style="color:var(--red);text-decoration:none;">formulaire de contact</a> en indiquant sa décision de se rétracter. Le remboursement sera effectué dans un délai de 14 jours suivant la réception de la demande.</p>
+  </div>
+
+  <!-- ARTICLE 7 -->
+  <div class="section" id="art7">
+    <h2>🚫 Article 7 — Résiliation</h2>
+    <h3>7.1 Résiliation à l'initiative du Client</h3>
+    <p>Le Client peut résilier son abonnement à tout moment en adressant sa demande par email via le <a href="contact.html" style="color:var(--red);text-decoration:none;">formulaire de contact</a> en sélectionnant le sujet "Abonnement & facturation".</p>
+    <div class="highlight">
+      <strong>📌 Conditions importantes :</strong><br><br>
+      • <strong>Tout mois commencé est intégralement dû.</strong> Aucun remboursement partiel ne sera effectué pour la période en cours.<br><br>
+      • <strong>Délai de préavis :</strong> Toute demande de résiliation reçue moins de <strong>10 jours avant la date de renouvellement</strong> ne sera prise en compte qu'au mois suivant. Le Client sera prélevé une dernière fois et conservera l'accès jusqu'à la fin de cette période supplémentaire.<br><br>
+      • Exemple : si votre renouvellement est le 15 du mois, toute demande reçue après le 5 du même mois sera effective à la fin du mois suivant.
+    </div>
+    <p>Le Client conserve l'accès au service jusqu'à la date effective de résiliation.</p>
+
+    <h3>7.2 Résiliation à l'initiative du Vendeur</h3>
+    <p>Le Vendeur se réserve le droit de résilier un abonnement en cas de :</p>
+    <ul>
+      <li>Violation des Conditions Générales d'Utilisation</li>
+      <li>Utilisation frauduleuse ou abusive du service</li>
+      <li>Défaut de paiement non régularisé</li>
+    </ul>
+    <p>En cas de résiliation à l'initiative du Vendeur pour motif légitime, aucun remboursement ne sera effectué pour la période en cours.</p>
+
+    <h3>7.3 Effet de la résiliation</h3>
+    <p>À la date effective de résiliation, l'accès au service est automatiquement suspendu. Les données du Client sont conservées pendant 30 jours puis supprimées définitivement, sauf obligation légale contraire.</p>
+  </div>
+
+  <!-- ARTICLE 8 -->
+  <div class="section" id="art8">
+    <h2>⚙️ Article 8 — Description du service</h2>
+    <p>Le service moncontrat.app comprend, selon l'offre souscrite :</p>
+    <ul>
+      <li>L'analyse de documents contractuels par intelligence artificielle</li>
+      <li>La génération de contrats entre particuliers</li>
+      <li>La rédaction de courriers de réclamation</li>
+      <li>La comparaison de contrats</li>
+      <li>Le calcul d'un score de protection familiale</li>
+      <li>La retranscription de documents manuscrits</li>
+      <li>L'accès au chatbot juridique</li>
+    </ul>
+    <p>Le Vendeur s'engage à maintenir le service disponible 24h/24 et 7j/7, sous réserve de périodes de maintenance planifiées qui seront communiquées à l'avance. En cas d'interruption non planifiée de plus de 24h, le Client sera compensé par un crédit équivalent.</p>
+  </div>
+
+  <!-- ARTICLE 9 -->
+  <div class="section" id="art9">
+    <h2>⚖️ Article 9 — Responsabilité</h2>
+    <p>Le Vendeur s'engage à fournir un service de qualité mais ne peut garantir l'exactitude absolue des informations générées par l'intelligence artificielle.</p>
+    <p>Le Client reconnaît expressément que :</p>
+    <ul>
+      <li>Les analyses et documents générés sont produits par une IA et peuvent contenir des erreurs</li>
+      <li>Il est seul responsable des décisions prises sur la base des informations fournies</li>
+      <li>Il doit vérifier les documents générés avant toute utilisation ou signature</li>
+      <li>Le service ne constitue pas un conseil juridique professionnel</li>
+    </ul>
+    <p>La responsabilité du Vendeur ne pourra être engagée qu'en cas de faute prouvée et sera limitée au montant des sommes versées par le Client au cours des 3 derniers mois.</p>
+  </div>
+
+  <!-- ARTICLE 10 -->
+  <div class="section" id="art10">
+    <h2>🔒 Article 10 — Protection des données</h2>
+    <p>Le traitement des données personnelles du Client est régi par notre <a href="legal.html#confidentialite" style="color:var(--red);text-decoration:none;">Politique de confidentialité</a>, conforme au Règlement Général sur la Protection des Données (RGPD).</p>
+    <p>Le Client dispose d'un droit d'accès, de rectification, d'effacement et de portabilité de ses données. Pour exercer ces droits : <a href="contact.html" style="color:var(--red);text-decoration:none;">nous contacter</a>.</p>
+  </div>
+
+  <!-- ARTICLE 11 -->
+  <div class="section" id="art11">
+    <h2>©️ Article 11 — Propriété intellectuelle</h2>
+    <p>L'ensemble des éléments composant le service moncontrat.app (interface, textes, algorithmes, marque) est la propriété exclusive du Vendeur et est protégé par le droit de la propriété intellectuelle.</p>
+    <p>Les documents générés par le service pour le compte du Client lui appartiennent. Le Vendeur se réserve le droit d'utiliser les données anonymisées à des fins d'amélioration du service.</p>
+  </div>
+
+  <!-- ARTICLE 12 -->
+  <div class="section" id="art12">
+    <h2>⚖️ Article 12 — Litiges et droit applicable</h2>
+    <p>Les présentes CGV sont soumises au droit français. En cas de litige, les parties s'engagent à rechercher une solution amiable avant tout recours judiciaire.</p>
+    <p>À défaut d'accord amiable, tout litige sera soumis aux tribunaux compétents de Nice (France).</p>
+    <p>Conformément aux articles L611-1 et suivants du Code de la consommation, le Client peut recourir gratuitement à un médiateur de la consommation. Le médiateur compétent est : <strong>Médiateur du Commerce Électronique (FEVAD)</strong>.</p>
+    <p>La Commission européenne met à disposition une plateforme de règlement en ligne des litiges accessible sur : <a href="https://ec.europa.eu/consumers/odr" target="_blank" style="color:var(--red);text-decoration:none;">ec.europa.eu/consumers/odr</a></p>
+  </div>
+
+  <div class="contact-box">
+    <div class="contact-box-text">
+      <h3>Une question sur les CGV ?</h3>
+      <p>Notre équipe répond sous 24h ouvrées.</p>
+    </div>
+    <a href="contact.html" class="contact-link">Nous contacter →</a>
+  </div>
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="legal.html">Mentions légales</a> · <a href="legal.html#cgu">CGU</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a>
+</footer>
+
+</body>
+</html>

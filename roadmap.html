@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap — moncontrat.app</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; }
+:root { --red:#FF2D55; --light:#EBEBEB; --off:#FAFAFA; --red-pale:#FFF0F3; --green:#22C55E; --orange:#F59E0B; --blue:#3B82F6; --purple:#8B5CF6; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light); padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn { background:transparent; border:2px solid var(--light); color:#888; padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-wrap { max-width:900px; margin:0 auto; padding:120px 40px 80px; }
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.page-title { font-size:clamp(36px,5vw,56px); font-weight:900; letter-spacing:-1.5px; color:#111; line-height:1.05; margin-bottom:12px; }
+.page-sub { font-size:16px; color:#888; line-height:1.6; margin-bottom:60px; }
+
+/* LEGEND */
+.legend { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:48px; }
+.legend-item { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:#888; }
+.legend-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+
+/* PHASE */
+.phase { margin-bottom:60px; }
+.phase-header { display:flex; align-items:center; gap:16px; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid var(--light); }
+.phase-num { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:900; color:#fff; flex-shrink:0; }
+.phase-title { font-size:22px; font-weight:900; color:#111; }
+.phase-period { font-size:13px; color:#888; font-weight:600; margin-top:2px; }
+
+/* ITEMS */
+.roadmap-item {
+  display:flex; align-items:flex-start; gap:16px;
+  padding:20px; border:2px solid var(--light); border-radius:16px;
+  margin-bottom:10px; transition:all 0.2s; background:#fff;
+}
+.roadmap-item:hover { border-color:rgba(255,45,85,0.2); transform:translateX(4px); }
+.roadmap-item.done { background:var(--off); }
+.item-status { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; margin-top:2px; }
+.status-done { background:#DCFCE7; }
+.status-progress { background:#FEF9C3; }
+.status-next { background:var(--red-pale); }
+.status-future { background:#F3E8FF; }
+.status-idea { background:#EFF6FF; }
+.item-content { flex:1; }
+.item-title { font-size:15px; font-weight:700; color:#111; margin-bottom:4px; }
+.roadmap-item.done .item-title { color:#888; text-decoration:line-through; }
+.item-desc { font-size:13px; color:#888; line-height:1.5; }
+.item-badge {
+  display:inline-block; font-size:10px; font-weight:700; padding:3px 10px;
+  border-radius:100px; letter-spacing:0.08em; text-transform:uppercase; margin-left:8px;
+}
+.badge-done { background:#DCFCE7; color:#15803D; }
+.badge-progress { background:#FEF9C3; color:#854D0E; }
+.badge-next { background:var(--red-pale); color:var(--red); }
+.badge-future { background:#F3E8FF; color:#7C3AED; }
+.badge-idea { background:#EFF6FF; color:#1D4ED8; }
+
+/* IDEA BOX */
+.idea-box {
+  background:linear-gradient(135deg, #111, #333); border-radius:20px;
+  padding:32px; text-align:center; margin-top:48px;
+}
+.idea-title { font-size:20px; font-weight:900; color:#fff; margin-bottom:8px; }
+.idea-sub { font-size:14px; color:rgba(255,255,255,0.6); margin-bottom:20px; }
+.idea-btn { display:inline-block; background:var(--red); color:#fff; padding:12px 24px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:14px; font-weight:700; text-decoration:none; }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; margin-top:60px; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-wrap { padding:90px 20px 60px; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-wrap">
+  <span class="page-tag">Vision produit</span>
+  <h1 class="page-title">Roadmap<br>moncontrat</h1>
+  <p class="page-sub">Ce qu'on a construit, ce qu'on construit, et où on va. Une feuille de route vivante.</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#22C55E"></div>Livré</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div>En cours</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FF2D55"></div>Prochainement</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#8B5CF6"></div>Version 2.0</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3B82F6"></div>Idée / Réflexion</div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--green);">1</div>
+      <div>
+        <div class="phase-title">MVP — Le lancement</div>
+        <div class="phase-period">Mai 2026 · Complété ✅</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Site web complet <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Homepage, 6 outils IA, design rouge/blanc, responsive mobile.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Analyse de contrat avec choix du ton <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Simple, classique, pro, frérot. Upload PDF/image. Danger Score automatique.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Comparateur de contrats <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Upload 2 contrats, analyse garantie par garantie, verdict clair.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Création de contrats entre particuliers <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Vente véhicule, prêt argent, colocation, prestation. Légal et prêt à signer.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Courriers de réclamation <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Réclamation assureur, résiliation, mise en demeure, contestation amende...</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Score famille <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Score de protection globale avec recommandations personnalisées.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Scan de documents manuscrits <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Photo → document professionnel retranscrit et mis en forme.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Chatbot juridique <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">4 questions gratuites puis paywall. Répond à toute question juridique en 10 secondes.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Système de crédits + paywall <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">3 crédits gratuits, modal d'inscription obligatoire, paywall au 4ème essai.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Bouton "Trouve moi mieux & moins cher" <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Consentement RGPD explicite, leads transmis aux partenaires assureurs.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Dashboard admin + carte live <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Statistiques, leads, carte des connexions en temps réel, export CSV.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Pages légales complètes <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Mentions légales, CGU, CGV, Confidentialité, Cookies, FAQ, Contact.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Blog SEO avec 7 articles <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Articles optimisés sur assurance, contrats, droits consommateurs.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">Pages À propos, Tarifs, Partenaires <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Histoire du fondateur, comparatif tarifs détaillé, programme leads et affiliation.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item done">
+      <div class="item-status status-done">✅</div>
+      <div class="item-content">
+        <div class="item-title">SEO — meta, Open Graph, Schema.org, sitemap <span class="item-badge badge-done">Livré</span></div>
+        <div class="item-desc">Prêt pour l'indexation Google et les partages réseaux sociaux.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--orange);">2</div>
+      <div>
+        <div class="phase-title">Monétisation — Faire tourner la machine</div>
+        <div class="phase-period">Juin 2026 · En cours 🔧</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-progress">🔧</div>
+      <div class="item-content">
+        <div class="item-title">Déploiement Vercel + SSL moncontrat.app <span class="item-badge badge-progress">En cours</span></div>
+        <div class="item-desc">Mise en ligne propre, certificat SSL automatique, déploiement auto à chaque modif.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-next">⚡</div>
+      <div class="item-content">
+        <div class="item-title">Intégration Stripe — paiements réels <span class="item-badge badge-next">Prochainement</span></div>
+        <div class="item-desc">Apple Pay, CB, prélèvements automatiques mensuels, gestion des résiliations.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-next">⚡</div>
+      <div class="item-content">
+        <div class="item-title">Connexion Airtable — leads centralisés <span class="item-badge badge-next">Prochainement</span></div>
+        <div class="item-desc">Chaque inscription remonte automatiquement dans un tableau de bord centralisé.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-next">⚡</div>
+      <div class="item-content">
+        <div class="item-title">Validation email — double opt-in <span class="item-badge badge-next">Prochainement</span></div>
+        <div class="item-desc">Email de confirmation après inscription. Améliore la qualité des leads.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-next">⚡</div>
+      <div class="item-content">
+        <div class="item-title">Sécurisation clé API — backend Vercel <span class="item-badge badge-next">Prochainement</span></div>
+        <div class="item-desc">Variables d'environnement Vercel. La clé Anthropic n'est plus visible dans le code.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-next">⚡</div>
+      <div class="item-content">
+        <div class="item-title">Premiers partenaires assureurs <span class="item-badge badge-next">Prochainement</span></div>
+        <div class="item-desc">Activer le circuit de leads "Trouve moi mieux" avec 2-3 assureurs partenaires.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-next">⚡</div>
+      <div class="item-content">
+        <div class="item-title">Google Analytics + suivi conversions <span class="item-badge badge-next">Prochainement</span></div>
+        <div class="item-desc">Savoir d'où viennent les utilisateurs, quels outils convertissent, quel contenu performe.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--purple);">3</div>
+      <div>
+        <div class="phase-title">Version 2.0 — Rétention & Scale</div>
+        <div class="phase-period">Automne 2026 · Planifié 🔮</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-future">🔮</div>
+      <div class="item-content">
+        <div class="item-title">Coffre-fort numérique <span class="item-badge badge-future">V2.0</span></div>
+        <div class="item-desc">Stockage sécurisé de tous tes contrats. Alertes d'échéance automatiques 30 jours avant renouvellement.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-future">🔮</div>
+      <div class="item-content">
+        <div class="item-title">Alerte résiliation automatique <span class="item-badge badge-future">V2.0</span></div>
+        <div class="item-desc">Détection de la date anniversaire + génération du courrier de résiliation en 1 clic.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-future">🔮</div>
+      <div class="item-content">
+        <div class="item-title">Comptes utilisateurs persistants <span class="item-badge badge-future">V2.0</span></div>
+        <div class="item-desc">Historique cross-device, synchronisation, accès depuis n'importe quel appareil.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-future">🔮</div>
+      <div class="item-content">
+        <div class="item-title">Détecteur de schémas récurrents <span class="item-badge badge-future">V2.0</span></div>
+        <div class="item-desc">"Vous vous faites surfacturer sur vos contrats auto depuis 3 ans" — analyse long terme.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-future">🔮</div>
+      <div class="item-content">
+        <div class="item-title">Application mobile iOS / Android <span class="item-badge badge-future">V2.0</span></div>
+        <div class="item-desc">App native avec notifications push pour les alertes d'échéance et nouvelles offres.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-future">🔮</div>
+      <div class="item-content">
+        <div class="item-title">Programme d'affiliation complet <span class="item-badge badge-future">V2.0</span></div>
+        <div class="item-desc">Dashboard affilié, liens trackés, paiement automatique des commissions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 — IDÉES -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--blue);">4</div>
+      <div>
+        <div class="phase-title">Idées & Réflexions</div>
+        <div class="phase-period">2027 et au-delà 💡</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-idea">💡</div>
+      <div class="item-content">
+        <div class="item-title">Connexion Gmail / Outlook — scan automatique des contrats <span class="item-badge badge-idea">Idée</span></div>
+        <div class="item-desc">L'utilisateur connecte sa boîte mail. L'IA scanne et détecte automatiquement tous les contrats d'assurance. Stockage dans le coffre-fort. Consentement RGPD explicite requis. Nécessite un backend robuste et validation Google OAuth.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-idea">💡</div>
+      <div class="item-content">
+        <div class="item-title">Assistant vocal juridique <span class="item-badge badge-idea">Idée</span></div>
+        <div class="item-desc">"Ok moncontrat, est-ce que je suis couvert si mon voisin inonde mon appartement ?" — interaction vocale avec l'assistant.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-idea">💡</div>
+      <div class="item-content">
+        <div class="item-title">API B2B pour cabinets juridiques et assureurs <span class="item-badge badge-idea">Idée</span></div>
+        <div class="item-desc">Permettre à des professionnels d'intégrer les capacités d'analyse de moncontrat dans leurs propres outils.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-idea">💡</div>
+      <div class="item-content">
+        <div class="item-title">Extension navigateur <span class="item-badge badge-idea">Idée</span></div>
+        <div class="item-desc">Analyse n'importe quel contrat en ligne directement depuis le navigateur, sans quitter la page.</div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="item-status status-idea">💡</div>
+      <div class="item-content">
+        <div class="item-title">Marketplace de juristes partenaires <span class="item-badge badge-idea">Idée</span></div>
+        <div class="item-desc">Pour les cas complexes, mise en relation avec des avocats partenaires. Commission sur les consultations.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="idea-box">
+    <div class="idea-title">💡 Une idée à ajouter ?</div>
+    <div class="idea-sub">Cette roadmap évolue constamment. Si tu as une suggestion, on veut l'entendre.</div>
+    <a href="contact.html" class="idea-btn">Partager une idée →</a>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="apropos.html">À propos</a> · <a href="contact.html">Contact</a>
+</footer>
+</body>
+</html>

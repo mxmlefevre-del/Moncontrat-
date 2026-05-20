@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos — moncontrat, l'assistant juridique IA 100% français</title>
+<meta name="description" content="Découvrez l'histoire de moncontrat.app, créé par un expert en assurances avec 15 ans d'expérience pour démocratiser l'accès aux droits juridiques.">
+<meta property="og:title" content="À propos — moncontrat.app">
+<meta property="og:description" content="15 ans d'expertise en assurances au service de tous. L'histoire derrière moncontrat.app.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; }
+:root { --red:#FF2D55; --light:#EBEBEB; --off:#FAFAFA; --red-pale:#FFF0F3; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light); padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn { background:transparent; border:2px solid var(--light); color:#888; padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.hero { padding:120px 40px 80px; max-width:900px; margin:0 auto; }
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.hero h1 { font-size:clamp(36px,5vw,60px); font-weight:900; letter-spacing:-1.5px; color:#111; line-height:1.05; margin-bottom:20px; }
+.hero h1 em { font-style:italic; color:var(--red); }
+.hero-sub { font-size:18px; color:#888; line-height:1.7; max-width:600px; margin-bottom:60px; }
+
+/* FOUNDER */
+.founder-section { background:var(--off); border-radius:28px; padding:48px; margin-bottom:60px; display:grid; grid-template-columns:auto 1fr; gap:40px; align-items:start; }
+.founder-avatar { width:120px; height:120px; border-radius:50%; background:linear-gradient(135deg,var(--red-pale),#FFE8ED); display:flex; align-items:center; justify-content:center; font-size:48px; flex-shrink:0; border:4px solid white; box-shadow:0 8px 32px rgba(255,45,85,0.15); }
+.founder-name { font-size:24px; font-weight:900; color:#111; margin-bottom:4px; }
+.founder-role { font-size:14px; color:var(--red); font-weight:700; margin-bottom:16px; }
+.founder-bio { font-size:15px; color:#444; line-height:1.8; }
+.founder-bio p { margin-bottom:12px; }
+
+/* STATS */
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:60px; }
+.stat-box { background:var(--off); border:2px solid var(--light); border-radius:20px; padding:28px 20px; text-align:center; }
+.stat-num { font-size:36px; font-weight:900; color:var(--red); letter-spacing:-1px; line-height:1; margin-bottom:6px; }
+.stat-label { font-size:12px; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:0.08em; }
+
+/* MISSION */
+.mission-section { margin-bottom:60px; }
+.section-title { font-size:28px; font-weight:900; color:#111; letter-spacing:-0.5px; margin-bottom:20px; }
+.mission-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.mission-card { background:var(--off); border:2px solid var(--light); border-radius:20px; padding:28px; transition:border-color 0.3s; }
+.mission-card:hover { border-color:rgba(255,45,85,0.3); }
+.mission-icon { font-size:32px; margin-bottom:12px; }
+.mission-title { font-size:17px; font-weight:700; color:#111; margin-bottom:8px; }
+.mission-text { font-size:14px; color:#888; line-height:1.6; }
+
+/* VALUES */
+.values-section { background:var(--red); border-radius:28px; padding:48px; margin-bottom:60px; }
+.values-title { font-size:28px; font-weight:900; color:#fff; margin-bottom:32px; }
+.values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.value-item { background:rgba(255,255,255,0.1); border-radius:16px; padding:24px; }
+.value-icon { font-size:28px; margin-bottom:10px; }
+.value-name { font-size:16px; font-weight:700; color:#fff; margin-bottom:6px; }
+.value-text { font-size:13px; color:rgba(255,255,255,0.7); line-height:1.5; }
+
+/* CTA */
+.cta-section { text-align:center; padding:60px 40px; background:var(--off); border-radius:28px; }
+.cta-title { font-size:32px; font-weight:900; color:#111; margin-bottom:8px; }
+.cta-sub { font-size:16px; color:#888; margin-bottom:28px; }
+.cta-btn { display:inline-block; background:var(--red); color:#fff; padding:16px 36px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:16px; font-weight:700; text-decoration:none; transition:all 0.2s; box-shadow:0 4px 20px rgba(255,45,85,0.3); }
+.cta-btn:hover { background:#E0002A; transform:translateY(-2px); }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; margin-top:60px; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .hero { padding:90px 20px 60px; }
+  .founder-section { grid-template-columns:1fr; gap:24px; padding:28px; }
+  .stats-row { grid-template-columns:repeat(2,1fr); }
+  .mission-grid { grid-template-columns:1fr; }
+  .values-grid { grid-template-columns:1fr; }
+  .values-section { padding:28px; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="hero">
+  <span class="page-tag">Notre histoire</span>
+  <h1>Né d'une frustration.<br>Construit avec <em>conviction.</em></h1>
+  <p class="hero-sub">En 15 ans d'assurance, j'ai vu des milliers de personnes découvrir au pire moment qu'elles n'étaient pas couvertes comme elles le croyaient. moncontrat est né pour que ça n'arrive plus.</p>
+
+  <div class="founder-section">
+    <div class="founder-avatar">👨‍💼</div>
+    <div>
+      <div class="founder-name">Maxime Lefèvre</div>
+      <div class="founder-role">Fondateur · Expert en assurances · Nice, Côte d'Azur</div>
+      <div class="founder-bio">
+        <p>Après 15 ans dans le secteur de l'assurance — dont plusieurs années à diriger des agences sur la Côte d'Azur — j'ai réalisé que le problème n'était pas le manque d'offres. C'était le manque de compréhension.</p>
+        <p>Les contrats sont rédigés pour protéger les assureurs, pas pour être compris par les assurés. J'ai décidé de changer ça. moncontrat combine mon expertise terrain avec l'intelligence artificielle pour rendre le droit accessible à tous.</p>
+        <p>Ce n'est pas un outil fait par des développeurs qui ne connaissent pas l'assurance. C'est un outil fait par quelqu'un qui a passé 15 ans à expliquer des contrats à des clients, et qui sait exactement quelles questions poser.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">15</div><div class="stat-label">Ans d'expertise</div></div>
+    <div class="stat-box"><div class="stat-num">6 200+</div><div class="stat-label">Contrats analysés</div></div>
+    <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Outils disponibles</div></div>
+    <div class="stat-box"><div class="stat-num">4,9★</div><div class="stat-label">Note moyenne</div></div>
+  </div>
+
+  <div class="mission-section">
+    <div class="section-title">Notre mission</div>
+    <div class="mission-grid">
+      <div class="mission-card">
+        <div class="mission-icon">🔍</div>
+        <div class="mission-title">Rendre le juridique accessible</div>
+        <div class="mission-text">Comprendre un contrat ne devrait pas nécessiter un diplôme en droit. moncontrat traduit le jargon en langage humain.</div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">⚖️</div>
+        <div class="mission-title">Rééquilibrer le rapport de force</div>
+        <div class="mission-text">Les assureurs ont des armées de juristes. Vous méritez vous aussi d'avoir quelqu'un dans votre camp.</div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">💡</div>
+        <div class="mission-title">Prévenir plutôt que guérir</div>
+        <div class="mission-text">Connaître ses garanties avant le sinistre, c'est éviter les mauvaises surprises au pire moment.</div>
+      </div>
+      <div class="mission-card">
+        <div class="mission-icon">🇫🇷</div>
+        <div class="mission-title">100% français</div>
+        <div class="mission-text">Conçu pour le droit français, par des experts du marché français. Pas une traduction d'un outil américain.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="values-section">
+    <div class="values-title">Nos valeurs</div>
+    <div class="values-grid">
+      <div class="value-item">
+        <div class="value-icon">🎯</div>
+        <div class="value-name">Clarté</div>
+        <div class="value-text">Nous disons les choses clairement, même quand elles sont complexes. Pas de jargon, pas de faux-semblants.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🤝</div>
+        <div class="value-name">Honnêteté</div>
+        <div class="value-text">Nous ne vous dirons jamais que votre contrat est parfait s'il ne l'est pas. Notre intérêt c'est le vôtre.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🔒</div>
+        <div class="value-name">Confidentialité</div>
+        <div class="value-text">Vos documents ne sont jamais stockés. Votre vie privée n'est pas notre produit.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div class="cta-title">Prêt à comprendre enfin tes contrats ?</div>
+    <div class="cta-sub">3 crédits offerts · Sans carte bancaire · En 30 secondes</div>
+    <a href="index.html" class="cta-btn">Essayer gratuitement →</a>
+  </div>
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="blog.html">Blog</a> · <a href="faq.html">FAQ</a> · <a href="legal.html">Mentions légales</a> · <a href="contact.html">Contact</a>
+</footer>
+</body>
+</html>

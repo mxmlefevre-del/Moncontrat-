@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarifs — moncontrat.app · À partir de 2,49€/semaine</title>
+<meta name="description" content="Découvrez les tarifs de moncontrat.app. Offre gratuite avec 3 crédits, plan Particulier à 9,99€/mois, plan Pro à 29,99€/mois. 7 jours d'essai gratuit.">
+<meta property="og:title" content="Tarifs moncontrat.app — À partir de 2,49€/semaine">
+<meta property="og:description" content="3 crédits gratuits sans CB. Plan Particulier 9,99€/mois. Plan Pro 29,99€/mois. 7 jours d'essai offerts.">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; }
+:root { --red:#FF2D55; --light:#EBEBEB; --off:#FAFAFA; --red-pale:#FFF0F3; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; background:#fff; color:#111; min-height:100vh; }
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light); padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn { background:transparent; border:2px solid var(--light); color:#888; padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:inline-block; }
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-wrap { max-width:1000px; margin:0 auto; padding:120px 40px 80px; text-align:center; }
+.page-tag { font-size:11px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:block; }
+.page-title { font-size:clamp(36px,5vw,58px); font-weight:900; letter-spacing:-1.5px; color:#111; line-height:1.05; margin-bottom:12px; }
+.page-sub { font-size:17px; color:#888; max-width:500px; margin:0 auto 60px; line-height:1.6; }
+
+/* TOGGLE */
+.billing-toggle { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:48px; }
+.toggle-label { font-size:14px; font-weight:700; color:#888; }
+.toggle-label.active { color:#111; }
+.toggle-wrap {
+  width:52px; height:28px; background:var(--red); border-radius:100px;
+  position:relative; cursor:pointer; transition:background 0.3s;
+}
+.toggle-knob {
+  width:22px; height:22px; background:#fff; border-radius:50%;
+  position:absolute; top:3px; left:3px; transition:transform 0.3s;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+.toggle-wrap.yearly .toggle-knob { transform:translateX(24px); }
+.save-badge { background:var(--red-pale); color:var(--red); font-size:12px; font-weight:700; padding:4px 10px; border-radius:100px; }
+
+/* PRICING */
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:60px; text-align:left; }
+.price-card { background:#fff; border:2px solid var(--light); border-radius:24px; padding:36px 28px; transition:all 0.3s; position:relative; }
+.price-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,0.08); }
+.price-card.featured { background:var(--red); border-color:var(--red); }
+.price-badge { position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:#111; color:#fff; font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:6px 16px; border-radius:100px; white-space:nowrap; }
+.plan-name { font-size:12px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#888; margin-bottom:12px; }
+.price-card.featured .plan-name { color:rgba(255,255,255,0.65); }
+.plan-price { font-size:48px; font-weight:900; color:#111; letter-spacing:-2px; line-height:1; }
+.price-card.featured .plan-price { color:#fff; }
+.plan-week { font-size:16px; font-weight:600; }
+.plan-period { font-size:12px; color:#888; margin-bottom:8px; }
+.price-card.featured .plan-period { color:rgba(255,255,255,0.6); }
+.plan-credits { background:rgba(255,45,85,0.08); border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700; color:var(--red); margin-bottom:20px; }
+.price-card.featured .plan-credits { background:rgba(255,255,255,0.15); color:#fff; }
+.plan-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.plan-features li { font-size:13px; color:#111; font-weight:500; display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+.price-card.featured .plan-features li { color:#fff; }
+.plan-features li::before { content:'✓'; color:var(--red); font-weight:900; flex-shrink:0; }
+.price-card.featured .plan-features li::before { color:rgba(255,255,255,0.8); }
+.plan-btn { width:100%; padding:15px; border-radius:100px; font-family:'Figtree',sans-serif; font-size:15px; font-weight:700; cursor:pointer; border:none; transition:all 0.2s; }
+.btn-outline-plan { background:transparent; color:#111; border:2px solid var(--light); }
+.btn-outline-plan:hover { border-color:var(--red); color:var(--red); }
+.btn-white-plan { background:#fff; color:var(--red); }
+.btn-dark-plan { background:#111; color:#fff; }
+.btn-dark-plan:hover { background:#333; }
+
+/* COMPARE TABLE */
+.compare-section { margin-bottom:60px; text-align:left; }
+.compare-title { font-size:28px; font-weight:900; color:#111; text-align:center; margin-bottom:32px; }
+.compare-table { width:100%; border-collapse:collapse; border:2px solid var(--light); border-radius:16px; overflow:hidden; }
+.compare-table th { background:var(--off); padding:14px 20px; font-size:13px; font-weight:700; color:#111; text-align:center; border-bottom:2px solid var(--light); }
+.compare-table th:first-child { text-align:left; }
+.compare-table td { padding:14px 20px; font-size:13px; color:#444; border-bottom:1px solid var(--light); text-align:center; }
+.compare-table td:first-child { text-align:left; font-weight:600; color:#111; }
+.compare-table tr:last-child td { border-bottom:none; }
+.compare-table tr:hover td { background:var(--off); }
+.check-yes { color:var(--red); font-weight:900; font-size:16px; }
+.check-no { color:#ccc; font-size:16px; }
+.check-limited { color:#F59E0B; font-weight:700; font-size:12px; }
+
+/* FAQ MINI */
+.faq-mini { margin-bottom:60px; }
+.faq-mini-title { font-size:28px; font-weight:900; color:#111; text-align:center; margin-bottom:32px; }
+.faq-mini-item { border:2px solid var(--light); border-radius:16px; margin-bottom:8px; overflow:hidden; }
+.faq-mini-q { width:100%; background:#fff; border:none; padding:18px 20px; display:flex; align-items:center; justify-content:space-between; font-family:'Figtree',sans-serif; font-size:15px; font-weight:700; color:#111; cursor:pointer; text-align:left; }
+.faq-mini-q:hover { background:var(--off); }
+.faq-mini-item.open .faq-mini-q { background:var(--red-pale); color:var(--red); }
+.faq-mini-chevron { transition:transform 0.3s; flex-shrink:0; }
+.faq-mini-item.open .faq-mini-chevron { transform:rotate(180deg); }
+.faq-mini-a { display:none; padding:0 20px 18px; font-size:14px; color:#444; line-height:1.7; }
+.faq-mini-a.show { display:block; }
+
+/* GUARANTEE */
+.guarantee { background:var(--off); border:2px solid var(--light); border-radius:24px; padding:40px; text-align:center; margin-bottom:60px; }
+.guarantee-icon { font-size:52px; margin-bottom:16px; }
+.guarantee-title { font-size:24px; font-weight:900; color:#111; margin-bottom:8px; }
+.guarantee-text { font-size:15px; color:#888; line-height:1.6; max-width:500px; margin:0 auto; }
+
+footer { text-align:center; padding:32px 40px; border-top:2px solid var(--light); font-size:13px; color:#aaa; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-wrap { padding:90px 20px 60px; }
+  .pricing-grid { grid-template-columns:1fr; }
+  .compare-table { font-size:12px; }
+  .compare-table td, .compare-table th { padding:10px 12px; }
+  footer { padding:24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-wrap">
+  <span class="page-tag">Tarifs</span>
+  <h1 class="page-title">Simple, transparent,<br>sans mauvaise surprise.</h1>
+  <p class="page-sub">Commence gratuitement. Passe en Premium quand tu en as besoin. Résilie quand tu veux.</p>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="plan-name">Gratuit</div>
+      <div class="plan-price">0€</div>
+      <div class="plan-period">pour toujours · sans CB</div>
+      <div class="plan-credits">🎁 3 crédits offerts</div>
+      <ul class="plan-features">
+        <li>Accès aux 6 outils</li>
+        <li>Danger Score</li>
+        <li>Tous les tons</li>
+        <li>Chatbot juridique (4 questions)</li>
+        <li>Sans carte bancaire</li>
+      </ul>
+      <button class="plan-btn btn-outline-plan" onclick="window.location.href='index.html'">Commencer gratuitement</button>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-badge">⚡ 7 JOURS OFFERTS</div>
+      <div class="plan-name">Particulier</div>
+      <div class="plan-price">2,49€<span class="plan-week">/sem</span></div>
+      <div class="plan-period">prélevé 9,99€/mois · résiliable à tout moment</div>
+      <div class="plan-credits">🎯 50 crédits par mois</div>
+      <ul class="plan-features">
+        <li>50 analyses / contrats / courriers</li>
+        <li>Comparateur de contrats</li>
+        <li>Scan de documents manuscrits</li>
+        <li>Chatbot juridique illimité</li>
+        <li>Historique complet</li>
+        <li>Sans publicité</li>
+      </ul>
+      <button class="plan-btn btn-white-plan" onclick="alert('Intégration Stripe à connecter')">🍎 Essayer 7 jours gratuits</button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.5);">ou CB · Visa · Mastercard</div>
+    </div>
+
+    <div class="price-card">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">7,49€<span class="plan-week">/sem</span></div>
+      <div class="plan-period">prélevé 29,99€/mois · résiliable à tout moment</div>
+      <div class="plan-credits">🚀 Crédits illimités</div>
+      <ul class="plan-features">
+        <li>Crédits illimités</li>
+        <li>Export PDF des documents</li>
+        <li>10 utilisateurs inclus</li>
+        <li>Chatbot juridique illimité</li>
+        <li>Support prioritaire</li>
+        <li>Accès API</li>
+      </ul>
+      <button class="plan-btn btn-dark-plan" onclick="alert('Intégration Stripe à connecter')">🍎 Payer avec Apple Pay</button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:#aaa;">ou CB · Visa · Mastercard</div>
+    </div>
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="compare-section">
+    <div class="compare-title">Comparer les offres en détail</div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Fonctionnalité</th>
+          <th>Gratuit</th>
+          <th>Particulier</th>
+          <th>Pro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Crédits mensuels</td><td>3 offerts</td><td>50/mois</td><td>Illimités</td></tr>
+        <tr><td>Analyse de contrat</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Comparateur de contrats</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Création de contrats</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Courriers de réclamation</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Scan manuscrit</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Score famille</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Danger Score</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Chatbot juridique</td><td><span class="check-limited">4 questions</span></td><td>Illimité</td><td>Illimité</td></tr>
+        <tr><td>Historique des documents</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Export PDF</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Utilisateurs inclus</td><td>1</td><td>1</td><td>10</td></tr>
+        <tr><td>Sans publicité</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Support prioritaire</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+        <tr><td>Accès API</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GUARANTEE -->
+  <div class="guarantee">
+    <div class="guarantee-icon">🛡️</div>
+    <div class="guarantee-title">Satisfait ou remboursé 7 jours</div>
+    <div class="guarantee-text">Si tu n'es pas satisfait dans les 7 premiers jours de ton abonnement payant, on te rembourse intégralement. Sans question, sans friction.</div>
+  </div>
+
+  <!-- FAQ MINI -->
+  <div class="faq-mini">
+    <div class="faq-mini-title">Questions fréquentes sur les tarifs</div>
+    <div class="faq-mini-item">
+      <button class="faq-mini-q" onclick="toggleFaq(this)">C'est quoi un crédit exactement ? <span class="faq-mini-chevron">↓</span></button>
+      <div class="faq-mini-a">Un crédit = une utilisation d'un outil. Que ce soit une analyse, un contrat généré, un courrier rédigé, une comparaison ou un scan — chaque action consomme 1 crédit.</div>
+    </div>
+    <div class="faq-mini-item">
+      <button class="faq-mini-q" onclick="toggleFaq(this)">Les crédits non utilisés sont-ils reportés ? <span class="faq-mini-chevron">↓</span></button>
+      <div class="faq-mini-a">Non, les crédits sont remis à zéro chaque mois. C'est pourquoi l'offre Pro avec crédits illimités est recommandée pour les utilisateurs intensifs.</div>
+    </div>
+    <div class="faq-mini-item">
+      <button class="faq-mini-q" onclick="toggleFaq(this)">Comment résilier mon abonnement ? <span class="faq-mini-chevron">↓</span></button>
+      <div class="faq-mini-a">Via notre <a href="contact.html" style="color:var(--red);">formulaire de contact</a>. Toute résiliation reçue moins de 10 jours avant le renouvellement prend effet le mois suivant. Tout mois commencé est dû.</div>
+    </div>
+    <div class="faq-mini-item">
+      <button class="faq-mini-q" onclick="toggleFaq(this)">Les 7 jours d'essai sont-ils vraiment gratuits ? <span class="faq-mini-chevron">↓</span></button>
+      <div class="faq-mini-a">Oui, complètement. Aucun prélèvement pendant 7 jours. Si tu ne résiles pas avant la fin de la période d'essai, l'abonnement démarre automatiquement.</div>
+    </div>
+    <div class="faq-mini-item">
+      <button class="faq-mini-q" onclick="toggleFaq(this)">Puis-je changer de plan à tout moment ? <span class="faq-mini-chevron">↓</span></button>
+      <div class="faq-mini-a">Oui. Tu peux passer de Particulier à Pro (ou inversement) à tout moment. Le changement est effectif immédiatement et la facturation est ajustée au prorata.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="cgv.html">CGV</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a>
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const answer = item.querySelector('.faq-mini-a');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-mini-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-mini-a').classList.remove('show'); });
+  if (!isOpen) { item.classList.add('open'); answer.classList.add('show'); }
+}
+</script>
+</body>
+</html>
