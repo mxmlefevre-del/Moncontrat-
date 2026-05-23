@@ -2197,7 +2197,7 @@ let pendingAction = null;
 let chatCount = 0;
 
 // ===== AUTH =====
-const ADMIN = {email:'max@moncontrat.app', pwd:'MonContrat2026!', prenom:'Max'};
+const ADMIN = {email:'max@moncontrat.app', pwd:'alina', prenom:'Max'};
 
 function getUsers() { return JSON.parse(localStorage.getItem('mc_users')||'{}'); }
 function saveUsers(u) { localStorage.setItem('mc_users', JSON.stringify(u)); }
@@ -2256,8 +2256,9 @@ function submitLogin() {
 
   // Admin check
   if(email === ADMIN.email && pwd === ADMIN.pwd) {
-    setLoggedIn({email:ADMIN.email, prenom:ADMIN.prenom, nom:'', role:'admin'});
+    setLoggedIn({email:ADMIN.email, prenom:ADMIN.prenom, nom:'', role:'admin', plan:'pro'});
     closeLogin();
+    window.location.href = 'monespace.html';
     return;
   }
 
@@ -2267,6 +2268,7 @@ function submitLogin() {
     setLoggedIn(users[email]);
     closeLogin();
     if(pendingAction){pendingAction();pendingAction=null;}
+    else { window.location.href = 'monespace.html'; }
   } else {
     err.classList.add('show');
   }
@@ -2311,6 +2313,7 @@ function submitSignup() {
   setLoggedIn(user);
   closeSignup();
   if(pendingAction){pendingAction();pendingAction=null;}
+  else { window.location.href = 'monespace.html'; }
 }
 
 // ===== PAYMENT =====
