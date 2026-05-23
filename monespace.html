@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon espace — moncontrat</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { background:#fff !important; overflow-x:hidden; }
+:root { --red:#FF2D55; --light:#EBEBEB; --off:#FAFAFA; --red-pale:#FFF0F3; --green:#22C55E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Figtree',sans-serif; color:#111; min-height:100vh; background:var(--off); }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--light); padding:0 40px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { font-size:20px; font-weight:900; color:#111; text-decoration:none; }
+.logo span { color:var(--red); }
+.back-btn {
+  background:transparent; border:2px solid var(--light); color:#888;
+  padding:8px 20px; border-radius:100px; font-family:'Figtree',sans-serif;
+  font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s;
+  display:inline-block; cursor:pointer;
+}
+.back-btn:hover { border-color:var(--red); color:var(--red); }
+
+.page-wrap { max-width:900px; margin:0 auto; padding:90px 24px 60px; }
+
+/* HEADER */
+.espace-header {
+  background:#fff; border-radius:24px; padding:32px;
+  margin-bottom:20px; display:flex; align-items:center; gap:20px;
+  border:2px solid var(--light);
+}
+.espace-avatar {
+  width:72px; height:72px; border-radius:50%;
+  background:var(--red); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:28px; font-weight:900; flex-shrink:0;
+}
+.espace-name { font-size:24px; font-weight:900; color:#111; margin-bottom:4px; }
+.espace-email { font-size:14px; color:#888; margin-bottom:8px; }
+.espace-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--red-pale); color:var(--red);
+  font-size:12px; font-weight:700; padding:4px 12px; border-radius:100px;
+}
+
+/* TABS */
+.tabs { display:flex; gap:6px; margin-bottom:24px; flex-wrap:wrap; }
+.tab {
+  padding:10px 20px; border-radius:100px; border:2px solid var(--light);
+  background:#fff; font-family:'Figtree',sans-serif; font-size:13px;
+  font-weight:700; color:#888; cursor:pointer; transition:all 0.2s;
+}
+.tab.active { background:var(--red); border-color:var(--red); color:#fff; }
+.tab:hover:not(.active) { border-color:var(--red); color:var(--red); }
+
+.tab-content { display:none; }
+.tab-content.active { display:block; animation:fadeUp 0.3s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* CARDS */
+.card {
+  background:#fff; border:2px solid var(--light); border-radius:20px;
+  padding:28px; margin-bottom:16px;
+}
+.card-title { font-size:17px; font-weight:700; color:#111; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.card-title span { font-size:20px; }
+
+/* CREDITS */
+.credits-display {
+  display:flex; align-items:center; gap:20px; margin-bottom:20px;
+}
+.credits-num { font-size:48px; font-weight:900; color:var(--red); letter-spacing:-2px; line-height:1; }
+.credits-label { font-size:14px; color:#888; font-weight:600; }
+.credits-bar { height:8px; background:var(--light); border-radius:100px; overflow:hidden; margin-bottom:8px; }
+.credits-fill { height:100%; background:var(--red); border-radius:100px; transition:width 1s ease; }
+.credits-note { font-size:12px; color:#aaa; }
+
+/* STATS ROW */
+.stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+.stat-box { background:var(--off); border-radius:14px; padding:16px; text-align:center; }
+.stat-num { font-size:24px; font-weight:900; color:#111; letter-spacing:-0.5px; }
+.stat-label { font-size:11px; color:#888; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; margin-top:4px; }
+
+/* HISTORY */
+.history-item {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 0; border-bottom:1px solid var(--light);
+}
+.history-item:last-child { border-bottom:none; }
+.history-icon { width:40px; height:40px; border-radius:12px; background:var(--red-pale); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.history-title { font-size:14px; font-weight:700; color:#111; }
+.history-date { font-size:12px; color:#aaa; }
+.history-tag { margin-left:auto; font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; }
+.tag-red { background:var(--red-pale); color:var(--red); }
+.tag-green { background:#DCFCE7; color:#15803D; }
+.tag-blue { background:#EFF6FF; color:#1D4ED8; }
+
+/* PARTENAIRES TOGGLE */
+.toggle-row { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--light); }
+.toggle-row:last-child { border-bottom:none; }
+.toggle-info { flex:1; }
+.toggle-title { font-size:15px; font-weight:700; color:#111; margin-bottom:3px; }
+.toggle-desc { font-size:13px; color:#888; line-height:1.5; }
+.toggle-switch { position:relative; width:48px; height:26px; flex-shrink:0; margin-left:16px; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider {
+  position:absolute; inset:0; background:var(--light);
+  border-radius:100px; cursor:pointer; transition:0.3s;
+}
+.toggle-slider::before {
+  content:''; position:absolute; height:20px; width:20px;
+  left:3px; bottom:3px; background:#fff; border-radius:50%;
+  transition:0.3s; box-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+input:checked + .toggle-slider { background:var(--red); }
+input:checked + .toggle-slider::before { transform:translateX(22px); }
+
+/* PROFILE FORM */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-group { margin-bottom:14px; }
+.form-label { font-size:11px; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; display:block; }
+.form-input {
+  width:100%; border:2px solid var(--light); border-radius:12px;
+  padding:12px 16px; font-family:'Figtree',sans-serif; font-size:15px;
+  color:#111; background:var(--off); outline:none; transition:border-color 0.2s;
+}
+.form-input:focus { border-color:var(--red); background:#fff; }
+.save-btn {
+  background:var(--red); color:#fff; border:none;
+  padding:13px 28px; border-radius:100px;
+  font-family:'Figtree',sans-serif; font-size:14px; font-weight:700;
+  cursor:pointer; transition:all 0.2s;
+}
+.save-btn:hover { background:#E0002A; }
+
+/* OFFER BANNER */
+.offer-banner {
+  background:linear-gradient(135deg, #111 0%, #333 100%);
+  border-radius:20px; padding:28px; color:#fff; margin-bottom:16px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  flex-wrap:wrap;
+}
+.offer-title { font-size:20px; font-weight:900; margin-bottom:4px; }
+.offer-sub { font-size:13px; color:rgba(255,255,255,0.6); }
+.offer-btn {
+  background:var(--red); color:#fff; border:none;
+  padding:12px 24px; border-radius:100px;
+  font-family:'Figtree',sans-serif; font-size:14px; font-weight:700;
+  cursor:pointer; white-space:nowrap; flex-shrink:0;
+}
+
+/* DANGER SCORE MINI */
+.score-mini { display:flex; align-items:center; gap:16px; }
+.score-circle {
+  width:60px; height:60px; border-radius:50%;
+  border:4px solid var(--red); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; flex-shrink:0;
+}
+.score-num { font-size:18px; font-weight:900; color:var(--red); line-height:1; }
+.score-sub { font-size:8px; color:#888; font-weight:700; }
+
+footer { text-align:center; padding:32px; font-size:13px; color:#aaa; }
+footer a { color:var(--red); text-decoration:none; }
+
+@media(max-width:768px) {
+  nav { padding:0 16px; }
+  .page-wrap { padding:80px 16px 40px; }
+  .stats-row { grid-template-columns:1fr 1fr; }
+  .form-row { grid-template-columns:1fr; }
+  .espace-header { flex-direction:column; text-align:center; }
+  footer { padding:24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">mon<span>contrat</span></a>
+  <a href="index.html" class="back-btn">← Retour</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="espace-header" id="espaceHeader">
+    <div class="espace-avatar" id="espaceAvatar">M</div>
+    <div>
+      <div class="espace-name" id="espaceName">Chargement...</div>
+      <div class="espace-email" id="espaceEmail"></div>
+      <div class="espace-badge" id="espaceBadge">🎁 Plan Gratuit · 3 crédits</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('tableau')">📊 Tableau de bord</button>
+    <button class="tab" onclick="showTab('historique')">📋 Historique</button>
+    <button class="tab" onclick="showTab('partenaires')">🤝 Mes préférences</button>
+    <button class="tab" onclick="showTab('profil')">👤 Mon profil</button>
+  </div>
+
+  <!-- TAB: TABLEAU DE BORD -->
+  <div class="tab-content active" id="tab-tableau">
+
+    <div class="offer-banner" id="offerBanner">
+      <div>
+        <div class="offer-title">🚀 Passez en Premium</div>
+        <div class="offer-sub">50 analyses par mois · Comparateur · Sans pub · 7 jours gratuits</div>
+      </div>
+      <button class="offer-btn" onclick="window.location.href='tarifs.html'">Essayer 7 jours gratuits →</button>
+    </div>
+
+    <!-- CREDITS WIDGET -->
+    <div class="card" style="margin-bottom:16px;border:2px solid rgba(255,45,85,0.15);background:linear-gradient(135deg,#fff,#fff8f9);">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="width:52px;height:52px;border-radius:16px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="font-size:22px;">⚡</span>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Mes crédits</div>
+            <div style="display:flex;align-items:baseline;gap:6px;">
+              <span style="font-size:40px;font-weight:900;color:var(--red);letter-spacing:-2px;line-height:1;" id="statCredits">3</span>
+              <span style="font-size:15px;color:#888;font-weight:600;" id="creditsLabel">crédits disponibles</span>
+            </div>
+            <div style="margin-top:6px;" id="creditsBarWrap">
+              <div style="height:6px;background:var(--light);border-radius:100px;width:160px;overflow:hidden;">
+                <div id="creditsBar" style="height:100%;background:var(--red);border-radius:100px;transition:width 1s ease;width:100%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="creditsBtns">
+          <button onclick="window.location.href='tarifs.html'" style="background:var(--off);border:2px solid var(--light);color:#111;padding:10px 18px;border-radius:100px;font-family:Figtree,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;" onmouseenter="this.style.borderColor='var(--red)'" onmouseleave="this.style.borderColor='var(--light)'">Recharger</button>
+          <button onclick="window.location.href='tarifs.html'" style="position:relative;background:var(--red);border:none;color:#fff;padding:10px 18px;border-radius:100px;font-family:Figtree,sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(255,45,85,0.3);">
+            S'abonner
+            <span style="position:absolute;top:-8px;right:-8px;background:#F59E0B;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:100px;white-space:nowrap;">POPULAIRE</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-num" id="statAnalyses">0</div>
+        <div class="stat-label">Analyses effectuées</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statEconomies">—</div>
+        <div class="stat-label">Économies détectées</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="statJours">—</div>
+        <div class="stat-label">Membre depuis</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>⚡</span>Actions rapides</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <a href="index.html#outils" style="background:var(--red);color:#fff;border-radius:14px;padding:14px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;">🔍 Analyser un contrat</a>
+        <a href="index.html#outils" style="background:var(--off);border:2px solid var(--light);color:#111;border-radius:14px;padding:14px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;">⚖️ Comparer</a>
+        <a href="index.html#outils" style="background:var(--off);border:2px solid var(--light);color:#111;border-radius:14px;padding:14px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;">✍️ Créer un contrat</a>
+        <a href="index.html#outils" style="background:var(--off);border:2px solid var(--light);color:#111;border-radius:14px;padding:14px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;">⚡ Rédiger un courrier</a>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(255,45,85,0.2);background:linear-gradient(135deg,#fff,#fff5f7);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">✨</div>
+        <div style="font-size:17px;font-weight:900;color:#111;">Économisez sur vos assurances</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div style="font-size:32px;font-weight:900;color:var(--red);letter-spacing:-1px;">340€</div>
+        <div style="font-size:13px;color:#888;line-height:1.4;">économisés en moyenne<br>par nos utilisateurs</div>
+      </div>
+      <div style="font-size:13px;color:#888;line-height:1.6;margin-bottom:16px;">Autorisez nos partenaires à analyser vos contrats. Ils vous proposent une meilleure offre <strong style="color:#111;">uniquement si c'est moins cher</strong> — sinon, vous n'entendez pas parler d'eux.</div>
+      <button onclick="document.querySelectorAll('.tab')[2].click()" style="background:var(--red);color:#fff;border:none;padding:12px 24px;border-radius:100px;font-family:Figtree,sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(255,45,85,0.3);">Activer ce service gratuit →</button>
+      <div style="font-size:11px;color:#aaa;margin-top:8px;">Sans engagement · Vous gardez le contrôle à tout moment</div>
+    </div>
+
+  </div>
+
+  <!-- TAB: HISTORIQUE -->
+  <div class="tab-content" id="tab-historique">
+    <div class="card">
+      <div class="card-title"><span>📋</span>Historique de vos analyses</div>
+      <div id="historyList">
+        <div style="text-align:center;padding:40px;color:#aaa;">
+          <div style="font-size:40px;margin-bottom:12px;">📂</div>
+          <div style="font-size:15px;font-weight:600;">Aucune analyse pour le moment</div>
+          <div style="font-size:13px;margin-top:6px;">Vos analyses apparaîtront ici après votre première utilisation.</div>
+          <a href="index.html#outils" style="display:inline-block;margin-top:16px;background:var(--red);color:#fff;padding:11px 24px;border-radius:100px;text-decoration:none;font-weight:700;font-size:14px;">Analyser mon premier contrat →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PARTENAIRES / PRÉFÉRENCES -->
+  <div class="tab-content" id="tab-partenaires">
+    <div class="card">
+      <div class="card-title"><span>🤝</span>Mes préférences partenaires</div>
+      <p style="font-size:14px;color:#888;line-height:1.6;margin-bottom:20px;">Autorisez nos partenaires assureurs à analyser votre profil pour vous proposer des offres personnalisées. Vous n'avez rien à faire — on s'occupe de tout.</p>
+
+      <!-- FEATURED TOGGLE -->
+      <div style="background:linear-gradient(135deg,#fff5f7,#fff0f7);border:2px solid rgba(255,45,85,0.25);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden;">
+        <!-- Sparkle effect -->
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,45,85,0.02) 10px,rgba(255,45,85,0.02) 20px);"></div>
+        <!-- Économie badge -->
+        <div style="position:absolute;top:16px;right:64px;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:0.05em;">✨ ÉCONOMIES GARANTIES</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:relative;">
+          <div style="flex:1;">
+            <div style="font-size:16px;font-weight:900;color:#111;margin-bottom:6px;">Trouver une meilleure offre d'assurance</div>
+            <div style="font-size:13px;color:#888;line-height:1.6;margin-bottom:12px;">Nos partenaires assureurs analysent vos contrats et vous contactent <strong style="color:#111;">uniquement s'ils trouvent moins cher avec des garanties équivalentes ou supérieures</strong>. Vous n'avez rien à faire — on s'occupe de tout.</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <span style="font-size:12px;font-weight:700;color:var(--red);background:var(--red-pale);padding:4px 10px;border-radius:100px;">💰 340€ économisés en moyenne</span>
+              <span style="font-size:12px;font-weight:700;color:#15803d;background:#DCFCE7;padding:4px 10px;border-radius:100px;">✓ Zéro démarche</span>
+              <span style="font-size:12px;font-weight:700;color:#888;background:var(--off);padding:4px 10px;border-radius:100px;">🔒 Sans engagement</span>
+            </div>
+          </div>
+          <label class="toggle-switch" style="flex-shrink:0;margin-top:4px;">
+            <input type="checkbox" id="toggleAssurance" onchange="savePrefs()">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-title">📱 Alertes d'échéance par SMS</div>
+          <div class="toggle-desc">Recevez un SMS 30 jours avant chaque date d'échéance de vos contrats pour ne jamais manquer une résiliation possible.</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleSMS" onchange="savePrefs()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-title">📧 Conseils juridiques par email</div>
+          <div class="toggle-desc">Recevez chaque semaine nos meilleurs conseils juridiques et les dernières actualités sur vos droits en tant que consommateur.</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleEmail" onchange="savePrefs()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-title">📊 Partage anonymisé pour améliorer le service</div>
+          <div class="toggle-desc">Vos données anonymisées nous aident à améliorer la précision de nos analyses. Aucune donnée personnelle n'est partagée.</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleAnon" checked onchange="savePrefs()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--off);">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:24px;">🛡️</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#111;margin-bottom:6px;">Notre charte qualité</div>
+          <div style="font-size:13px;color:#888;line-height:1.6;">Nos partenaires s'engagent à ne vous contacter que s'ils peuvent proposer une offre <strong>moins chère avec des garanties au minimum équivalentes</strong>. Aucun démarchage abusif. Résiliable à tout moment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PROFIL -->
+  <div class="tab-content" id="tab-profil">
+    <div class="card">
+      <div class="card-title"><span>👤</span>Mes informations</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Prénom</label>
+          <input class="form-input" type="text" id="profilePrenom">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom</label>
+          <input class="form-input" type="text" id="profileNom">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="profileEmail" readonly style="opacity:0.6;cursor:not-allowed;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Téléphone</label>
+        <input class="form-input" type="tel" id="profileTel" style="max-width:240px;">
+      </div>
+      <button class="save-btn" onclick="saveProfile()">Enregistrer les modifications</button>
+      <div id="profileSuccess" style="display:none;margin-top:12px;font-size:13px;color:#15803d;font-weight:600;">✅ Profil mis à jour !</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🔒</span>Changer de mot de passe</div>
+      <div class="form-group">
+        <label class="form-label">Nouveau mot de passe</label>
+        <input class="form-input" type="password" id="newPwd" placeholder="8 caractères minimum" style="max-width:320px;">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirmer</label>
+        <input class="form-input" type="password" id="newPwd2" placeholder="Répéter" style="max-width:320px;">
+      </div>
+      <button class="save-btn" onclick="changePwd()">Changer le mot de passe</button>
+      <div id="pwdMsg" style="display:none;margin-top:12px;font-size:13px;font-weight:600;"></div>
+    </div>
+
+    <div class="card" style="border-color:rgba(255,45,85,0.2);">
+      <div class="card-title"><span>⚠️</span>Zone de danger</div>
+      <p style="font-size:14px;color:#888;margin-bottom:16px;">Supprimer votre compte effacera définitivement toutes vos données. Cette action est irréversible.</p>
+      <button onclick="deleteAccount()" style="background:none;border:2px solid var(--red);color:var(--red);padding:10px 20px;border-radius:100px;font-family:Figtree,sans-serif;font-size:13px;font-weight:700;cursor:pointer;">Supprimer mon compte</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 <a href="index.html">moncontrat.app</a> · <a href="legal.html">Mentions légales</a> · <a href="contact.html">Contact</a>
+</footer>
+
+<script>
+// ===== LOAD USER =====
+function getCurrentUser() {
+  return JSON.parse(localStorage.getItem('mc_current_user') || 'null');
+}
+function getUsers() {
+  return JSON.parse(localStorage.getItem('mc_users') || '{}');
+}
+function saveUsers(u) {
+  localStorage.setItem('mc_users', JSON.stringify(u));
+}
+
+function init() {
+  const user = getCurrentUser();
+  if(!user) { window.location.href = 'index.html'; return; }
+
+  // Header
+  document.getElementById('espaceAvatar').textContent = user.prenom.charAt(0).toUpperCase();
+  document.getElementById('espaceName').textContent = user.prenom + ' ' + (user.nom||'');
+  document.getElementById('espaceEmail').textContent = user.email;
+  
+  if(user.role === 'admin') {
+    document.getElementById('espaceBadge').innerHTML = '👑 Admin · Accès illimité';
+    document.getElementById('offerBanner').style.display = 'none';
+    document.getElementById('statCredits').textContent = '∞';
+  }
+
+  // Profile form
+  document.getElementById('profilePrenom').value = user.prenom || '';
+  document.getElementById('profileNom').value = user.nom || '';
+  document.getElementById('profileEmail').value = user.email || '';
+  document.getElementById('profileTel').value = user.tel || '';
+
+
+  // Stats
+  const usage = parseInt(localStorage.getItem('mc_usage')||'0');
+  document.getElementById('statAnalyses').textContent = usage;
+  
+  const isAdminUser = user.role === 'admin';
+  const hasSubscription = user.plan === 'particulier' || user.plan === 'pro' || isAdminUser;
+  const purchasedCredits = parseInt(user.purchasedCredits || 0);
+  const freeCredits = Math.max(0, 3 - usage);
+  const totalCredits = hasSubscription ? '∞' : (purchasedCredits > 0 ? purchasedCredits : freeCredits);
+  
+  document.getElementById('statCredits').textContent = totalCredits;
+  
+  if(hasSubscription) {
+    document.getElementById('creditsLabel').textContent = 'crédits illimités';
+    document.getElementById('creditsBar').style.width = '100%';
+    document.getElementById('creditsBar').style.background = '#22C55E';
+    document.getElementById('creditsBtns').innerHTML = '<span style="font-size:13px;font-weight:700;color:#22C55E;background:#DCFCE7;padding:8px 16px;border-radius:100px;">✓ Abonnement actif</span>';
+  } else {
+    const maxCredits = purchasedCredits > 0 ? purchasedCredits + usage : 3;
+    const remaining = purchasedCredits > 0 ? purchasedCredits : freeCredits;
+    const pct = Math.max(0, Math.min(100, (remaining/maxCredits)*100));
+    document.getElementById('creditsBar').style.width = pct + '%';
+    if(pct < 30) document.getElementById('creditsBar').style.background = '#F59E0B';
+  }
+  
+  // Membre depuis
+  if(user.date) {
+    const days = Math.floor((Date.now() - new Date(user.date)) / 86400000);
+    document.getElementById('statJours').textContent = days === 0 ? 'Aujourd'hui' : days + 'j';
+  }
+
+  // Prefs
+  const prefs = JSON.parse(localStorage.getItem('mc_prefs')||'{}');
+  if(prefs.assurance) document.getElementById('toggleAssurance').checked = true;
+  if(prefs.sms) document.getElementById('toggleSMS').checked = true;
+  if(prefs.email) document.getElementById('toggleEmail').checked = true;
+  if(prefs.anon !== false) document.getElementById('toggleAnon').checked = true;
+
+  // History
+  loadHistory();
+}
+
+function loadHistory() {
+  const history = JSON.parse(localStorage.getItem('mc_history')||'[]');
+  if(history.length === 0) return;
+  const icons = {analyse:'🔍',comparer:'⚖️',creer:'✍️',agir:'⚡',score:'👨‍👩‍👧',scan:'📸'};
+  const labels = {analyse:'Analyse de contrat',comparer:'Comparaison',creer:'Création de contrat',agir:'Courrier rédigé',score:'Score famille',scan:'Scan manuscrit'};
+  const list = document.getElementById('historyList');
+  list.innerHTML = history.slice(-10).reverse().map(h => `
+    <div class="history-item">
+      <div class="history-icon">${icons[h.type]||'📄'}</div>
+      <div>
+        <div class="history-title">${labels[h.type]||h.type}</div>
+        <div class="history-date">${new Date(h.date).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})}</div>
+      </div>
+      <span class="history-tag tag-red">1 crédit</span>
+    </div>
+  `).join('');
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function savePrefs() {
+  const prefs = {
+    assurance: document.getElementById('toggleAssurance').checked,
+    sms: document.getElementById('toggleSMS').checked,
+    email: document.getElementById('toggleEmail').checked,
+    anon: document.getElementById('toggleAnon').checked,
+  };
+  localStorage.setItem('mc_prefs', JSON.stringify(prefs));
+  
+  // If assurance enabled, save as lead
+  if(prefs.assurance) {
+    const user = getCurrentUser();
+    const leads = JSON.parse(localStorage.getItem('mc_find_better')||'[]');
+    if(!leads.find(l => l.email === user.email)) {
+      leads.push({...user, date:new Date().toISOString(), source:'espace_client'});
+      localStorage.setItem('mc_find_better', JSON.stringify(leads));
+    }
+  }
+}
+
+function saveProfile() {
+  const user = getCurrentUser();
+  user.prenom = document.getElementById('profilePrenom').value.trim();
+  user.nom = document.getElementById('profileNom').value.trim();
+  user.tel = document.getElementById('profileTel').value.trim();
+
+  localStorage.setItem('mc_current_user', JSON.stringify(user));
+  
+  // Update in users db
+  const users = getUsers();
+  if(users[user.email]) { users[user.email] = {...users[user.email], ...user}; saveUsers(users); }
+  
+  document.getElementById('profileSuccess').style.display = 'block';
+  setTimeout(() => document.getElementById('profileSuccess').style.display = 'none', 3000);
+  document.getElementById('espaceName').textContent = user.prenom + ' ' + user.nom;
+}
+
+function changePwd() {
+  const pwd = document.getElementById('newPwd').value;
+  const pwd2 = document.getElementById('newPwd2').value;
+  const msg = document.getElementById('pwdMsg');
+  msg.style.display = 'block';
+  if(pwd.length < 8) { msg.style.color='var(--red)'; msg.textContent='❌ 8 caractères minimum.'; return; }
+  if(pwd !== pwd2) { msg.style.color='var(--red)'; msg.textContent='❌ Les mots de passe ne correspondent pas.'; return; }
+  const user = getCurrentUser();
+  const users = getUsers();
+  if(users[user.email]) { users[user.email].pwd = btoa(pwd); saveUsers(users); }
+  msg.style.color = '#15803d'; msg.textContent = '✅ Mot de passe modifié !';
+  document.getElementById('newPwd').value = '';
+  document.getElementById('newPwd2').value = '';
+}
+
+function deleteAccount() {
+  if(!confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) return;
+  const user = getCurrentUser();
+  const users = getUsers();
+  delete users[user.email];
+  saveUsers(users);
+  localStorage.removeItem('mc_current_user');
+  localStorage.removeItem('mc_registered');
+  window.location.href = 'index.html';
+}
+
+init();
+</script>
+</body>
+</html>
