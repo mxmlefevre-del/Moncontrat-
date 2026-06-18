@@ -10,7 +10,9 @@ import { SYSTEM_PROMPT } from './_prompt.js';
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = 'claude-sonnet-4-6';        // modèle équilibré (qualité/prix)
 const MAX_TOKENS = 4000;
-
+export const config = {
+  maxDuration: 60
+};
 export default async function handler(req, res) {
   // -- CORS / méthode --
   if (req.method === 'OPTIONS') {
