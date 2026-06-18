@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Espace client — MonContrat.app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F8FB;--bg-2:#FFFFFF;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+  --line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);--ok:#13C29C;--warn:#FF9F1C;--info:#3D5BF5;
+  --card-shadow:0 18px 50px rgba(20,30,70,.07);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:var(--bg)}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+a{text-decoration:none;color:inherit}button{font-family:inherit}
+::selection{background:var(--hl);color:var(--ink)}
+.mono-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+
+/* ===== DEMO SWITCHER (barre de démo, à retirer en prod) ===== */
+.demo-bar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(11,14,26,.92);backdrop-filter:blur(12px);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.demo-bar span{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase}
+.demo-bar button{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer;transition:.18s}
+.demo-bar button:hover{background:rgba(255,255,255,.18)}
+.demo-bar button.on{background:var(--accent);border-color:var(--accent)}
+
+/* ===== TOPBAR ===== */
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--accent)}
+.logo-glyph{width:30px;height:30px;flex:none}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--line)}
+.topbar-inner{height:64px;display:flex;align-items:center;justify-content:space-between;width:min(1200px,calc(100% - 40px));margin:0 auto}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.user-chip{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 6px 6px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;transition:.18s}
+.user-chip:hover{border-color:var(--line-2)}
+.user-chip .uname{font-size:13.5px;font-weight:600}
+.user-chip .uname small{display:block;font-family:var(--mono);font-size:10px;color:var(--soft);font-weight:500}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none}
+
+/* ===== SHELL ===== */
+.shell{width:min(1200px,calc(100% - 40px));margin:0 auto;display:grid;grid-template-columns:240px 1fr;gap:30px;padding:30px 0 80px}
+.side-nav{position:sticky;top:90px;align-self:start;display:flex;flex-direction:column;gap:4px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 15px;border-radius:12px;font-size:14.5px;font-weight:600;color:var(--mute);cursor:pointer;transition:.18s;border:1px solid transparent;text-align:left;background:none;width:100%}
+.nav-item svg{width:19px;height:19px;stroke:currentColor;stroke-width:2;fill:none;flex:none}
+.nav-item:hover{background:#fff;color:var(--ink)}
+.nav-item.active{background:#fff;color:var(--accent);border-color:var(--line);box-shadow:0 4px 16px rgba(20,30,70,.05)}
+.side-nav .sep{height:1px;background:var(--line);margin:12px 4px}
+.nav-item.danger{color:var(--soft)}.nav-item.danger:hover{color:var(--accent)}
+
+/* ===== VIEWS ===== */
+.view{display:none}.view.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view-head{margin-bottom:24px}
+.view-head h1{font-family:var(--disp);font-weight:800;font-size:28px;letter-spacing:-.03em}
+.view-head p{color:var(--mute);font-size:14.5px;margin-top:5px;font-weight:500}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 6px 24px rgba(20,30,70,.04)}
+.cards-row{display:grid;gap:16px;margin-bottom:16px}
+.cards-3{grid-template-columns:repeat(3,1fr)}
+.cards-2{grid-template-columns:1.4fr 1fr}
+
+/* plan card */
+.plan-card{position:relative;overflow:hidden}
+.plan-card.premium{background:linear-gradient(135deg,#fff,#FFF6F8);border-color:rgba(255,45,85,.2)}
+.plan-card.pro{background:linear-gradient(150deg,#1a1020,#2b1a24);border-color:transparent;color:#fff}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-bottom:14px}
+.plan-card.free .plan-badge{background:var(--hl-soft);color:var(--accent)}
+.plan-card.premium .plan-badge{background:var(--accent);color:#fff}
+.plan-card.pro .plan-badge{background:rgba(255,255,255,.16);color:#fff}
+.plan-name{font-family:var(--disp);font-weight:800;font-size:26px;letter-spacing:-.02em;margin-bottom:4px}
+.plan-price{font-size:14px;color:var(--mute);font-weight:500}
+.plan-card.pro .plan-price{color:rgba(255,255,255,.7)}
+.plan-card .plan-cta{margin-top:18px}
+
+/* credits */
+.credit-big{font-family:var(--disp);font-weight:800;font-size:44px;letter-spacing:-.03em;line-height:1}
+.credit-sub{font-family:var(--mono);font-size:11px;color:var(--soft);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.credit-bar{height:9px;border-radius:6px;background:#EEF0F4;margin-top:16px;overflow:hidden}
+.credit-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.credit-meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);margin-top:10px;font-weight:500}
+
+.stat-mini{font-family:var(--mono);font-size:11px;color:var(--soft);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.stat-val{font-family:var(--disp);font-weight:800;font-size:32px;letter-spacing:-.03em}
+.stat-val small{font-size:15px;color:var(--mute);font-weight:600}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:11px;padding:12px 18px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 8px 22px rgba(255,45,85,.26)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,45,85,.34)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3)}
+.btn-light{background:rgba(255,255,255,.16);color:#fff}
+.btn-light:hover{background:rgba(255,255,255,.26)}
+.btn-block{width:100%}
+
+/* table analyses */
+.section-title{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;margin:30px 0 14px}
+.analyses{display:flex;flex-direction:column;gap:10px}
+.analysis-row{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 18px;transition:border-color .2s}
+.analysis-row:hover{border-color:var(--line-2)}
+.a-type{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.a-type.habitation{background:rgba(61,91,245,.1)}
+.a-type.auto{background:rgba(19,194,156,.12)}
+.a-type.generique{background:var(--hl-soft)}
+.a-info{flex:1;min-width:0}
+.a-info b{font-size:14.5px;font-weight:700;display:block}
+.a-info small{font-family:var(--mono);font-size:11px;color:var(--soft)}
+.a-score{font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em;flex:none}
+.a-score small{font-size:11px;color:var(--soft);font-weight:600}
+.a-score.good{color:var(--ok)}.a-score.mid{color:var(--warn)}.a-score.low{color:var(--accent)}
+.a-arrow{color:var(--soft);flex:none}
+.empty{text-align:center;padding:50px 20px;color:var(--soft)}
+.empty svg{width:46px;height:46px;stroke:var(--line-2);stroke-width:1.5;fill:none;margin-bottom:14px}
+.empty b{display:block;color:var(--mute);font-size:15px;margin-bottom:6px;font-weight:700}
+
+/* settings form */
+.field{margin-bottom:18px}
+.field label{display:block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.field input{width:100%;border:1px solid var(--line-2);border-radius:11px;padding:13px 15px;font-family:var(--body);font-size:15px;background:#fff;transition:border-color .2s}
+.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,45,85,.1)}
+.field input:disabled{background:var(--bg);color:var(--mute)}
+.field .hint{font-size:12px;color:var(--soft);margin-top:6px;font-weight:500}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verified{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--ok);font-family:var(--mono)}
+
+/* abonnement */
+.plan-compare{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.pc{border:1px solid var(--line);border-radius:18px;padding:24px;background:#fff;position:relative}
+.pc.current{border-color:var(--accent);box-shadow:0 10px 30px rgba(255,45,85,.12)}
+.pc .cur-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.pc h3{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em;margin-bottom:4px}
+.pc .pc-price{font-family:var(--disp);font-weight:800;font-size:30px;letter-spacing:-.03em;margin:10px 0 2px}
+.pc .pc-price small{font-size:13px;color:var(--mute);font-weight:600}
+.pc .pc-sub{font-size:12.5px;color:var(--soft);margin-bottom:16px;font-weight:500}
+.pc ul{list-style:none;margin:16px 0;display:flex;flex-direction:column;gap:9px}
+.pc li{font-size:13.5px;color:var(--mute);font-weight:500;display:flex;gap:9px;align-items:flex-start}
+.pc li svg{width:16px;height:16px;stroke:var(--ok);stroke-width:2.4;fill:none;flex:none;margin-top:1px}
+
+.danger-zone{border-color:rgba(255,59,59,.2);background:linear-gradient(135deg,#fff,#FFF8F8)}
+.danger-zone h3{color:#D33}
+
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr;gap:16px}
+  .side-nav{position:relative;top:auto;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:4px}
+  .nav-item{white-space:nowrap;padding:10px 14px}
+  .nav-item span.lbl{display:none}
+  .nav-item svg{width:20px;height:20px}
+  .nav-item.active span.lbl,.nav-item:not(.danger) span.lbl{display:inline}
+  .cards-3,.cards-2,.field-row,.plan-compare{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .topbar-inner,.shell{width:calc(100% - 28px)}
+  .user-chip .uname{display:none}
+  .demo-bar{width:calc(100% - 24px);justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+</defs></svg>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <svg class="logo-glyph" viewBox="0 0 34 34"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <div class="topbar-right">
+      <button class="btn btn-main" onclick="alert('Prototype : lancer une analyse')">+ Analyser un contrat</button>
+      <div class="user-chip">
+        <span class="uname" id="chipName">—<small id="chipPlan">—</small></span>
+        <span class="avatar" id="chipAvatar">M</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- SIDE NAV -->
+  <nav class="side-nav">
+    <button class="nav-item active" data-view="dashboard" onclick="showView('dashboard',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span class="lbl">Tableau de bord</span></button>
+    <button class="nav-item" data-view="analyses" onclick="showView('analyses',this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="lbl">Mes analyses</span></button>
+    <button class="nav-item" data-view="subscription" onclick="showView('subscription',this)"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span class="lbl">Abonnement</span></button>
+    <button class="nav-item" data-view="settings" onclick="showView('settings',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="lbl">Paramètres</span></button>
+    <div class="sep"></div>
+    <button class="nav-item danger" onclick="alert('Prototype : déconnexion')"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span class="lbl">Déconnexion</span></button>
+  </nav>
+
+  <!-- CONTENT -->
+  <main>
+    <!-- ===== DASHBOARD ===== -->
+    <section class="view active" id="view-dashboard">
+      <div class="view-head">
+        <h1 id="dashHello">Bonjour 👋</h1>
+        <p>Voici un aperçu de votre compte et de vos analyses.</p>
+      </div>
+
+      <div class="cards-row cards-2">
+        <!-- carte crédits -->
+        <div class="card">
+          <div class="stat-mini">Crédits disponibles</div>
+          <div class="credit-big" id="creditNum">0</div>
+          <div class="credit-sub" id="creditReset">—</div>
+          <div class="credit-bar"><div class="credit-fill" id="creditFill" style="width:0%"></div></div>
+          <div class="credit-meta"><span id="creditUsed">0 utilisés</span><span id="creditTotal">/ 0</span></div>
+        </div>
+        <!-- carte forfait -->
+        <div class="card plan-card" id="planCard">
+          <span class="plan-badge" id="planBadge">—</span>
+          <div class="plan-name" id="planName">—</div>
+          <div class="plan-price" id="planPrice">—</div>
+          <div class="plan-cta" id="planCta"></div>
+        </div>
+      </div>
+
+      <div class="cards-row cards-3">
+        <div class="card"><div class="stat-mini">Analyses réalisées</div><div class="stat-val" id="statAnalyses">0</div></div>
+        <div class="card"><div class="stat-mini">Score moyen</div><div class="stat-val" id="statScore">—<small>/100</small></div></div>
+        <div class="card"><div class="stat-mini">Membre depuis</div><div class="stat-val" id="statSince" style="font-size:22px">—</div></div>
+      </div>
+
+      <div class="section-title">Analyses récentes</div>
+      <div class="analyses" id="recentAnalyses"></div>
+    </section>
+
+    <!-- ===== ANALYSES ===== -->
+    <section class="view" id="view-analyses">
+      <div class="view-head">
+        <h1>Mes analyses</h1>
+        <p>Retrouvez l'historique de tous vos contrats analysés.</p>
+      </div>
+      <div class="analyses" id="allAnalyses"></div>
+    </section>
+
+    <!-- ===== ABONNEMENT ===== -->
+    <section class="view" id="view-subscription">
+      <div class="view-head">
+        <h1>Abonnement</h1>
+        <p>Gérez votre formule. Changez ou résiliez à tout moment.</p>
+      </div>
+      <div class="plan-compare">
+        <div class="pc" id="pc-free">
+          <h3>Gratuit</h3>
+          <div class="pc-price">0 €</div>
+          <div class="pc-sub">Pour découvrir</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>3 crédits offerts</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Analyse de contrat</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Comparateur</li>
+          </ul>
+          <button class="btn btn-ghost btn-block" data-plan="free" onclick="choosePlan('free')">Choisir</button>
+        </div>
+        <div class="pc" id="pc-premium">
+          <h3>Premium</h3>
+          <div class="pc-price">9,99 €<small>/mois</small></div>
+          <div class="pc-sub">Résiliable à tout moment</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>50 crédits par mois</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Tous les outils</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Alertes contrats</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Historique complet</li>
+          </ul>
+          <button class="btn btn-main btn-block" data-plan="premium" onclick="choosePlan('premium')">Choisir Premium</button>
+        </div>
+        <div class="pc" id="pc-pro">
+          <h3>Pro</h3>
+          <div class="pc-price">29,99 €<small>/mois</small></div>
+          <div class="pc-sub">Résiliable à tout moment</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>200 crédits par mois</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Tout Premium inclus</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Assistant sinistre</li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Support prioritaire</li>
+          </ul>
+          <button class="btn btn-ghost btn-block" data-plan="pro" onclick="choosePlan('pro')">Choisir Pro</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <div class="stat-mini">Besoin ponctuel ?</div>
+        <p style="color:var(--mute);font-size:14px;margin:8px 0 16px;font-weight:500">Vous pouvez aussi acheter des packs de crédits à l'unité, sans abonnement.</p>
+        <button class="btn btn-ghost" onclick="alert('Prototype : achat de pack de crédits')">Voir les packs de crédits</button>
+      </div>
+    </section>
+
+    <!-- ===== PARAMÈTRES ===== -->
+    <section class="view" id="view-settings">
+      <div class="view-head">
+        <h1>Paramètres</h1>
+        <p>Vos informations personnelles et la sécurité de votre compte.</p>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title" style="margin:0 0 18px">Informations personnelles</div>
+        <div class="field-row">
+          <div class="field"><label>Nom complet</label><input type="text" id="setName" placeholder="Votre nom"></div>
+          <div class="field"><label>Email <span class="verified">✓ vérifié</span></label><input type="email" id="setEmail" disabled></div>
+        </div>
+        <div class="field">
+          <label>Numéro de mobile</label>
+          <input type="tel" id="setPhone" placeholder="06 12 34 56 78">
+          <div class="hint">Utilisé pour le service « Trouvez moins cher » et les alertes.</div>
+        </div>
+        <button class="btn btn-main" onclick="alert('Prototype : enregistrer les modifications')">Enregistrer</button>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title" style="margin:0 0 18px">Sécurité</div>
+        <div class="field"><label>Mot de passe</label><input type="password" value="••••••••••" disabled></div>
+        <button class="btn btn-ghost" onclick="alert('Prototype : changer le mot de passe')">Changer le mot de passe</button>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="section-title" style="margin:0 0 14px">Vos données (RGPD)</div>
+        <p style="color:var(--mute);font-size:14px;margin-bottom:16px;font-weight:500">Vous pouvez exporter toutes vos données ou demander leur suppression à tout moment.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost" onclick="alert('Prototype : export des données')">Exporter mes données</button>
+          <button class="btn btn-ghost" onclick="alert('Prototype : demande de suppression')">Supprimer mon compte</button>
+        </div>
+      </div>
+
+      <div class="card danger-zone">
+        <h3 style="font-family:var(--disp);font-weight:800;font-size:17px;margin-bottom:8px">Consentement partenaires</h3>
+        <p style="color:var(--mute);font-size:14px;margin-bottom:16px;font-weight:500">Vous avez autorisé la transmission de vos dossiers aux assureurs partenaires via « Trouvez moins cher ». Vous pouvez retirer ce consentement à tout moment.</p>
+        <button class="btn btn-ghost" onclick="alert('Prototype : gérer le consentement')">Gérer mon consentement</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- BARRE DE DÉMO (à retirer en production) -->
+<div class="demo-bar">
+  <span>Aperçu forfait :</span>
+  <button onclick="loadPlan('free',this)" class="on">Gratuit</button>
+  <button onclick="loadPlan('premium',this)">Premium</button>
+  <button onclick="loadPlan('pro',this)">Pro</button>
+</div>
+
+<script>
+/* ======================================================
+   DONNÉES D'EXEMPLE — en prod, viennent de Supabase
+   (profil utilisateur + ses analyses + son forfait)
+   ====================================================== */
+const USER = {
+  full_name:"Maxime Lefèvre",
+  email:"max@email.fr",
+  phone:"06 12 34 56 78",
+  since:"juin 2026",
+  consent_partner:true
+};
+
+// 3 jeux de données forfait pour la démo
+const PLANS = {
+  free:    { key:"free",    label:"Gratuit", price:"3 crédits offerts",            credits_total:3,   credits_left:2 },
+  premium: { key:"premium", label:"Premium", price:"9,99 €/mois · 50 crédits/mois", credits_total:50,  credits_left:37, reset:"Renouvellement le 1er juil." },
+  pro:     { key:"pro",     label:"Pro",     price:"29,99 €/mois · 200 crédits/mois",credits_total:200, credits_left:184, reset:"Renouvellement le 1er juil." },
+};
+
+// analyses d'exemple
+const ANALYSES = [
+  { type:"habitation", titre:"Habitation — Maison", insurer:"Contrat MRH", score:62, date:"12 juin 2026" },
+  { type:"auto",       titre:"Auto — Peugeot 308",  insurer:"Tous risques", score:78, date:"8 juin 2026" },
+  { type:"generique",  titre:"Mutuelle santé",      insurer:"Complémentaire", score:71, date:"3 juin 2026" },
+];
+
+const typeIcon={habitation:"🏠",auto:"🚗",generique:"📄"};
+const scoreClass=s=>s>=70?'good':s>=55?'mid':'low';
+
+let currentPlan='free';
+
+/* ======================================================
+   RENDU
+   ====================================================== */
+function loadPlan(key,btn){
+  currentPlan=key;
+  document.querySelectorAll('.demo-bar button').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  render();
+}
+
+function render(){
+  const plan=PLANS[currentPlan];
+  const initials=USER.full_name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
+  // topbar chip
+  document.getElementById('chipName').firstChild.textContent=USER.full_name;
+  document.getElementById('chipPlan').textContent="Forfait "+plan.label;
+  document.getElementById('chipAvatar').textContent=initials;
+
+  // dashboard hello
+  document.getElementById('dashHello').textContent="Bonjour "+USER.full_name.split(' ')[0]+" 👋";
+
+  // crédits
+  const used=plan.credits_total-plan.credits_left;
+  document.getElementById('creditNum').textContent=plan.credits_left;
+  document.getElementById('creditReset').textContent=plan.reset||"Crédits offerts à l'inscription";
+  document.getElementById('creditFill').style.width=(plan.credits_left/plan.credits_total*100)+'%';
+  document.getElementById('creditUsed').textContent=used+" utilisé"+(used>1?'s':'');
+  document.getElementById('creditTotal').textContent="/ "+plan.credits_total;
+
+  // carte forfait
+  const pc=document.getElementById('planCard');
+  pc.className='card plan-card '+plan.key;
+  document.getElementById('planBadge').textContent="Forfait actuel";
+  document.getElementById('planName').textContent=plan.label;
+  document.getElementById('planPrice').textContent=plan.price;
+  const cta=document.getElementById('planCta');
+  if(plan.key==='free'){
+    cta.innerHTML='<button class="btn btn-main" onclick="goSub()">Passer à Premium</button>';
+  }else if(plan.key==='premium'){
+    cta.innerHTML='<button class="btn btn-main" onclick="goSub()">Passer à Pro</button>';
+  }else{
+    cta.innerHTML='<button class="btn btn-light" onclick="goSub()">Gérer mon abonnement</button>';
+  }
+
+  // stats
+  document.getElementById('statAnalyses').textContent=ANALYSES.length;
+  const avg=Math.round(ANALYSES.reduce((s,a)=>s+a.score,0)/ANALYSES.length);
+  document.getElementById('statScore').innerHTML=avg+'<small>/100</small>';
+  document.getElementById('statSince').textContent=USER.since;
+
+  // analyses
+  const rowHtml=a=>`
+    <div class="analysis-row" onclick="openAnalysis()">
+      <div class="a-type ${a.type}">${typeIcon[a.type]}</div>
+      <div class="a-info"><b>${a.titre}</b><small>${a.insurer} · ${a.date}</small></div>
+      <div class="a-score ${scoreClass(a.score)}">${a.score}<small>/100</small></div>
+      <div class="a-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>`;
+  document.getElementById('recentAnalyses').innerHTML=ANALYSES.slice(0,3).map(rowHtml).join('');
+  document.getElementById('allAnalyses').innerHTML=ANALYSES.length?ANALYSES.map(rowHtml).join(''):
+    '<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><b>Aucune analyse pour le moment</b>Lancez votre première analyse de contrat.</div>';
+
+  // abonnement : marquer la formule en cours
+  ['free','premium','pro'].forEach(k=>{
+    const el=document.getElementById('pc-'+k);
+    el.classList.toggle('current',k===plan.key);
+    const tag=el.querySelector('.cur-tag'); if(tag)tag.remove();
+    const btn=el.querySelector('button');
+    if(k===plan.key){
+      el.insertAdjacentHTML('afterbegin','<span class="cur-tag">Votre formule</span>');
+      btn.textContent='Formule actuelle';btn.disabled=true;btn.style.opacity=.5;btn.style.cursor='default';
+    }else{
+      btn.disabled=false;btn.style.opacity=1;btn.style.cursor='pointer';
+      btn.textContent=k==='free'?'Revenir au Gratuit':('Choisir '+PLANS[k].label);
+    }
+  });
+
+  // settings
+  document.getElementById('setName').value=USER.full_name;
+  document.getElementById('setEmail').value=USER.email;
+  document.getElementById('setPhone').value=USER.phone;
+}
+
+function showView(name,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(btn&&btn.classList.contains('nav-item'))btn.classList.add('active');
+  else{const ni=document.querySelector('.nav-item[data-view='+name+']');if(ni)ni.classList.add('active');}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goSub(){showView('subscription',document.querySelector('.nav-item[data-view=subscription]'));}
+function openAnalysis(){alert('Prototype : ouvrir le résultat de cette analyse.');}
+
+function choosePlan(key){
+  if(key===currentPlan)return;
+  alert('Prototype : redirection vers le paiement pour le forfait '+PLANS[key].label+'.\n\nEn production, Stripe gère le paiement, puis le forfait est mis à jour dans Supabase.');
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Comparer deux contrats — MonContrat.app</title>
+<meta name="description" content="Déposez deux contrats d'assurance et obtenez une comparaison claire, garantie par garantie." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;--bg-2:#FBFBFD;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+  --blue:#3D5BF5;--blue-soft:rgba(61,91,245,.07);--hl-blue:#C7D2FF;
+  --ok:#13C29C;--line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);
+  --card-shadow:0 18px 50px rgba(20,30,70,.08);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:#fff}
+body{font-family:var(--body);background:radial-gradient(900px 520px at 50% -10%,rgba(255,45,85,.08),transparent 70%),var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{text-decoration:none;color:inherit}button{font-family:inherit}
+::selection{background:var(--hl);color:var(--ink)}
+.wrap{width:min(1180px,calc(100% - 36px));margin:0 auto}
+.mark{background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat;background-size:100% .32em;background-position:0 88%;padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* NAV flottante */
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
+.logo-glyph{width:32px;height:32px;flex:none}
+.nav{position:fixed;top:18px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none;transition:transform .35s ease,opacity .35s ease}
+.nav-inner{pointer-events:auto;height:64px;display:flex;align-items:center;gap:26px;width:min(1180px,calc(100% - 36px));padding:0 14px 0 22px;border-radius:18px;background:rgba(28,18,24,.32);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border:1px solid rgba(255,255,255,.18);box-shadow:0 12px 40px rgba(20,10,20,.18),inset 0 1px 0 rgba(255,255,255,.22)}
+.nav .brand{color:#fff;margin-right:auto}
+.nav .brand .ext{color:#fff;opacity:.85}
+.nav-links{display:flex;gap:28px;font-size:14px;font-weight:600;color:rgba(255,255,255,.82)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
+.nav-cta{display:flex;gap:9px;align-items:center}
+.nav-burger{width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex:none}
+.nav-burger:hover{background:rgba(255,255,255,.16)}
+.nav-burger svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:12px;padding:13px 21px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.nav .btn{border-radius:11px;padding:12px 18px;font-size:13.5px;font-weight:700}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 28px rgba(255,45,85,.26)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,45,85,.34)}
+.btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.nav .btn-main{box-shadow:0 8px 22px rgba(255,45,85,.32)}
+.nav .btn-client{background:#fff;color:var(--ink)}
+
+/* MENU BURGER */
+.menu-overlay{position:fixed;inset:0;z-index:80;background:rgba(11,14,26,.5);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.menu-overlay.show{opacity:1;pointer-events:auto}
+.menu-panel{position:absolute;top:0;right:0;height:100%;width:min(380px,86vw);background:#fff;box-shadow:-20px 0 60px rgba(20,30,70,.2);padding:28px;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.3,.9,.3,1);overflow-y:auto}
+.menu-overlay.show .menu-panel{transform:none}
+.menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.menu-title{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.menu-close{width:40px;height:40px;border-radius:11px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font-size:24px;cursor:pointer;line-height:1}
+.menu-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.menu-group{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:18px 0 8px}
+.menu-group:first-child{margin-top:0}
+.menu-links a{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);padding:9px 0;transition:color .2s,padding-left .2s}
+.menu-links a:hover{color:var(--accent);padding-left:6px}
+.menu-foot{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+
+/* HERO */
+.hero{padding:132px 0 16px;text-align:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 18px;margin-bottom:22px;box-shadow:0 6px 24px rgba(20,30,70,.06)}
+.hero-kicker i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,5vw,54px);line-height:1.05;letter-spacing:-.04em}
+.hero-sub{margin:16px auto 0;font-size:clamp(15px,1.6vw,18px);line-height:1.55;color:var(--mute);max-width:540px;font-weight:500}
+
+/* SHELL */
+.shell{width:min(900px,calc(100% - 36px));margin:24px auto 60px}
+
+/* DEUX ZONES DE DÉPÔT */
+.drops{display:grid;grid-template-columns:1fr 1fr;gap:18px;position:relative}
+.vs-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;width:48px;height:48px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:var(--card-shadow);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:15px;color:var(--ink)}
+
+.col{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--card-shadow);overflow:hidden}
+.col-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.col.A .col-head{background:linear-gradient(180deg,var(--hl-soft),transparent)}
+.col.B .col-head{background:linear-gradient(180deg,var(--blue-soft),transparent)}
+.col-tag{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px}
+.col.A .col-tag{background:var(--hl);color:#9B1733}
+.col.B .col-tag{background:var(--hl-blue);color:#26379E}
+.col-head b{font-family:var(--disp);font-weight:800;font-size:15px}
+
+.drop{margin:18px;border:2px dashed var(--line-2);border-radius:16px;padding:34px 18px;text-align:center;cursor:pointer;transition:.2s}
+.col.A .drop:hover,.col.A .drop.drag{border-color:var(--accent);background:var(--hl-soft)}
+.col.B .drop:hover,.col.B .drop.drag{border-color:var(--blue);background:var(--blue-soft)}
+.drop .ic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.col.A .drop .ic{background:var(--hl-soft);border:1px solid rgba(255,45,85,.18)}
+.col.B .drop .ic{background:var(--blue-soft);border:1px solid rgba(61,91,245,.18)}
+.drop .ic svg{width:24px;height:24px;stroke-width:2;fill:none}
+.col.A .drop .ic svg{stroke:var(--accent)}
+.col.B .drop .ic svg{stroke:var(--blue)}
+.drop h3{font-family:var(--disp);font-weight:800;font-size:16px;margin-bottom:5px}
+.drop p{color:var(--mute);font-size:13px;font-weight:500}
+.drop .formats{font-family:var(--mono);font-size:10.5px;color:var(--soft);margin-top:11px;letter-spacing:.04em}
+
+.file-loaded{display:none;align-items:center;gap:12px;margin:18px;padding:14px 16px;border-radius:13px}
+.file-loaded.show{display:flex}
+.col.A .file-loaded{background:var(--hl-soft);border:1px solid rgba(255,45,85,.2)}
+.col.B .file-loaded{background:var(--blue-soft);border:1px solid rgba(61,91,245,.2)}
+.file-loaded .fic{width:38px;height:38px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;font-size:17px}
+.file-loaded .finfo{flex:1;min-width:0}
+.file-loaded .finfo b{font-size:13.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-loaded .finfo small{font-family:var(--mono);font-size:10.5px;color:var(--soft)}
+.file-remove{background:none;border:none;color:var(--soft);cursor:pointer;font-size:19px;padding:4px}
+.file-remove:hover{color:var(--accent)}
+
+/* TON */
+.tone-block{margin:26px auto 0;text-align:center}
+.tone-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);display:block;margin-bottom:12px}
+.tones{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.tone{font-size:13.5px;font-weight:600;border:1px solid var(--line-2);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.18s}
+.tone:hover{border-color:var(--accent)}
+.tone.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(255,45,85,.25)}
+
+.cmp-btn{margin:26px auto 0;display:block;width:min(420px,100%);font-size:15px;padding:16px 22px}
+.err-msg{display:none;margin:16px auto 0;max-width:520px;padding:13px 16px;border-radius:11px;background:rgba(255,59,59,.08);color:#D33;border:1px solid rgba(255,59,59,.25);font-size:13.5px;font-weight:600;text-align:center}
+.err-msg.show{display:block}
+
+/* OVERLAY SCAN */
+.scan-overlay{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}
+.scan-overlay.show{display:flex}
+.scan-docs{display:flex;gap:20px;align-items:center;margin-bottom:28px}
+.scan-doc{width:104px;height:132px;border-radius:12px;border:2px solid var(--line-2);position:relative;overflow:hidden;background:#fff;box-shadow:var(--card-shadow);padding:14px}
+.scan-doc .l{height:6px;border-radius:4px;background:#EEF0F4;margin-bottom:8px}
+.scan-doc .l.s{width:60%}
+.scan-doc.a .l.hl{background:var(--hl)}.scan-doc.b .l.hl{background:var(--hl-blue)}
+.scan-beam{position:absolute;left:0;right:0;height:34px;animation:scanmove 1.7s ease-in-out infinite}
+.scan-doc.a .scan-beam{background:linear-gradient(180deg,transparent,rgba(255,45,85,.25),transparent)}
+.scan-doc.b .scan-beam{background:linear-gradient(180deg,transparent,rgba(61,91,245,.22),transparent);animation-delay:.3s}
+@keyframes scanmove{0%,100%{top:-34px}50%{top:132px}}
+.scan-vs{font-family:var(--disp);font-weight:800;font-size:20px;color:var(--soft)}
+.scan-overlay h2{font-family:var(--disp);font-weight:800;font-size:23px;letter-spacing:-.02em;margin-bottom:9px}
+.scan-overlay p{color:var(--mute);font-size:14px;font-weight:500;max-width:340px}
+.scan-steps{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:16px;height:18px}
+
+footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.foot-links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;color:var(--soft);flex-wrap:wrap}
+.foot-links a:hover{color:var(--ink)}
+.foot-note{font-family:var(--mono);font-size:11px;color:var(--soft);width:100%;margin-top:8px}
+
+@media(max-width:880px){.nav-links{display:none}}
+@media(max-width:680px){
+  .drops{grid-template-columns:1fr;gap:14px}
+  .vs-badge{display:none}
+}
+@media(max-width:560px){
+  .hero{padding:118px 0 10px}
+  .nav.nav-hidden{transform:translateY(-140%);opacity:0}
+  .foot{justify-content:center;text-align:center}.foot-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+</defs></svg>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="MonContrat.app">
+      <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+        <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+        <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+        <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+      </svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#tools">Outils</a>
+      <a href="blog.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="nav-burger" onclick="openMenu()" aria-label="Menu" aria-expanded="false" id="burgerBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="btn btn-client" href="espace-client.html">Espace client</a>
+      <a class="btn btn-main" href="analyser.html">Analyser un contrat</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MENU BURGER -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
+  <aside class="menu-panel" role="dialog" aria-label="Menu de navigation">
+    <div class="menu-head"><span class="menu-title">Menu</span><button class="menu-close" onclick="closeMenu()" aria-label="Fermer">×</button></div>
+    <nav class="menu-links">
+      <span class="menu-group">Produit</span>
+      <a href="index.html#tools">Outils</a><a href="analyser.html">Analyser un contrat</a><a href="comparateur.html">Comparer deux contrats</a><a href="assistant-sinistre.html">Assistant sinistre</a><a href="documents.html">Résilier mon assurance</a>
+      <span class="menu-group">Ressources</span>
+      <a href="blog.html">Le Décodeur — Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a>
+      <span class="menu-group">Légal</span>
+      <a href="mentions-legales.html">Mentions légales</a><a href="cguv.html">CGU &amp; CGV</a><a href="politique-confidentialite.html">Confidentialité</a><a href="politique-cookies.html">Cookies</a>
+    </nav>
+    <div class="menu-foot"><a class="btn btn-client" style="width:100%" href="espace-client.html">Espace client</a><a class="btn btn-main" style="width:100%;margin-top:10px" href="analyser.html">Analyser un contrat</a></div>
+  </aside>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-kicker"><i></i>Comparaison gratuite</div>
+    <h1>Deux contrats.<br><span class="mark">Un seul gagnant.</span></h1>
+    <p class="hero-sub">Déposez vos deux contrats d'assurance du même type. On les compare garantie par garantie, sans jargon.</p>
+  </div>
+</header>
+
+<!-- SHELL -->
+<div class="shell">
+  <div class="drops">
+    <div class="vs-badge">VS</div>
+
+    <!-- CONTRAT A -->
+    <div class="col A">
+      <div class="col-head"><span class="col-tag">Contrat A</span><b>Votre contrat actuel</b></div>
+      <div class="drop" id="dropA" onclick="document.getElementById('fileA').click()">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+        <h3>Déposez le 1er contrat</h3>
+        <p>ou cliquez pour choisir</p>
+        <div class="formats">PDF · jusqu'à 10 Mo</div>
+      </div>
+      <input type="file" id="fileA" accept="application/pdf" style="display:none" onchange="onFile('A',this.files[0])">
+      <div class="file-loaded" id="loadedA">
+        <div class="fic">📄</div>
+        <div class="finfo"><b id="nameA">contrat-a.pdf</b><small id="sizeA">—</small></div>
+        <button class="file-remove" onclick="clearFile('A')" aria-label="Retirer">×</button>
+      </div>
+    </div>
+
+    <!-- CONTRAT B -->
+    <div class="col B">
+      <div class="col-head"><span class="col-tag">Contrat B</span><b>L'autre offre</b></div>
+      <div class="drop" id="dropB" onclick="document.getElementById('fileB').click()">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+        <h3>Déposez le 2e contrat</h3>
+        <p>ou cliquez pour choisir</p>
+        <div class="formats">PDF · jusqu'à 10 Mo</div>
+      </div>
+      <input type="file" id="fileB" accept="application/pdf" style="display:none" onchange="onFile('B',this.files[0])">
+      <div class="file-loaded" id="loadedB">
+        <div class="fic">📄</div>
+        <div class="finfo"><b id="nameB">contrat-b.pdf</b><small id="sizeB">—</small></div>
+        <button class="file-remove" onclick="clearFile('B')" aria-label="Retirer">×</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TON -->
+  <div class="tone-block">
+    <span class="tone-label">Ton de la comparaison</span>
+    <div class="tones" id="tones">
+      <button class="tone active" data-ton="Classique" onclick="setTon(this)">📋 Classique</button>
+      <button class="tone" data-ton="Simplifié" onclick="setTon(this)">💡 Simplifié</button>
+      <button class="tone" data-ton="Frérot" onclick="setTon(this)">😎 Frérot</button>
+    </div>
+  </div>
+
+  <button class="btn btn-main cmp-btn" id="cmpBtn" onclick="launch()" disabled>Comparer mes deux contrats</button>
+  <div class="err-msg" id="errMsg"></div>
+</div>
+
+<!-- OVERLAY SCAN -->
+<div class="scan-overlay" id="scanOverlay">
+  <div class="scan-docs">
+    <div class="scan-doc a"><div class="l hl"></div><div class="l"></div><div class="l s"></div><div class="l"></div><div class="scan-beam"></div></div>
+    <div class="scan-vs">VS</div>
+    <div class="scan-doc b"><div class="l hl"></div><div class="l"></div><div class="l s"></div><div class="l"></div><div class="scan-beam"></div></div>
+  </div>
+  <h2>Comparaison en cours…</h2>
+  <p>Notre IA lit vos deux contrats et les confronte garantie par garantie.</p>
+  <div class="scan-steps" id="scanSteps">Lecture des contrats…</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="index.html" aria-label="MonContrat.app" style="color:var(--ink)">
+        <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+        MonContrat<span class="ext" style="color:var(--accent)">.app</span>
+      </a>
+      <div class="foot-links">
+        <a href="blog.html">Blog</a>
+        <a href="faq.html">FAQ</a>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-confidentialite.html">Confidentialité</a>
+        <a href="cguv.html">CGUV</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-note">© 2026 moncontrat.app — Comparaison fournie à titre informatif.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* menu burger */
+function openMenu(){document.getElementById('menuOverlay').classList.add('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','true');}
+function closeMenu(e){if(e&&e.type==='click'&&e.target.id!=='menuOverlay'&&!e.target.classList.contains('menu-close'))return;document.getElementById('menuOverlay').classList.remove('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','false');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+
+/* nav cachée au scroll (mobile) */
+(function(){
+  const nav=document.getElementById('nav'); if(!nav)return;
+  let lastY=window.scrollY;
+  const isMobile=()=>window.matchMedia('(max-width:560px)').matches;
+  window.addEventListener('scroll',()=>{
+    if(!isMobile()){nav.classList.remove('nav-hidden');return;}
+    const y=window.scrollY;
+    if(y>lastY && y>120) nav.classList.add('nav-hidden'); else nav.classList.remove('nav-hidden');
+    lastY=y;
+  },{passive:true});
+})();
+
+/* ===== dépôt des fichiers ===== */
+let fileA=null, fileB=null, currentTon='Classique';
+
+function setTon(btn){
+  document.querySelectorAll('.tone').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active'); currentTon=btn.dataset.ton;
+}
+
+function onFile(side,file){
+  if(!file)return;
+  if(file.type!=='application/pdf'){showErr("Merci de déposer un fichier PDF.");return;}
+  if(file.size>10*1024*1024){showErr("Le fichier dépasse 10 Mo.");return;}
+  hideErr();
+  if(side==='A')fileA=file; else fileB=file;
+  document.getElementById('drop'+side).style.display='none';
+  document.getElementById('name'+side).textContent=file.name;
+  document.getElementById('size'+side).textContent=(file.size/1024/1024).toFixed(2)+' Mo';
+  document.getElementById('loaded'+side).classList.add('show');
+  refreshBtn();
+}
+function clearFile(side){
+  if(side==='A')fileA=null; else fileB=null;
+  document.getElementById('file'+side).value='';
+  document.getElementById('drop'+side).style.display='block';
+  document.getElementById('loaded'+side).classList.remove('show');
+  refreshBtn();
+}
+function refreshBtn(){ document.getElementById('cmpBtn').disabled = !(fileA && fileB); }
+function showErr(m){const e=document.getElementById('errMsg');e.textContent=m;e.classList.add('show');}
+function hideErr(){document.getElementById('errMsg').classList.remove('show');}
+
+/* drag & drop pour chaque zone */
+['A','B'].forEach(side=>{
+  const d=document.getElementById('drop'+side);
+  ['dragover','dragenter'].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.remove('drag');}));
+  d.addEventListener('drop',e=>{if(e.dataTransfer.files[0])onFile(side,e.dataTransfer.files[0]);});
+});
+
+/* étapes animées */
+const steps=["Lecture des contrats…","Identification des types…","Extraction des garanties…","Comparaison ligne par ligne…","Calcul des scores…","Préparation du verdict…"];
+let stepIdx=0,stepTimer=null;
+function cycleSteps(){document.getElementById('scanSteps').textContent=steps[stepIdx%steps.length];stepIdx++;}
+
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(r.result.split(',')[1]);
+    r.onerror=()=>reject(new Error("Lecture du fichier impossible."));
+    r.readAsDataURL(file);
+  });
+}
+
+/* lancer la comparaison */
+async function launch(){
+  if(!fileA||!fileB)return;
+  hideErr();
+  document.getElementById('scanOverlay').classList.add('show');
+  stepIdx=0;cycleSteps();stepTimer=setInterval(cycleSteps,2000);
+
+  try{
+    const [b64A,b64B]=await Promise.all([fileToBase64(fileA),fileToBase64(fileB)]);
+    const res=await fetch('/api/compare',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({pdf_a:b64A,pdf_b:b64B,ton:currentTon})
+    });
+    const data=await res.json();
+
+    // cas d'erreur métier (types incompatibles, illisible, pas un contrat)
+    if(data && data.cas){
+      const params=new URLSearchParams({cas:data.cas});
+      if(data.type_a)params.set('a',data.type_a);
+      if(data.type_b)params.set('b',data.type_b);
+      window.location.href='comparateur-erreur.html?'+params.toString();
+      return;
+    }
+    if(!res.ok||!data.ok){ throw new Error(data.error||"La comparaison a échoué."); }
+
+    sessionStorage.setItem('mc_compare',JSON.stringify(data.comparison));
+    window.location.href='comparateur-resultat.html';
+
+  }catch(err){
+    clearInterval(stepTimer);
+    document.getElementById('scanOverlay').classList.remove('show');
+    showErr(err.message||"Une erreur est survenue. Réessayez.");
+  }
+}
+</script>
+</body>
+</html>

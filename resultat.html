@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Résultat d'analyse — MonContrat.app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;--bg-2:#FBFBFD;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+  --risk:#FF3B3B;--warn:#FF9F1C;--ok:#13C29C;--info:#3D5BF5;
+  --line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);
+  --card-shadow:0 18px 50px rgba(20,30,70,.08);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:#fff}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+a{text-decoration:none;color:inherit}button{font-family:inherit}
+.wrap{width:min(1080px,calc(100% - 48px));margin:0 auto}
+::selection{background:var(--hl);color:var(--ink)}
+.mono-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+
+/* NAV */
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
+.logo-glyph{width:32px;height:32px;flex:none}
+.nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.85);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--line)}
+.nav-inner{height:68px;display:flex;align-items:center;justify-content:space-between;width:min(1080px,calc(100% - 48px));margin:0 auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:11px;padding:11px 18px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 26px rgba(255,45,85,.25)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,45,85,.33)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3)}
+
+/* ===== OVERLAY SCAN (intro) ===== */
+.scan{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;transition:opacity .6s ease}
+.scan.done{opacity:0;pointer-events:none}
+.scan-doc{width:200px;height:250px;background:#fff;border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden;box-shadow:var(--card-shadow);padding:22px}
+.scan-doc .l{height:7px;border-radius:4px;background:#EEF0F4;margin-bottom:11px}
+.scan-doc .l.s{width:60%}.scan-doc .l.hl{background:var(--hl)}
+.scan-line{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 22px 5px rgba(255,45,85,.45);top:0;animation:scanmove 1.6s ease-in-out infinite}
+@keyframes scanmove{0%{top:0}50%{top:calc(100% - 3px)}100%{top:0}}
+.scan-txt{font-family:var(--mono);font-size:13px;color:var(--mute);letter-spacing:.06em}
+.scan-txt b{color:var(--accent)}
+
+/* ===== HEADER RÉSULTAT ===== */
+.head{padding:48px 0 36px}
+.head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+.contract-id h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.1}
+.contract-id .meta{font-family:var(--mono);font-size:12.5px;color:var(--mute);margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.contract-id .meta span{display:inline-flex;align-items:center}
+.contract-id .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--soft);margin:0 4px}
+.tone-badge{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;border:1px solid var(--line-2);border-radius:999px;padding:8px 13px;color:var(--mute)}
+
+/* SCORE PANEL */
+.score-panel{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;background:linear-gradient(135deg,#fff,#FFF6F8);border:1px solid var(--line);border-radius:24px;padding:38px;box-shadow:var(--card-shadow)}
+.ring{width:150px;height:150px;position:relative;flex:none}
+.ring svg{transform:rotate(-90deg)}
+.ring .bg{stroke:#F0E3E7}.ring .fg{stroke:url(#sg);stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num b{font-family:var(--disp);font-weight:800;font-size:46px;letter-spacing:-.04em;line-height:1}
+.ring-num small{font-family:var(--mono);font-size:9.5px;color:var(--soft);letter-spacing:.14em;margin-top:3px}
+.score-verdict h2{font-family:var(--disp);font-weight:800;font-size:26px;letter-spacing:-.025em;margin-bottom:10px}
+.score-verdict p{color:var(--mute);font-size:15.5px;line-height:1.6;font-weight:500;max-width:460px}
+.score-stats{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.stat{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:11px 15px;font-size:13px;font-weight:600}
+.stat i{width:9px;height:9px;border-radius:50%;flex:none}
+.stat .n{font-family:var(--disp);font-weight:800;font-size:17px;margin-right:1px}
+.stat.r i{background:var(--risk)}.stat.w i{background:var(--warn)}.stat.g i{background:var(--ok)}
+
+/* ===== SECTIONS ===== */
+.section{padding:18px 0}
+.sec-head{display:flex;align-items:center;gap:12px;margin:34px 0 18px}
+.sec-head .idx{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.sec-head h3{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em}
+.sec-head .line{flex:1;height:1px;background:var(--line)}
+
+/* ALERTE majeure */
+.alert-major{background:linear-gradient(135deg,#FFF1F1,#FFE9EC);border:1px solid rgba(255,59,59,.25);border-left:4px solid var(--risk);border-radius:0 16px 16px 0;padding:24px 26px;display:flex;gap:18px;align-items:flex-start}
+.alert-major .ic{width:42px;height:42px;border-radius:11px;background:var(--risk);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;font-size:22px;font-weight:800}
+.alert-major h4{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:-.01em;margin-bottom:7px}
+.alert-major p{color:#5a3033;font-size:14.5px;line-height:1.6;font-weight:500}
+.alert-major .reco{margin-top:12px;background:rgba(255,255,255,.7);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.55}
+.alert-major .reco b{color:var(--risk)}
+
+/* GARANTIES */
+.guarantees{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g-item{display:flex;align-items:center;gap:13px;border:1px solid var(--line);border-radius:13px;padding:15px 17px;background:#fff;transition:border-color .2s}
+.g-item:hover{border-color:var(--line-2)}
+.g-ic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;font-size:14px;font-weight:800;color:#fff}
+.g-item.ok .g-ic{background:var(--ok)}.g-item.absent .g-ic{background:var(--risk)}.g-item.check .g-ic{background:var(--warn)}
+.g-body{flex:1;min-width:0}
+.g-body b{font-size:14.5px;font-weight:700;display:block}
+.g-body small{font-family:var(--mono);font-size:11px;color:var(--soft)}
+.g-item.absent .g-body small{color:var(--risk)}
+.g-item.check .g-body small{color:var(--warn)}
+
+/* POINTS (risques / vérifs / atouts) */
+.points{display:grid;gap:12px}
+.point{border:1px solid var(--line);border-radius:15px;padding:20px 22px;background:#fff;display:flex;gap:16px;align-items:flex-start}
+.point .pic{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-size:19px}
+.point.risk{border-left:3px solid var(--risk)}.point.risk .pic{background:rgba(255,59,59,.1)}
+.point.warn{border-left:3px solid var(--warn)}.point.warn .pic{background:rgba(255,159,28,.12)}
+.point.good{border-left:3px solid var(--ok)}.point.good .pic{background:rgba(19,194,156,.12)}
+.point.info{border-left:3px solid var(--info)}.point.info .pic{background:rgba(61,91,245,.1)}
+.point h4{font-family:var(--disp);font-weight:800;font-size:16.5px;letter-spacing:-.01em;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.point .lvl{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.point.risk .lvl{background:rgba(255,59,59,.12);color:var(--risk)}
+.point.warn .lvl{background:rgba(255,159,28,.16);color:#C77800}
+.point.good .lvl{background:rgba(19,194,156,.14);color:#0A8E72}
+.point p{color:var(--mute);font-size:14.5px;line-height:1.6;font-weight:500}
+.point p .why{color:var(--ink);font-weight:600}
+
+/* INFO callout (service / déclarations) */
+.callout{border:1px solid var(--line);border-radius:16px;padding:24px 26px;background:var(--bg-2)}
+.callout.service{background:linear-gradient(135deg,#F4F7FF,#EFF3FF);border-color:rgba(61,91,245,.18)}
+.callout h4{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.01em;margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.callout p{color:var(--mute);font-size:14.5px;line-height:1.65;font-weight:500}
+.decl-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.decl-list span{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--mute)}
+
+/* FRANCHISE bar */
+.franchise{display:flex;align-items:center;gap:24px;border:1px solid var(--line);border-radius:16px;padding:24px 26px;background:#fff;flex-wrap:wrap}
+.franchise .amt{font-family:var(--disp);font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1}
+.franchise .amt small{font-size:16px;color:var(--mute)}
+.fr-gauge{flex:1;min-width:200px}
+.fr-track{height:9px;border-radius:6px;background:linear-gradient(90deg,var(--ok),var(--warn) 55%,var(--risk));position:relative;margin:12px 0 8px}
+.fr-cursor{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--ink);transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.fr-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--soft)}
+.fr-note{font-size:13.5px;color:var(--mute);line-height:1.55;font-weight:500;flex-basis:100%;margin-top:4px}
+.fr-note b{color:var(--ink)}
+
+/* CTA */
+.cta-final{margin:46px 0 30px;background:linear-gradient(160deg,#FF3D63,#E0234A);border-radius:24px;padding:44px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.cta-final:before{content:"";position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 60%)}
+.cta-final h3{font-family:var(--disp);font-weight:800;font-size:clamp(30px,4.4vw,44px);letter-spacing:-.035em;line-height:1.05;margin-bottom:24px;position:relative}
+.cta-eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.8);position:relative;display:block;margin-bottom:16px}
+.cta-final p{color:rgba(255,255,255,.9);font-size:15px;line-height:1.6;max-width:520px;margin:34px auto 0;position:relative;font-weight:500}
+.cta-steps{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px auto 0;max-width:720px;position:relative}
+.cta-step{flex:1;min-width:190px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;text-align:left}
+.cs-ic{width:26px;height:26px;border-radius:50%;background:#fff;color:#E0234A;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none}
+.cta-step b{font-family:var(--disp);font-size:15px;letter-spacing:-.01em;display:block;color:#fff;margin-bottom:3px}
+.cta-step small{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.4;display:block}
+.cta-go{background:#fff;color:#E0234A;font-size:17px;font-weight:800;padding:18px 34px;border-radius:14px;position:relative;box-shadow:0 14px 34px rgba(120,0,25,.34)}
+.cta-go:hover{transform:translateY(-3px);box-shadow:0 20px 44px rgba(120,0,25,.42)}
+.cta-go:disabled{opacity:.5;cursor:not-allowed;box-shadow:none;transform:none}
+.consent{display:flex;gap:12px;align-items:flex-start;text-align:left;max-width:540px;margin:0 auto 22px;position:relative;cursor:pointer;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:16px 18px;transition:border-color .2s,background .2s}
+.consent:hover{background:rgba(255,255,255,.15)}
+.consent.checked{border-color:#fff;background:rgba(255,255,255,.18)}
+.consent input{position:absolute;opacity:0;width:0;height:0}
+.consent-box{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,255,255,.6);flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.18s}
+.consent.checked .consent-box{background:#fff;border-color:#fff}
+.consent.checked .consent-box:after{content:"✓";color:#E0234A;font-size:14px;font-weight:800}
+.consent input:focus-visible + .consent-box{outline:2px solid #fff;outline-offset:2px}
+.consent-txt{font-size:13px;line-height:1.5;color:rgba(255,255,255,.92);font-weight:500}
+.consent-txt a{color:#fff;text-decoration:underline}
+.lead-fields{display:flex;flex-direction:column;gap:10px;max-width:540px;margin:0 auto 18px}
+.lead-fields input{width:100%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:14px 16px;font-family:inherit;font-size:15px;transition:.2s}
+.lead-fields input::placeholder{color:rgba(255,255,255,.6)}
+.lead-fields input:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.2)}
+/* Relevé d'information (auto) */
+.ri-block{max-width:540px;margin:0 auto 18px;background:rgba(255,255,255,.1);border:1px dashed rgba(255,255,255,.4);border-radius:14px;padding:18px;text-align:left}
+.ri-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.ri-tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.22);color:#fff;padding:4px 9px;border-radius:999px}
+.ri-head b{font-family:var(--disp);font-weight:800;font-size:16px;color:#fff}
+.ri-txt{font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.88);font-weight:500;margin-bottom:14px}
+.ri-txt b{color:#fff}
+.ri-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:700;font-size:13.5px;padding:11px 16px;border-radius:11px;cursor:pointer;transition:.2s}
+.ri-btn:hover{background:rgba(255,255,255,.26)}
+.ri-loaded{display:none;align-items:center;gap:10px;margin-top:12px;background:rgba(255,255,255,.16);border-radius:10px;padding:10px 14px}
+.ri-loaded.show{display:flex}
+.ri-fic{font-size:18px}
+.ri-fname{flex:1;font-size:13px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri-remove{background:none;border:none;color:rgba(255,255,255,.8);font-size:18px;cursor:pointer;padding:2px 6px}
+.ri-remove:hover{color:#fff}
+.lead-status{max-width:540px;margin:14px auto 0;font-size:14px;font-weight:600;min-height:20px}
+.lead-status.ok{color:#fff}
+.lead-status.err{color:#FFD9D9}
+.cta-sub{display:block;margin-top:14px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.78);position:relative}
+
+/* disclaimer */
+.disclaimer{font-family:var(--mono);font-size:11.5px;color:var(--soft);line-height:1.7;text-align:center;max-width:680px;margin:0 auto;padding:30px 0 60px}
+
+footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--soft)}
+
+.reveal{opacity:0;transform:translateY(20px);animation:rise .7s ease forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+
+@media(max-width:780px){
+  .score-panel{grid-template-columns:1fr;justify-items:center;text-align:center;gap:24px;padding:30px}
+  .score-verdict p{margin:0 auto}.score-stats{justify-content:center}
+  .guarantees{grid-template-columns:1fr}
+  .cta-final{padding:32px 22px}
+}
+@media(max-width:560px){
+  .wrap{width:calc(100% - 32px)}.nav-inner{width:calc(100% - 32px)}
+  .head-top{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.scan{display:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+  <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+</defs></svg>
+
+<!-- ===== OVERLAY SCAN ===== -->
+<div class="scan" id="scan">
+  <div class="scan-doc">
+    <div class="scan-line"></div>
+    <div class="l"></div><div class="l s"></div>
+    <div class="l hl"></div><div class="l"></div><div class="l s"></div>
+    <div class="l hl"></div><div class="l"></div><div class="l s"></div>
+    <div class="l"></div>
+  </div>
+  <div class="scan-txt" id="scanTxt">Lecture du contrat<b>...</b></div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#">
+      <svg class="logo-glyph" viewBox="0 0 34 34"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <button class="btn btn-ghost" onclick="location.href='analyser.html'">Analyser un autre contrat</button>
+  </div>
+</nav>
+
+<main class="wrap" id="result" style="visibility:hidden">
+
+  <!-- HEADER -->
+  <header class="head">
+    <div class="head-top">
+      <div class="contract-id">
+        <span class="mono-label">Résultat d'analyse</span>
+        <h1 id="cTitle"></h1>
+        <div class="meta" id="cMeta"></div>
+      </div>
+      <span class="tone-badge" id="cTone"></span>
+    </div>
+
+    <!-- SCORE -->
+    <div class="score-panel">
+      <div class="ring">
+        <svg width="150" height="150" viewBox="0 0 150 150">
+          <circle class="bg" cx="75" cy="75" r="64" fill="none" stroke-width="11"/>
+          <circle class="fg" id="ring" cx="75" cy="75" r="64" fill="none" stroke-width="11" stroke-dasharray="402" stroke-dashoffset="402"/>
+        </svg>
+        <div class="ring-num"><b id="scoreNum">0</b><small>SCORE / 100</small></div>
+      </div>
+      <div class="score-verdict">
+        <h2 id="verdictTitle"></h2>
+        <p id="verdictText"></p>
+        <div class="score-stats" id="stats"></div>
+      </div>
+    </div>
+  </header>
+
+  <div id="sections"></div>
+
+  <!-- CTA -->
+  <section class="cta-final">
+    <span class="cta-eyebrow">Le même niveau de garantie, moins cher</span>
+    <h3>Vous pouvez payer moins cher.<br>En un seul clic.</h3>
+    <p style="margin-bottom:22px">Laissez vos coordonnées : on transmet votre dossier aux assureurs partenaires les plus adaptés — et c'est eux qui reviennent vers vous avec une offre.</p>
+    <div class="lead-fields">
+      <input type="text" id="leadName" placeholder="Votre nom complet" autocomplete="name">
+      <input type="email" id="leadEmail" placeholder="Votre email" autocomplete="email">
+      <input type="tel" id="leadPhone" placeholder="Votre téléphone" autocomplete="tel">
+    </div>
+
+    <!-- Relevé d'information : affiché uniquement pour les contrats AUTO -->
+    <div class="ri-block" id="riBlock" style="display:none">
+      <div class="ri-head">
+        <span class="ri-tag">Recommandé pour l'auto</span>
+        <b>Ajoutez votre relevé d'information</b>
+      </div>
+      <p class="ri-txt">Ce document (à demander à votre assureur actuel) indique votre bonus-malus et votre historique. Le joindre permet aux partenaires de vous faire une offre <b>précise, sans mauvaise surprise</b>. Vous pouvez l'envoyer plus tard, mais c'est plus rapide maintenant.</p>
+      <input type="file" id="riInput" accept="application/pdf" style="display:none" onchange="onRiFile(this.files[0])">
+      <button type="button" class="ri-btn" id="riBtn" onclick="document.getElementById('riInput').click()">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+        Joindre mon relevé (PDF)
+      </button>
+      <div class="ri-loaded" id="riLoaded">
+        <span class="ri-fic">📄</span>
+        <span class="ri-fname" id="riName">relevé.pdf</span>
+        <button type="button" class="ri-remove" onclick="clearRi()" aria-label="Retirer">×</button>
+      </div>
+    </div>
+
+    <label class="consent" id="consentLabel">
+      <input type="checkbox" id="consent" onchange="toggleConsent()">
+      <span class="consent-box" aria-hidden="true"></span>
+      <span class="consent-txt">J'accepte que mon contrat et mes coordonnées soient transmis uniquement aux assureurs partenaires de MonContrat.app afin de recevoir des offres. <a href="politique-confidentialite.html" target="_blank">En savoir plus</a></span>
+    </label>
+    <button class="btn cta-go" id="ctaGo" disabled onclick="sendDossier()">Trouvez-moi moins cher — Gratuit</button>
+    <span class="cta-sub">Gratuit · sans engagement · aucune carte bancaire</span>
+    <div class="lead-status" id="leadStatus"></div>
+    <div class="cta-steps">
+      <div class="cta-step"><span class="cs-ic">✓</span><div><b>Votre dossier est prêt</b><small>contrat déjà analysé</small></div></div>
+      <div class="cta-step"><span class="cs-ic">✓</span><div><b>Vous n'avez rien à fournir d'autre</b><small>aucun devis à remplir</small></div></div>
+      <div class="cta-step"><span class="cs-ic">✓</span><div><b>L'assureur revient vers vous</b><small>une offre sous 48h, directement</small></div></div>
+    </div>
+  </section>
+
+  <p class="disclaimer" id="disclaimer"></p>
+</main>
+
+<footer><div class="wrap"><div class="foot">
+  <span>© 2026 moncontrat.app</span>
+  <span>Analyse informative — ne constitue pas un conseil personnalisé</span>
+</div></div></footer>
+
+<script>
+/* =========================================================
+   DONNÉES D'EXEMPLE — c'est le format JSON que l'IA produira.
+   (Ici un contrat habitation MAISON fictif, ton "Simplifié")
+   ========================================================= */
+const ANALYSIS = {
+  contrat:{
+    titre:"Assurance habitation — Maison",
+    assureur_type:"Compagnie en ligne",      // sert au bloc service (pas de marque)
+    formule:"Multirisque habitation",
+    type_bien:"Maison",                       // Maison | Appartement | Studio
+    pieces:"5 pièces",
+    statut:"Propriétaire occupant",
+    reference:"N° 884-201-B",
+    pages:34
+  },
+  ton:"Simplifié",
+  score:62,
+  verdict_titre:"Une base correcte, mais des trous à combler",
+  verdict_texte:"Votre contrat couvre l'essentiel, mais plusieurs garanties importantes pour une maison sont absentes ou à vérifier. Rien de dramatique — surtout des points faciles à corriger avant le prochain sinistre.",
+
+  garanties:[
+    {nom:"Vol et vandalisme", etat:"ok", detail:"Garantie présente"},
+    {nom:"Incendie / explosion", etat:"ok", detail:"Garantie présente"},
+    {nom:"Dégât des eaux", etat:"ok", detail:"Garantie présente"},
+    {nom:"Catastrophes naturelles", etat:"ok", detail:"Garantie présente"},
+    {nom:"Responsabilité civile", etat:"ok", detail:"Garantie présente"},
+    {nom:"Événements climatiques / tempête", etat:"ok", detail:"Garantie présente"},
+    {nom:"Extérieur / jardin", etat:"absent", detail:"Non souscrite"},
+    {nom:"Canalisations enterrées / perte d'eau", etat:"absent", detail:"Non souscrite"},
+    {nom:"Objets de valeur", etat:"absent", detail:"Non souscrite"},
+    {nom:"Bris de glace", etat:"check", detail:"À vérifier"}
+  ],
+
+  // Alerte majeure éventuelle (usage). null si rien à signaler.
+  alerte_usage:null,
+
+  // Points d'analyse (risques / vérifs / atouts)
+  points:[
+    {type:"risk", niveau:"Risque", titre:"Pas de garantie extérieur / jardin",
+     texte:"Sur une maison, la clôture, le portail et le mobilier de jardin ne sont pas couverts sans cette garantie. <span class='why'>Concrètement : un portail arraché par la tempête ou du mobilier de jardin volé resterait à votre charge.</span>"},
+    {type:"risk", niveau:"Risque", titre:"Canalisations enterrées non couvertes",
+     texte:"Sur une maison, le compteur et les canalisations sont souvent à l'extérieur. <span class='why'>Sans cette garantie, une fuite enterrée et la surconsommation d'eau qui en découle ne sont pas prises en charge.</span> À souscrire quasi systématiquement, sauf si déjà couvert par votre fournisseur d'eau."},
+    {type:"warn", niveau:"À vérifier", titre:"Aucune garantie objets de valeur",
+     texte:"Cette garantie joue souvent <span class='why'>dès le premier euro</span> : sans elle, même un bijou de faible valeur n'est pas indemnisé en cas de vol, incendie ou dégât des eaux. Pensez aussi à conserver factures ou expertises : les bijoux et objets d'art ne sont indemnisés que sur justificatif."},
+    {type:"good", niveau:"Atout", titre:"Le socle essentiel est bien là",
+     texte:"Vol, incendie, dégât des eaux, catastrophes naturelles et responsabilité civile sont présents. C'est la base d'une bonne protection, et elle est solide."}
+  ],
+
+  franchise:{ montant:300, min:150, max:200,
+    note:"Votre franchise de <b>300 €</b> dépasse la fourchette habituelle (150–200 €). Ce n'est pas anormal, mais cela augmente votre reste à charge à chaque sinistre. À mettre en balance avec le montant de votre cotisation." },
+
+  service:{
+    texte:"Votre contrat semble être géré sans agence physique ni interlocuteur dédié. Ce n'est pas un défaut de couverture en soi. Mais le jour où vous aurez un sinistre, pouvoir joindre une vraie personne qui connaît votre dossier change tout : la prise en charge est plus rapide et plus simple. Sur une plateforme sans interlocuteur fixe, les délais sont souvent plus longs et vous repartez de zéro à chaque appel."
+  },
+
+  declarations:["Adresse","Nombre de pièces","Cheminée / insert","Véranda","Panneaux photovoltaïques","Piscine","Dépendances / garage"],
+
+  disclaimer:"Cette analyse est fournie à titre informatif, à partir des éléments présents dans le document transmis. Elle ne constitue pas un conseil en assurance personnalisé. Vérifiez toujours vos déclarations et conditions auprès de votre assureur."
+};
+
+/* =========================================================
+   RENDU
+   ========================================================= */
+// Données réelles si elles existent (venant de la page analyser),
+// sinon on garde l'exemple ci-dessus (utile pour tester la page seule).
+let A = ANALYSIS;
+try {
+  const real = sessionStorage.getItem('mc_analysis');
+  if (real) { A = JSON.parse(real); }
+} catch(e) { /* on garde l'exemple */ }
+
+const $=id=>document.getElementById(id);
+const icons={ok:"✓",absent:"✕",check:"?"};
+
+function render(){
+  const c=A.contrat||{};
+  // header
+  $("cTitle").textContent=c.titre||"Analyse de votre contrat";
+  $("cMeta").innerHTML=[c.formule,(c.type_bien||'')+(c.pieces?(" · "+c.pieces):''),c.statut,c.reference]
+    .filter(x=>x&&x.trim&&x.trim()).map(x=>`<span>${x}</span>`).join('<span class="dot"></span>');
+  $("cTone").textContent="Ton : "+(A.ton||"Classique");
+  $("verdictTitle").textContent=A.verdict_titre||"";
+  $("verdictText").textContent=A.verdict_texte||"";
+
+  // stats
+  const pts=A.points||[];
+  const nR=pts.filter(p=>p.type==='risk').length;
+  const nW=pts.filter(p=>p.type==='warn').length;
+  const nG=pts.filter(p=>p.type==='good').length;
+  $("stats").innerHTML=`
+    <div class="stat r"><i></i><span class="n">${nR}</span> risque${nR>1?'s':''}</div>
+    <div class="stat w"><i></i><span class="n">${nW}</span> à vérifier</div>
+    <div class="stat g"><i></i><span class="n">${nG}</span> atout${nG>1?'s':''}</div>`;
+
+  // sections
+  let html='';
+  // alerte usage si présente
+  if(A.alerte_usage){
+    html+=`<section class="section reveal"><div class="alert-major">
+      <div class="ic">!</div><div>
+        <h4>${A.alerte_usage.titre}</h4><p>${A.alerte_usage.texte}</p>
+      <div class="reco"><b>Recommandation —</b> ${A.alerte_usage.reco}</div></div></div></section>`;
+  }
+  // garanties
+  if((A.garanties||[]).length){
+    html+=`<section class="section reveal"><div class="sec-head"><span class="idx">01</span><h3>Garanties</h3><div class="line"></div></div>
+      <div class="guarantees">${A.garanties.map(g=>`
+        <div class="g-item ${g.etat}"><div class="g-ic">${icons[g.etat]||'?'}</div>
+        <div class="g-body"><b>${g.nom}</b><small>${g.detail||''}</small></div></div>`).join('')}</div></section>`;
+  }
+  // points
+  if(pts.length){
+    html+=`<section class="section reveal"><div class="sec-head"><span class="idx">02</span><h3>Ce qu'on a repéré</h3><div class="line"></div></div>
+      <div class="points">${pts.map(p=>{
+        const ic={risk:"⚠️",warn:"🔍",good:"✓",info:"ℹ️"}[p.type]||"ℹ️";
+        return `<div class="point ${p.type}"><div class="pic">${ic}</div><div>
+        <h4>${p.titre}<span class="lvl">${p.niveau||''}</span></h4><p>${p.texte}</p></div></div>`;}).join('')}</div></section>`;
+  }
+  // franchise
+  if(A.franchise && typeof A.franchise.montant==='number'){
+    const pct=Math.min(100,Math.max(0,(A.franchise.montant/400)*100));
+    html+=`<section class="section reveal"><div class="sec-head"><span class="idx">03</span><h3>Franchise</h3><div class="line"></div></div>
+      <div class="franchise"><div class="amt">${A.franchise.montant}€<small></small></div>
+      <div class="fr-gauge"><div class="fr-track"><div class="fr-cursor" style="left:${pct}%"></div></div>
+      <div class="fr-scale"><span>0€</span><span>fourchette 150–200€</span><span>400€+</span></div></div>
+      <div class="fr-note">${A.franchise.note||''}</div></div></section>`;
+  }
+  // service
+  if(A.service && A.service.texte){
+    html+=`<section class="section reveal"><div class="sec-head"><span class="idx">04</span><h3>Service &amp; gestion</h3><div class="line"></div></div>
+      <div class="callout service"><h4>👤 Un interlocuteur humain, ça compte</h4><p>${A.service.texte}</p></div></section>`;
+  }
+  // déclarations
+  if(A.declarations && A.declarations.length){
+    html+=`<section class="section reveal"><div class="sec-head"><span class="idx">05</span><h3>À vérifier vous-même</h3><div class="line"></div></div>
+      <div class="callout"><h4>📋 Vos déclarations</h4><p>On ne peut pas vérifier ces points sans échanger avec vous : assurez-vous qu'ils correspondent à la réalité. Une déclaration inexacte peut réduire votre indemnisation.</p>
+      <div class="decl-list">${A.declarations.map(d=>`<span>${d}</span>`).join('')}</div></div></section>`;
+  }
+
+  $("sections").innerHTML=html;
+  $("disclaimer").textContent=A.disclaimer||"Cette analyse est fournie à titre informatif, à partir des éléments présents dans le document transmis. Elle ne constitue pas un conseil en assurance personnalisé.";
+
+  // animation score
+  const score=typeof A.score==='number'?A.score:0;
+  setTimeout(()=>{
+    const off=402-(402*score/100);
+    $("ring").style.strokeDashoffset=off;
+    let n=0;const t=setInterval(()=>{n+=2;if(n>=score){n=score;clearInterval(t);}$("scoreNum").textContent=n;},22);
+  },300);
+}
+
+/* pré-remplir l'email si l'utilisateur avait coché l'option sur la page analyser */
+try{
+  if(sessionStorage.getItem('mc_lead_optin')==='1'){
+    setTimeout(()=>{const c=document.getElementById('consent');if(c){c.checked=true;toggleConsent();}},300);
+  }
+}catch(e){}
+
+/* afficher le relevé d'information uniquement pour les contrats auto */
+if(A.type_analyse==='auto'){
+  const ri=document.getElementById('riBlock');
+  if(ri)ri.style.display='block';
+}
+
+/* gestion du relevé d'information (auto) */
+let riFile=null;
+function onRiFile(file){
+  if(!file)return;
+  if(file.type!=='application/pdf'){alert("Merci de joindre un PDF.");return;}
+  if(file.size>10*1024*1024){alert("Le fichier dépasse 10 Mo.");return;}
+  riFile=file;
+  document.getElementById('riName').textContent=file.name;
+  document.getElementById('riLoaded').classList.add('show');
+  document.getElementById('riBtn').style.display='none';
+}
+function clearRi(){
+  riFile=null;
+  document.getElementById('riInput').value='';
+  document.getElementById('riLoaded').classList.remove('show');
+  document.getElementById('riBtn').style.display='inline-flex';
+}
+
+/* consentement RGPD : le bouton ne s'active qu'une fois la case cochée */
+function toggleConsent(){
+  const ok=$("consent").checked;
+  $("ctaGo").disabled=!ok;
+  $("consentLabel").classList.toggle("checked",ok);
+}
+async function sendDossier(){
+  if(!$("consent").checked){return;}
+  const name=$("leadName").value.trim();
+  const email=$("leadEmail").value.trim();
+  const phone=$("leadPhone").value.trim();
+  const status=$("leadStatus");
+  status.className='lead-status';status.textContent='';
+
+  if(!email||!email.includes('@')){
+    status.className='lead-status err';status.textContent="Merci d'indiquer un email valide.";return;
+  }
+  const btn=$("ctaGo");btn.disabled=true;btn.textContent='Envoi en cours…';
+
+  try{
+    // joindre le relevé d'information s'il est présent (auto)
+    let ri_base64=null, ri_filename=null;
+    if(riFile){
+      ri_base64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej();r.readAsDataURL(riFile);});
+      ri_filename=riFile.name;
+    }
+
+    const res=await fetch('/api/lead',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({full_name:name,email,phone,consent_partner:true,contract_type:(A.type_analyse||null),ri_base64,ri_filename})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.ok)throw new Error(data.error||"Échec de l'envoi.");
+    status.className='lead-status ok';
+    status.textContent="✓ Merci ! Votre dossier est transmis. Un assureur partenaire reviendra vers vous rapidement.";
+    btn.textContent='Dossier transmis ✓';
+    document.querySelector('.lead-fields').style.display='none';
+    $("consentLabel").style.display='none';
+  }catch(err){
+    status.className='lead-status err';status.textContent=err.message||"Une erreur est survenue. Réessayez.";
+    btn.disabled=false;btn.textContent='Trouvez-moi moins cher — Gratuit';
+  }
+}
+
+/* intro scan puis affichage */
+const steps=["Lecture du contrat","Repérage des garanties","Analyse des franchises","Vérification de l'usage","Génération du diagnostic"];
+let si=0;
+const txt=$("scanTxt");
+const cycle=setInterval(()=>{si++;if(si<steps.length)txt.innerHTML=steps[si]+'<b>...</b>';},620);
+setTimeout(()=>{
+  clearInterval(cycle);
+  $("scan").classList.add("done");
+  $("result").style.visibility="visible";
+  render();
+},3200);
+
+/* si reduced motion : pas de scan */
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+  clearInterval(cycle);$("scan").style.display="none";$("result").style.visibility="visible";render();
+}
+</script>
+</body>
+</html>

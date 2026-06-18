@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Générateur de courriers — MonContrat.app</title>
+<meta name="description" content="Générez en quelques secondes vos courriers d'assurance : résiliation, réclamation, déclaration de sinistre. Prêts à envoyer." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;--bg-2:#FBFBFD;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+  --ok:#13C29C;--line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);
+  --card-shadow:0 18px 50px rgba(20,30,70,.08);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:#fff}
+body{font-family:var(--body);background:radial-gradient(900px 520px at 50% -10%,rgba(255,45,85,.08),transparent 70%),var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{text-decoration:none;color:inherit}button{font-family:inherit}
+::selection{background:var(--hl);color:var(--ink)}
+.wrap{width:min(1180px,calc(100% - 36px));margin:0 auto}
+.mark{background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat;background-size:100% .32em;background-position:0 88%;padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* NAV flottante */
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
+.logo-glyph{width:32px;height:32px;flex:none}
+.nav{position:fixed;top:18px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none;transition:transform .35s ease,opacity .35s ease}
+.nav-inner{pointer-events:auto;height:64px;display:flex;align-items:center;gap:26px;width:min(1180px,calc(100% - 36px));padding:0 14px 0 22px;border-radius:18px;background:rgba(28,18,24,.32);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border:1px solid rgba(255,255,255,.18);box-shadow:0 12px 40px rgba(20,10,20,.18),inset 0 1px 0 rgba(255,255,255,.22)}
+.nav .brand{color:#fff;margin-right:auto}
+.nav .brand .ext{color:#fff;opacity:.85}
+.nav-links{display:flex;gap:28px;font-size:14px;font-weight:600;color:rgba(255,255,255,.82)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
+.nav-cta{display:flex;gap:9px;align-items:center}
+.nav-burger{width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex:none}
+.nav-burger:hover{background:rgba(255,255,255,.16)}
+.nav-burger svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:12px;padding:13px 21px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.nav .btn{border-radius:11px;padding:12px 18px;font-size:13.5px;font-weight:700}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3)}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 28px rgba(255,45,85,.26)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,45,85,.34)}
+.btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.nav .btn-main{box-shadow:0 8px 22px rgba(255,45,85,.32)}
+.nav .btn-client{background:#fff;color:var(--ink)}
+.nav .btn-client:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+
+/* MENU BURGER */
+.menu-overlay{position:fixed;inset:0;z-index:80;background:rgba(11,14,26,.5);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.menu-overlay.show{opacity:1;pointer-events:auto}
+.menu-panel{position:absolute;top:0;right:0;height:100%;width:min(380px,86vw);background:#fff;box-shadow:-20px 0 60px rgba(20,30,70,.2);padding:28px;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.3,.9,.3,1);overflow-y:auto}
+.menu-overlay.show .menu-panel{transform:none}
+.menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.menu-title{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.menu-close{width:40px;height:40px;border-radius:11px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font-size:24px;cursor:pointer;line-height:1}
+.menu-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.menu-group{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:18px 0 8px}
+.menu-group:first-child{margin-top:0}
+.menu-links a{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);padding:9px 0;transition:color .2s,padding-left .2s}
+.menu-links a:hover{color:var(--accent);padding-left:6px}
+.menu-foot{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+
+/* HERO */
+.hero{padding:138px 0 22px;text-align:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 18px;margin-bottom:24px;box-shadow:0 6px 24px rgba(20,30,70,.06)}
+.hero-kicker i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(34px,5vw,58px);line-height:1.05;letter-spacing:-.04em}
+.hero-sub{margin:18px auto 0;font-size:clamp(15px,1.6vw,18px);line-height:1.55;color:var(--mute);max-width:560px;font-weight:500}
+
+/* SHELL */
+.shell{width:min(820px,calc(100% - 36px));margin:24px auto 60px}
+
+/* CARTE FORMULAIRE */
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--card-shadow);padding:30px}
+.card h2{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;margin-bottom:4px}
+.card .hint{font-size:13.5px;color:var(--mute);margin-bottom:22px;font-weight:500}
+
+/* sélecteur de type */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.type-opt{border:1px solid var(--line-2);border-radius:14px;padding:15px 16px;cursor:pointer;transition:.18s;display:flex;gap:12px;align-items:flex-start;background:#fff}
+.type-opt:hover{border-color:var(--accent);background:var(--hl-soft)}
+.type-opt.active{border-color:var(--accent);background:var(--hl-soft);box-shadow:0 0 0 3px rgba(255,45,85,.1)}
+.type-opt .e{font-size:22px;flex:none;line-height:1}
+.type-opt b{font-size:14px;font-weight:700;display:block;margin-bottom:2px}
+.type-opt span{font-size:12px;color:var(--mute);line-height:1.4}
+
+/* champs */
+.fields{display:flex;flex-direction:column;gap:14px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1 / -1}
+.field label{font-size:12.5px;font-weight:600;color:var(--ink)}
+.field label .opt{color:var(--soft);font-weight:500}
+.field input,.field textarea{border:1px solid var(--line-2);border-radius:11px;padding:12px 14px;font-family:inherit;font-size:14.5px;color:var(--ink);transition:border-color .2s;background:#fff;width:100%}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:90px;line-height:1.5}
+.select{border:1px solid var(--line-2);border-radius:11px;padding:12px 40px 12px 14px;font-family:inherit;font-size:14.5px;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235E6478' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;-webkit-appearance:none;appearance:none;cursor:pointer;width:100%;transition:border-color .2s}
+.select:focus{outline:none;border-color:var(--accent)}
+.motif-tip{margin-top:10px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);border-radius:11px;padding:11px 14px;font-size:12.5px;line-height:1.5;color:var(--ink);font-weight:500}
+
+.gen-btn{margin-top:24px;width:100%}
+.err-msg{display:none;margin-top:16px;padding:13px 16px;border-radius:11px;background:rgba(255,59,59,.08);color:#D33;border:1px solid rgba(255,59,59,.25);font-size:13.5px;font-weight:600}
+.err-msg.show{display:block}
+
+/* OVERLAY génération */
+.gen-loading{display:none;flex-direction:column;align-items:center;gap:18px;padding:40px 0 10px;text-align:center}
+.gen-loading.show{display:flex}
+.pen{width:54px;height:54px;border-radius:15px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.2);display:flex;align-items:center;justify-content:center;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.pen svg{width:26px;height:26px;stroke:var(--accent);stroke-width:2;fill:none}
+.gen-loading p{font-size:14.5px;color:var(--mute);font-weight:500}
+
+/* RÉSULTAT courrier */
+.result{display:none;margin-top:26px;animation:rise .5s ease}
+.result.show{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.result-head h2{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em}
+.result-actions{display:flex;gap:9px}
+.mini-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;border:1px solid var(--line-2);background:#fff;border-radius:10px;padding:9px 14px;cursor:pointer;transition:.18s;color:var(--ink)}
+.mini-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mini-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none}
+
+.letter{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--card-shadow);padding:38px 40px;font-size:14.5px;line-height:1.75;color:var(--ink);white-space:pre-wrap;font-family:var(--body)}
+.letter .obj{font-weight:700}
+
+.envoi{margin-top:16px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);border-radius:14px;padding:18px 20px}
+.envoi .mode{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px;margin-bottom:12px}
+.envoi .mode .ic{width:26px;height:26px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+.envoi ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.envoi li{font-size:13.5px;line-height:1.5;color:var(--mute);padding-left:24px;position:relative;font-weight:500}
+.envoi li:before{content:"✓";position:absolute;left:0;top:0;width:17px;height:17px;background:rgba(19,194,156,.14);color:var(--ok);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+
+.copied-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:12px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:100}
+.copied-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.disclaimer{text-align:center;font-size:11.5px;color:var(--soft);margin-top:22px;line-height:1.5;max-width:620px;margin:22px auto 0}
+
+/* ===== BLOC DEVIS PARTENAIRES ===== */
+.deal{position:relative;margin:34px auto 0;background:linear-gradient(135deg,#0B0E1A,#1A1130);border-radius:26px;padding:42px 40px;color:#fff;overflow:hidden;text-align:center}
+.deal-glow{position:absolute;top:-40%;right:-10%;width:380px;height:380px;background:radial-gradient(circle,rgba(255,45,85,.32),transparent 65%);pointer-events:none}
+.deal-eyebrow{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px}
+.deal h2{position:relative;font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.12;margin-bottom:12px}
+.mark-light{background:linear-gradient(0deg,var(--accent),var(--accent)) no-repeat;background-size:100% .3em;background-position:0 88%;padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.deal-sub{position:relative;font-size:15px;line-height:1.6;color:rgba(255,255,255,.85);max-width:480px;margin:0 auto 26px;font-weight:500}
+.deal-box{position:relative;max-width:540px;margin:0 auto;text-align:left}
+.deal-textarea{width:100%;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:14px;padding:15px 16px;font-family:inherit;font-size:15px;line-height:1.5;resize:vertical;min-height:84px;transition:border-color .2s}
+.deal-textarea::placeholder{color:rgba(255,255,255,.5)}
+.deal-textarea:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.12)}
+.deal-attach{margin-top:12px}
+.deal-attach-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-weight:600;font-size:13px;padding:10px 15px;border-radius:11px;cursor:pointer;transition:.2s}
+.deal-attach-btn:hover{background:rgba(255,255,255,.18)}
+.deal-attach-btn .opt{color:rgba(255,255,255,.55);font-weight:500}
+.deal-file{display:none;align-items:center;gap:9px;margin-top:10px;background:rgba(255,255,255,.12);border-radius:10px;padding:9px 13px}
+.deal-file.show{display:flex}
+.df-ic{font-size:15px}
+.df-name{flex:1;font-size:13px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.df-remove{background:none;border:none;color:rgba(255,255,255,.75);font-size:17px;cursor:pointer;padding:0 4px}
+.df-remove:hover{color:#fff}
+.deal-consent{display:flex;gap:11px;align-items:flex-start;margin-top:18px;cursor:pointer}
+.deal-consent input{position:absolute;opacity:0;width:0;height:0}
+.dc-box{width:20px;height:20px;border-radius:6px;border:2px solid rgba(255,255,255,.45);flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.18s}
+.deal-consent input:checked + .dc-box{background:var(--accent);border-color:var(--accent)}
+.deal-consent input:checked + .dc-box:after{content:"✓";color:#fff;font-size:12px;font-weight:800}
+.dc-txt{font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.85);font-weight:500}
+.dc-txt a{color:#fff;text-decoration:underline}
+.deal-send{width:100%;margin-top:20px;background:#fff;color:var(--accent);font-weight:800;font-size:15px}
+.deal-send:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.25)}
+.deal-send:disabled{opacity:.45;cursor:not-allowed}
+.deal-status{margin-top:14px;font-size:14px;font-weight:600;min-height:20px}
+.deal-status.ok{color:#fff}
+.deal-status.err{color:#FFD9D9}
+
+footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2);margin-top:30px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.foot-links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;color:var(--soft);flex-wrap:wrap}
+.foot-links a:hover{color:var(--ink)}
+.foot-note{font-family:var(--mono);font-size:11px;color:var(--soft);width:100%;margin-top:8px}
+
+@media(max-width:880px){.nav-links{display:none}}
+.nav.nav-hidden{transform:translateY(-140%);opacity:0}
+@media(max-width:560px){
+  .hero{padding:120px 0 14px}
+  .card{padding:22px}
+  .type-grid{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+  .letter{padding:24px 22px}
+  .foot{justify-content:center;text-align:center}.foot-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+</defs></svg>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="MonContrat.app">
+      <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+        <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+        <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+        <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+      </svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#tools">Outils</a>
+      <a href="blog.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="nav-burger" onclick="openMenu()" aria-label="Menu" aria-expanded="false" id="burgerBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="btn btn-client" href="espace-client.html">Espace client</a>
+      <a class="btn btn-main" href="analyser.html">Analyser mon contrat</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MENU BURGER -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
+  <aside class="menu-panel" role="dialog" aria-label="Menu de navigation">
+    <div class="menu-head"><span class="menu-title">Menu</span><button class="menu-close" onclick="closeMenu()" aria-label="Fermer">×</button></div>
+    <nav class="menu-links">
+      <span class="menu-group">Produit</span>
+      <a href="index.html#tools">Outils</a><a href="analyser.html">Analyser un contrat</a><a href="comparateur.html">Comparer deux contrats</a><a href="assistant-sinistre.html">Assistant sinistre</a><a href="documents.html">Résilier mon assurance</a>
+      <span class="menu-group">Ressources</span>
+      <a href="blog.html">Le Décodeur — Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a>
+      <span class="menu-group">Légal</span>
+      <a href="mentions-legales.html">Mentions légales</a><a href="cguv.html">CGU &amp; CGV</a><a href="politique-confidentialite.html">Confidentialité</a><a href="politique-cookies.html">Cookies</a>
+    </nav>
+    <div class="menu-foot"><a class="btn btn-client" style="width:100%" href="espace-client.html">Espace client</a><a class="btn btn-main" style="width:100%;margin-top:10px" href="analyser.html">Analyser mon contrat</a></div>
+  </aside>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-kicker"><i></i>Gratuit · prêt à envoyer</div>
+    <h1>Résiliez votre assurance,<br><span class="mark">sans prise de tête.</span></h1>
+    <p class="hero-sub">Choisissez votre motif, remplissez quelques champs, et obtenez une lettre de résiliation juste et prête à envoyer en quelques secondes.</p>
+  </div>
+</header>
+
+<!-- SHELL -->
+<div class="shell">
+  <div class="card">
+    <h2>Votre lettre de résiliation</h2>
+    <div class="hint">Choisissez votre motif et remplissez les informations. Tout ce que vous laissez vide restera [à compléter] dans la lettre.</div>
+
+    <div class="fields">
+      <div class="field full">
+        <label>Motif de la résiliation</label>
+        <select id="f_motif_select" class="select">
+          <option value="Résiliation à échéance">Résiliation à l'échéance annuelle</option>
+          <option value="Loi Hamon (propriétaire)">Loi Hamon — résiliation à tout moment (propriétaire)</option>
+          <option value="Loi Chatel (augmentation)">Loi Chatel — hausse de cotisation</option>
+          <option value="Déménagement (locataire)">Déménagement (locataire)</option>
+          <option value="Vente du bien ou du véhicule">Vente du bien ou du véhicule</option>
+        </select>
+        <div class="motif-tip" id="motifTip"></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label>Votre nom complet</label><input type="text" id="f_nom" placeholder="Jean Dupont"></div>
+        <div class="field"><label>Votre adresse</label><input type="text" id="f_adresse" placeholder="12 rue des Lilas, 06000 Nice"></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label>Nom de l'assureur</label><input type="text" id="f_assureur" placeholder="Nom de votre compagnie"></div>
+        <div class="field"><label>Adresse de l'assureur <span class="opt">(facultatif)</span></label><input type="text" id="f_adresse_assureur" placeholder="Service résiliation…"></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label>Numéro de contrat <span class="opt">(facultatif)</span></label><input type="text" id="f_num_contrat" placeholder="N° de police"></div>
+        <div class="field"><label>Type d'assurance</label><input type="text" id="f_type_assurance" placeholder="Habitation, auto…"></div>
+      </div>
+      <div class="field full">
+        <label id="dateLabel">Date d'échéance du contrat <span class="opt">(facultatif)</span></label>
+        <input type="text" id="f_date_cle" placeholder="Ex : 31 décembre 2026">
+      </div>
+      <div class="field full">
+        <label>Précisions complémentaires <span class="opt">(facultatif)</span></label>
+        <textarea id="f_details" placeholder="Toute précision utile : date de déménagement ou de vente, contexte, demande particulière…"></textarea>
+      </div>
+    </div>
+
+    <button class="btn btn-main gen-btn" id="genBtn" onclick="generate()">Générer ma lettre de résiliation</button>
+    <div class="err-msg" id="errMsg"></div>
+
+    <div class="gen-loading" id="genLoading">
+      <div class="pen"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
+      <p>Rédaction de votre lettre en cours…</p>
+    </div>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="result" id="result">
+    <div class="result-head">
+      <h2 id="docTitle">Votre courrier</h2>
+      <div class="result-actions">
+        <button class="mini-btn" onclick="copyLetter()"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copier</button>
+        <button class="mini-btn" onclick="downloadLetter()"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Télécharger</button>
+      </div>
+    </div>
+    <div class="letter" id="letterBody"></div>
+    <div class="envoi" id="envoiBox"></div>
+    <p class="disclaimer">Ce courrier est un modèle généré automatiquement à partir des informations que vous avez fournies. Relisez-le et complétez les éléments entre [crochets] avant l'envoi. Il ne constitue pas un conseil juridique personnalisé.</p>
+  </div>
+
+  <!-- BLOC DEVIS PARTENAIRES -->
+  <section class="deal">
+    <div class="deal-glow"></div>
+    <div class="deal-eyebrow">Votre prochain contrat</div>
+    <h2>Vous résiliez ? Vous pouvez payer <span class="mark-light">moins cher.</span></h2>
+    <p class="deal-sub">Pour votre prochain projet d'assurance, faites appel à nos assureurs partenaires. Décrivez votre projet en quelques mots, on s'occupe du reste.</p>
+
+    <div class="deal-box">
+      <textarea id="dealProject" class="deal-textarea" rows="3" placeholder="Ex : « Je vais prendre un Honda X-ADV, j'aimerais connaître le tarif » ou « J'aimerais un prix pour une maison de 5 pièces à Mougins »"></textarea>
+
+      <!-- pièce jointe optionnelle -->
+      <input type="file" id="dealFile" accept="application/pdf,image/*" style="display:none" onchange="onDealFile(this.files[0])">
+      <div class="deal-attach">
+        <button type="button" class="deal-attach-btn" id="dealAttachBtn" onclick="document.getElementById('dealFile').click()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          Joindre un document <span class="opt">(facultatif)</span>
+        </button>
+        <div class="deal-file" id="dealFileChip">
+          <span class="df-ic">📎</span><span class="df-name" id="dealFileName">document.pdf</span>
+          <button type="button" class="df-remove" onclick="clearDealFile()" aria-label="Retirer">×</button>
+        </div>
+      </div>
+
+      <label class="deal-consent">
+        <input type="checkbox" id="dealConsent" onchange="toggleDealConsent()">
+        <span class="dc-box" aria-hidden="true"></span>
+        <span class="dc-txt">J'accepte que ma demande et mes coordonnées soient transmises aux assureurs partenaires de MonContrat.app afin de recevoir une offre. <a href="politique-confidentialite.html" target="_blank">En savoir plus</a></span>
+      </label>
+
+      <button class="btn btn-main deal-send" id="dealSend" disabled onclick="sendDeal()">Recevoir une offre — Gratuit</button>
+      <div class="deal-status" id="dealStatus"></div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="index.html" aria-label="MonContrat.app" style="color:var(--ink)">
+        <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+        MonContrat<span class="ext" style="color:var(--accent)">.app</span>
+      </a>
+      <div class="foot-links">
+        <a href="blog.html">Blog</a>
+        <a href="faq.html">FAQ</a>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-confidentialite.html">Confidentialité</a>
+        <a href="cguv.html">CGUV</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="foot-note">© 2026 moncontrat.app — Modèles de courriers fournis à titre informatif.</div>
+    </div>
+  </div>
+</footer>
+
+<div class="copied-toast" id="toast">✓ Courrier copié</div>
+
+<script>
+/* menu burger */
+function openMenu(){document.getElementById('menuOverlay').classList.add('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','true');}
+function closeMenu(e){if(e&&e.type==='click'&&e.target.id!=='menuOverlay'&&!e.target.classList.contains('menu-close'))return;document.getElementById('menuOverlay').classList.remove('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','false');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+
+/* nav qui se cache au scroll — mobile uniquement */
+(function(){
+  const nav=document.getElementById('nav');
+  if(!nav)return;
+  let lastY=window.scrollY;
+  const isMobile=()=>window.matchMedia('(max-width:560px)').matches;
+  window.addEventListener('scroll',()=>{
+    if(!isMobile()){nav.classList.remove('nav-hidden');return;}
+    const y=window.scrollY;
+    if(y>lastY && y>120){ nav.classList.add('nav-hidden'); }
+    else { nav.classList.remove('nav-hidden'); }
+    lastY=y;
+  },{passive:true});
+})();
+
+/* adapter le label de la date selon le motif */
+const dateLabels = {
+  "Résiliation à échéance":"Date d'échéance annuelle du contrat",
+  "Loi Hamon (propriétaire)":"Date de souscription du contrat",
+  "Loi Chatel (augmentation)":"Date de réception de l'appel à cotisation",
+  "Déménagement (locataire)":"Date du déménagement",
+  "Vente du bien ou du véhicule":"Date de la vente / cession"
+};
+/* justificatif à rappeler selon le motif */
+const justifs = {
+  "Résiliation à échéance":"Pensez à envoyer votre lettre au moins 2 mois avant la date d'échéance.",
+  "Loi Hamon (propriétaire)":"La loi Hamon concerne uniquement les propriétaires de maison (contrat de plus d'un an). Pour les autres cas, elle n'est applicable que par l'assureur. La résiliation prend effet 1 mois après réception.",
+  "Loi Chatel (augmentation)":"À envoyer dans les 20 jours suivant la réception de l'appel à cotisation. Joignez en complément l'appel à cotisation et l'enveloppe : le cachet de la poste fait foi.",
+  "Déménagement (locataire)":"Joignez votre état des lieux de sortie comme justificatif du déménagement.",
+  "Vente du bien ou du véhicule":"Joignez le justificatif : acte notarié (bien immobilier) ou certificat de cession (véhicule). Et non, la carte grise barrée ne convient pas 😉"
+};
+function refreshMotif(){
+  const v=document.getElementById('f_motif_select').value;
+  document.getElementById('dateLabel').innerHTML = (dateLabels[v]||"Date clé") + ' <span class="opt">(recommandé)</span>';
+  const tip=document.getElementById('motifTip');
+  if(justifs[v]){ tip.textContent=justifs[v]; tip.style.display='block'; }
+  else { tip.style.display='none'; }
+}
+document.getElementById('f_motif_select').addEventListener('change', refreshMotif);
+refreshMotif();
+
+let currentDoc = null;
+function showErr(m){const e=document.getElementById('errMsg');e.textContent=m;e.classList.add('show');}
+function hideErr(){document.getElementById('errMsg').classList.remove('show');}
+
+async function generate(){
+  hideErr();
+  const motif = document.getElementById('f_motif_select').value;
+  const infos = {
+    motif: motif,
+    nom: document.getElementById('f_nom').value.trim(),
+    adresse: document.getElementById('f_adresse').value.trim(),
+    assureur: document.getElementById('f_assureur').value.trim(),
+    adresse_assureur: document.getElementById('f_adresse_assureur').value.trim(),
+    num_contrat: document.getElementById('f_num_contrat').value.trim(),
+    type_assurance: document.getElementById('f_type_assurance').value.trim(),
+    date_cle: document.getElementById('f_date_cle').value.trim(),
+    details: document.getElementById('f_details').value.trim()
+  };
+  // exigence minimale : nom + assureur pour une lettre crédible
+  if(!infos.nom || !infos.assureur){ showErr("Indiquez au moins votre nom et le nom de votre assureur."); return; }
+
+  document.getElementById('genBtn').disabled = true;
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('genLoading').classList.add('show');
+
+  try{
+    const res = await fetch('/api/document',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:motif, infos})
+    });
+    const data = await res.json();
+    document.getElementById('genLoading').classList.remove('show');
+
+    if(data.refus){ showErr(data.refus); document.getElementById('genBtn').disabled=false; return; }
+    if(!res.ok || !data.ok) throw new Error(data.error || "La génération a échoué.");
+
+    currentDoc = data.document;
+    renderDoc(currentDoc);
+  }catch(err){
+    document.getElementById('genLoading').classList.remove('show');
+    showErr(err.message || "Une erreur est survenue. Réessayez.");
+  }finally{
+    document.getElementById('genBtn').disabled = false;
+  }
+}
+
+function renderDoc(doc){
+  document.getElementById('docTitle').textContent = doc.titre || "Votre courrier";
+  document.getElementById('letterBody').textContent = doc.courrier || "";
+  // bloc envoi
+  let envoi = '';
+  if(doc.mode_envoi){
+    envoi += `<div class="mode"><span class="ic">📮</span> ${doc.mode_envoi}</div>`;
+  }
+  if(Array.isArray(doc.conseils) && doc.conseils.length){
+    envoi += `<ul>${doc.conseils.map(c=>`<li>${c.replace(/</g,'&lt;')}</li>`).join('')}</ul>`;
+  }
+  document.getElementById('envoiBox').innerHTML = envoi;
+  document.getElementById('envoiBox').style.display = envoi ? 'block' : 'none';
+  const r = document.getElementById('result');
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function copyLetter(){
+  if(!currentDoc)return;
+  navigator.clipboard.writeText(currentDoc.courrier).then(()=>{
+    const t=document.getElementById('toast'); t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),1800);
+  });
+}
+function downloadLetter(){
+  if(!currentDoc)return;
+  const blob=new Blob([currentDoc.courrier],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=(currentDoc.titre||'courrier').replace(/[^a-z0-9]+/gi,'_').toLowerCase()+'.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ===== BLOC DEVIS PARTENAIRES ===== */
+let dealFile=null;
+function onDealFile(file){
+  if(!file)return;
+  if(file.size>10*1024*1024){alert("Le fichier dépasse 10 Mo.");return;}
+  dealFile=file;
+  document.getElementById('dealFileName').textContent=file.name;
+  document.getElementById('dealFileChip').classList.add('show');
+  document.getElementById('dealAttachBtn').style.display='none';
+}
+function clearDealFile(){
+  dealFile=null;
+  document.getElementById('dealFile').value='';
+  document.getElementById('dealFileChip').classList.remove('show');
+  document.getElementById('dealAttachBtn').style.display='inline-flex';
+}
+function toggleDealConsent(){
+  document.getElementById('dealSend').disabled=!document.getElementById('dealConsent').checked;
+}
+async function sendDeal(){
+  if(!document.getElementById('dealConsent').checked)return;
+  const project=document.getElementById('dealProject').value.trim();
+  const status=document.getElementById('dealStatus');
+  status.className='deal-status';status.textContent='';
+  if(!project){ status.className='deal-status err'; status.textContent="Décrivez votre projet en quelques mots."; return; }
+
+  const btn=document.getElementById('dealSend'); btn.disabled=true; btn.textContent='Envoi en cours…';
+  try{
+    // pièce jointe -> base64 si présente
+    let file_base64=null, file_name=null;
+    if(dealFile){
+      file_base64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej();r.readAsDataURL(dealFile);});
+      file_name=dealFile.name;
+    }
+    const res=await fetch('/api/lead',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        consent_partner:true,
+        contract_type:'devis',
+        project_description:project,
+        ri_base64:file_base64,
+        ri_filename:file_name
+      })
+    });
+    const data=await res.json();
+    if(!res.ok||!data.ok) throw new Error(data.error||"L'envoi a échoué.");
+    status.className='deal-status ok';
+    status.textContent="✓ Votre demande est transmise. Un assureur partenaire reviendra vers vous rapidement.";
+    btn.textContent='Demande envoyée ✓';
+    document.getElementById('dealProject').style.display='none';
+    document.querySelector('.deal-attach').style.display='none';
+    document.querySelector('.deal-consent').style.display='none';
+  }catch(err){
+    status.className='deal-status err'; status.textContent=err.message||"Une erreur est survenue. Réessayez.";
+    btn.disabled=false; btn.textContent='Recevoir une offre — Gratuit';
+  }
+}
+</script>
+</body>
+</html>

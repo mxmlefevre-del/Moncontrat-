@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Politique de cookies — MonContrat.app</title>
+<meta name="description" content="Politique de cookies de MonContrat.app : fonctionnement, mesure d'audience, sécurité, consentement et gestion des préférences." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;
+  --bg-2:#FFFFFF;
+  --ink:#0B0E1A;
+  --mute:#5E6478;
+  --soft:#9AA0B4;
+  --accent:#FF2D55;
+  --accent-2:#FF5F82;
+  --hl:#FFBFCD;
+  --hl-soft:rgba(255,45,85,.07);
+  --line:rgba(11,14,26,.09);
+  --line-2:rgba(11,14,26,.14);
+  --card-shadow:0 24px 70px rgba(20,30,70,.10);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;
+  --body:Inter,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:#FFFFFF}
+body{
+  font-family:var(--body);
+  background:
+    radial-gradient(900px 520px at 50% -12%,rgba(255,45,85,.10),transparent 70%),
+    radial-gradient(700px 500px at 90% 25%,rgba(255,95,130,.06),transparent 70%),
+    var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit}
+.wrap{width:min(1120px,calc(100% - 48px));margin:0 auto;position:relative;z-index:2}
+::selection{background:var(--hl);color:var(--ink)}
+.mark{
+  background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat left 82%/100% 40%;
+  padding:0 .06em;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+.mono-label{
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--soft);
+}
+.mono-label b{color:var(--accent);font-weight:700}
+
+/* NAV — barre flottante translucide */
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent);margin-left:1px}
+.logo-glyph{width:34px;height:34px;flex:none;display:block}
+.nav{position:fixed;top:18px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none}
+.nav-inner{pointer-events:auto;height:64px;display:flex;align-items:center;gap:26px;width:min(1180px,calc(100% - 36px));padding:0 14px 0 22px;border-radius:18px;background:rgba(28,18,24,.32);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border:1px solid rgba(255,255,255,.18);box-shadow:0 12px 40px rgba(20,10,20,.18),inset 0 1px 0 rgba(255,255,255,.22)}
+.nav .brand{color:#fff;margin-right:auto}
+.nav .brand .ext{color:#fff;opacity:.85}
+.nav-links{display:flex;gap:28px;font-size:14px;font-weight:600;color:rgba(255,255,255,.82)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
+.nav-cta{display:flex;gap:9px;align-items:center}
+.nav-burger{width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex:none}
+.nav-burger:hover{background:rgba(255,255,255,.16)}
+.nav-burger svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:12px;padding:13px 21px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.nav .btn{border-radius:11px;padding:12px 18px;font-size:13.5px;font-weight:700}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3);transform:translateY(-1px)}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 28px rgba(255,45,85,.26)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,45,85,.34)}
+.nav .btn-main{box-shadow:0 8px 22px rgba(255,45,85,.32)}
+.nav .btn-client{background:#fff;color:var(--ink)}
+.nav .btn-client:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+
+/* MENU BURGER */
+.menu-overlay{position:fixed;inset:0;z-index:80;background:rgba(11,14,26,.5);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.menu-overlay.show{opacity:1;pointer-events:auto}
+.menu-panel{position:absolute;top:0;right:0;height:100%;width:min(380px,86vw);background:#fff;box-shadow:-20px 0 60px rgba(20,30,70,.2);padding:28px;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.3,.9,.3,1);overflow-y:auto}
+.menu-overlay.show .menu-panel{transform:none}
+.menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.menu-title{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.menu-close{width:40px;height:40px;border-radius:11px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font-size:24px;cursor:pointer;line-height:1}
+.menu-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.menu-group{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:18px 0 8px}
+.menu-group:first-child{margin-top:0}
+.menu-links a{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);padding:9px 0;transition:color .2s,padding-left .2s}
+.menu-links a:hover{color:var(--accent);padding-left:6px}
+.menu-foot{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+
+/* HERO */
+.hero{padding:150px 0 70px;text-align:center}
+.hero-kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--mute);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 18px;
+  margin-bottom:32px;
+  box-shadow:0 6px 24px rgba(20,30,70,.06)
+}
+.hero-kicker i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+h1{
+  font-family:var(--disp);
+  font-weight:800;
+  font-size:clamp(44px,7.5vw,104px);
+  line-height:1.05;
+  letter-spacing:-.045em;
+  max-width:980px;
+  margin:0 auto;
+}
+.hero-sub{
+  margin:28px auto 0;
+  font-size:clamp(17px,1.8vw,21px);
+  line-height:1.6;
+  color:var(--mute);
+  max-width:680px;
+  font-weight:500
+}
+
+/* CONTENT */
+.page{padding:0 0 120px}
+.legal-shell{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:28px;
+  align-items:start;
+}
+.side-card{
+  position:sticky;
+  top:98px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;
+  box-shadow:0 10px 36px rgba(20,30,70,.05);
+}
+.side-card h2{
+  font-family:var(--disp);
+  font-size:24px;
+  letter-spacing:-.03em;
+  margin-bottom:12px;
+}
+.side-card p{
+  color:var(--mute);
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+.side-links{display:grid;gap:8px}
+.side-links a{
+  padding:10px 12px;
+  border-radius:12px;
+  color:var(--mute);
+  font-size:13px;
+  font-weight:700;
+  border:1px solid transparent;
+}
+.side-links a:hover{background:var(--hl-soft);border-color:rgba(255,45,85,.14);color:var(--accent)}
+.legal-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:54px;
+  box-shadow:var(--card-shadow);
+}
+.legal-card section{padding:32px 0;border-top:1px solid var(--line)}
+.legal-card section:first-child{border-top:none;padding-top:0}
+.legal-card h2{
+  font-family:var(--disp);
+  font-weight:800;
+  font-size:clamp(27px,3vw,40px);
+  letter-spacing:-.035em;
+  line-height:1.1;
+  margin-bottom:18px;
+}
+.legal-card h3{
+  font-family:var(--disp);
+  font-weight:800;
+  font-size:22px;
+  letter-spacing:-.02em;
+  margin:24px 0 10px;
+}
+.legal-card p,.legal-card li{
+  color:var(--mute);
+  font-size:15.5px;
+  line-height:1.75;
+  font-weight:500;
+}
+.legal-card p+p{margin-top:12px}
+.legal-card ul{padding-left:22px;margin:14px 0}
+.legal-card li{margin:8px 0}
+.notice{
+  margin:26px 0;
+  background:linear-gradient(135deg,var(--hl-soft),rgba(255,255,255,.82));
+  border:1px solid rgba(255,45,85,.16);
+  border-radius:20px;
+  padding:24px;
+}
+.notice strong{color:var(--ink)}
+.table{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:18px;
+  margin:22px 0;
+}
+.row{
+  display:grid;
+  grid-template-columns:1fr 1.3fr 1fr;
+  border-top:1px solid var(--line);
+}
+.row:first-child{border-top:none;background:var(--bg)}
+.cell{padding:16px;font-size:14px;line-height:1.55;color:var(--mute);font-weight:500}
+.row:first-child .cell{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--soft);font-weight:700}
+.cell b{color:var(--ink)}
+.updated{
+  margin-top:34px;
+  font-family:var(--mono);
+  color:var(--soft);
+  font-size:12px;
+  letter-spacing:.08em;
+}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:60px 0 46px;background:#fff}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot-links{display:flex;gap:28px;font-family:var(--mono);font-size:12px;color:var(--mute);flex-wrap:wrap}
+.foot-links a:hover{color:var(--ink)}
+.foot-note{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:30px}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav{top:12px}
+  .nav-inner{height:58px;gap:12px;padding:0 10px 0 16px}
+  .legal-shell{grid-template-columns:1fr}
+  .side-card{position:relative;top:auto}
+  .legal-card{padding:34px}
+  .row{grid-template-columns:1fr}
+  .row:first-child{display:none}
+  .cell{border-top:1px solid var(--line)}
+  .cell:first-child{border-top:none;font-weight:800;color:var(--ink)}
+}
+@media(max-width:560px){
+  .wrap{width:calc(100% - 32px)}
+  .nav-inner{width:calc(100% - 28px);gap:8px}
+  .nav .btn-client{display:none}
+  .brand{font-size:18px;gap:8px}
+  .logo-glyph{width:30px;height:30px}
+  .nav .btn-main{padding:10px 14px;font-size:12.5px}
+  .hero{padding:120px 0 50px}
+  .legal-card{padding:26px;border-radius:24px}
+  .foot{justify-content:center;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="MonContrat.app">
+      <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+        <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+        <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+        <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+      </svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#tools">Outils</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="nav-burger" onclick="openMenu()" aria-label="Menu" aria-expanded="false" id="burgerBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="btn btn-client" href="index.html">Espace client</a>
+      <a class="btn btn-main" href="index.html">Trouvez moins cher</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MENU BURGER -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
+  <aside class="menu-panel" role="dialog" aria-label="Menu de navigation">
+    <div class="menu-head">
+      <span class="menu-title">Menu</span>
+      <button class="menu-close" onclick="closeMenu()" aria-label="Fermer">×</button>
+    </div>
+    <nav class="menu-links">
+      <span class="menu-group">Produit</span>
+      <a href="index.html#tools">Outils</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="index.html#economies">Économies</a>
+      <a href="index.html#alertes">Alertes</a>
+      <span class="menu-group">Ressources</span>
+      <a href="blog.html">Le Décodeur — Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <span class="menu-group">Légal</span>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cguv.html">CGU &amp; CGV</a>
+      <a href="politique-confidentialite.html">Confidentialité</a>
+      <a href="politique-cookies.html">Cookies</a>
+    </nav>
+    <div class="menu-foot">
+      <a class="btn btn-client" style="width:100%" href="index.html">Espace client</a>
+      <a class="btn btn-main" style="width:100%;margin-top:10px" href="index.html">Trouvez moins cher</a>
+    </div>
+  </aside>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-kicker"><i></i>Transparence & consentement</div>
+    <h1>Politique de <span class="mark">cookies.</span></h1>
+    <p class="hero-sub">Cette page explique comment MonContrat.app utilise les cookies et technologies similaires pour faire fonctionner le service, sécuriser votre navigation et améliorer l’expérience utilisateur.</p>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap legal-shell">
+    <aside class="side-card">
+      <h2>Sommaire</h2>
+      <p>Une politique claire, lisible et cohérente avec l’usage réel du site.</p>
+      <div class="side-links">
+        <a href="#definition">Définition</a>
+        <a href="#types">Cookies utilisés</a>
+        <a href="#tiers">Services tiers</a>
+        <a href="#consentement">Consentement</a>
+        <a href="#duree">Durée</a>
+        <a href="#droits">Vos droits</a>
+      </div>
+    </aside>
+
+    <article class="legal-card">
+      <section id="definition">
+        <span class="mono-label"><b>01</b> — Définition</span>
+        <h2>Qu’est-ce qu’un cookie ?</h2>
+        <p>Un cookie est un petit fichier texte déposé sur votre ordinateur, tablette ou smartphone lors de la consultation d’un site internet. Il permet au site de reconnaître votre navigateur, de mémoriser certaines informations et de sécuriser certaines fonctionnalités.</p>
+        <p>Les cookies peuvent être déposés directement par MonContrat.app ou par des services tiers utilisés pour faire fonctionner la plateforme.</p>
+      </section>
+
+      <section id="types">
+        <span class="mono-label"><b>02</b> — Catégories</span>
+        <h2>Quels cookies utilisons-nous ?</h2>
+        <p>MonContrat.app peut utiliser plusieurs catégories de cookies ou technologies similaires selon les fonctionnalités activées.</p>
+
+        <div class="table">
+          <div class="row">
+            <div class="cell">Catégorie</div>
+            <div class="cell">Finalité</div>
+            <div class="cell">Consentement</div>
+          </div>
+          <div class="row">
+            <div class="cell"><b>Cookies essentiels</b></div>
+            <div class="cell">Permettre le fonctionnement du site, l’accès aux pages, la sécurité et la stabilité technique.</div>
+            <div class="cell">Non requis</div>
+          </div>
+          <div class="row">
+            <div class="cell"><b>Cookies de connexion</b></div>
+            <div class="cell">Maintenir la session utilisateur, sécuriser l’espace client et éviter une reconnexion permanente.</div>
+            <div class="cell">Non requis</div>
+          </div>
+          <div class="row">
+            <div class="cell"><b>Cookies de mesure d’audience</b></div>
+            <div class="cell">Comprendre l’utilisation du site, détecter les pages consultées et améliorer l’ergonomie.</div>
+            <div class="cell">Requis si non exemptés</div>
+          </div>
+          <div class="row">
+            <div class="cell"><b>Cookies marketing</b></div>
+            <div class="cell">Mesurer l’efficacité de campagnes ou afficher des contenus plus pertinents, uniquement si ces outils sont activés.</div>
+            <div class="cell">Requis</div>
+          </div>
+          <div class="row">
+            <div class="cell"><b>Cookies de paiement</b></div>
+            <div class="cell">Sécuriser les paiements et abonnements via des prestataires de paiement comme Stripe.</div>
+            <div class="cell">Selon finalité</div>
+          </div>
+        </div>
+
+        <div class="notice">
+          <p><strong>Important :</strong> les cookies strictement nécessaires au fonctionnement de MonContrat.app ne peuvent pas être désactivés depuis notre site, car ils sont indispensables à la sécurité et à la fourniture du service.</p>
+        </div>
+      </section>
+
+      <section id="tiers">
+        <span class="mono-label"><b>03</b> — Prestataires</span>
+        <h2>Services tiers susceptibles d’utiliser des cookies</h2>
+        <p>Dans le cadre du fonctionnement de MonContrat.app, certains prestataires techniques peuvent intervenir et utiliser leurs propres cookies ou technologies similaires.</p>
+        <ul>
+          <li><strong>Vercel</strong> : hébergement et diffusion du site.</li>
+          <li><strong>Supabase</strong> : authentification, base de données et stockage des documents.</li>
+          <li><strong>Stripe</strong> : gestion des paiements, abonnements et sécurité des transactions.</li>
+          <li><strong>Outils de mesure d’audience</strong> : uniquement s’ils sont activés afin d’améliorer le service.</li>
+        </ul>
+        <p>Ces prestataires peuvent être amenés à traiter certaines données techniques, notamment l’adresse IP, le navigateur utilisé, l’heure de connexion ou des identifiants techniques.</p>
+      </section>
+
+      <section id="consentement">
+        <span class="mono-label"><b>04</b> — Gestion</span>
+        <h2>Comment gérer vos préférences ?</h2>
+        <p>Lorsqu’un cookie soumis à consentement est utilisé, vous pouvez l’accepter ou le refuser via le bandeau ou le module de gestion prévu à cet effet.</p>
+        <p>Vous pouvez également configurer votre navigateur pour bloquer ou supprimer les cookies. Toutefois, la désactivation de certains cookies peut dégrader ou empêcher le bon fonctionnement de certaines fonctionnalités, notamment l’espace client, la connexion, les crédits ou les paiements.</p>
+        <h3>Depuis votre navigateur</h3>
+        <ul>
+          <li>Chrome : paramètres de confidentialité et sécurité.</li>
+          <li>Safari : réglages de confidentialité.</li>
+          <li>Firefox : vie privée et sécurité.</li>
+          <li>Edge : cookies et autorisations de site.</li>
+        </ul>
+      </section>
+
+      <section id="duree">
+        <span class="mono-label"><b>05</b> — Conservation</span>
+        <h2>Combien de temps les cookies sont-ils conservés ?</h2>
+        <p>La durée de conservation varie selon la finalité du cookie. Les cookies de session sont supprimés lorsque vous fermez votre navigateur. Les cookies persistants peuvent rester enregistrés pendant une durée plus longue, dans la limite nécessaire à leur finalité.</p>
+        <p>Les cookies soumis à consentement ne sont pas conservés au-delà de la durée légalement admise. Votre choix peut être conservé afin d’éviter de vous redemander trop fréquemment votre consentement.</p>
+      </section>
+
+      <section id="droits">
+        <span class="mono-label"><b>06</b> — Droits</span>
+        <h2>Vos droits concernant vos données</h2>
+        <p>Lorsque les cookies impliquent un traitement de données personnelles, vous disposez des droits prévus par le RGPD, notamment le droit d’accès, de rectification, d’effacement, d’opposition, de limitation et de portabilité.</p>
+        <p>Pour exercer vos droits ou poser une question relative aux cookies, vous pouvez utiliser le formulaire de contact disponible sur le site.</p>
+        <div class="notice">
+          <p><strong>Responsable du traitement :</strong><br>
+          World Wide Seller Life — Auto-entreprise<br>
+          140 chemin de la Costière, 06000 Nice<br>
+          SIRET : 81320731300012<br>
+          Contact : formulaire de contact du site.</p>
+        </div>
+        <p class="updated">Dernière mise à jour : juin 2026</p>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="index.html" aria-label="MonContrat.app">
+        <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+          <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+          <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+          <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+          <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+          <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        </svg>
+        MonContrat<span class="ext">.app</span>
+      </a>
+      <div class="foot-links">
+        <a href="faq.html">FAQ</a>
+        <a href="blog.html">Blog</a>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-confidentialite.html">Confidentialité</a>
+        <a href="cguv.html">CGUV</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="foot-note">© 2026 moncontrat.app — Politique de cookies.</div>
+  </div>
+</footer>
+
+<script>
+function openMenu(){
+  document.getElementById('menuOverlay').classList.add('show');
+  document.getElementById('burgerBtn').setAttribute('aria-expanded','true');
+}
+function closeMenu(e){
+  if(e&&e.type==='click'&&e.target.id!=='menuOverlay'&&!e.target.classList.contains('menu-close'))return;
+  document.getElementById('menuOverlay').classList.remove('show');
+  document.getElementById('burgerBtn').setAttribute('aria-expanded','false');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+</script>
+</body>
+</html>

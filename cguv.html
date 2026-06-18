@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Conditions Générales d’Utilisation et de Vente — MonContrat.app</title>
+<meta name="description" content="Conditions Générales d’Utilisation et de Vente de MonContrat.app : analyses de contrats, crédits, abonnements, résiliation, responsabilité et service Trouvez-moi moins cher." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;
+  --bg-2:#FFFFFF;
+  --ink:#0B0E1A;
+  --mute:#5E6478;
+  --soft:#9AA0B4;
+  --accent:#FF2D55;
+  --accent-2:#FF5F82;
+  --hl:#FFBFCD;
+  --hl-soft:rgba(255,45,85,.07);
+  --risk:#FF5C5C;
+  --warn:#FFB020;
+  --ok:#18C998;
+  --line:rgba(11,14,26,.09);
+  --line-2:rgba(11,14,26,.14);
+  --card-shadow:0 24px 70px rgba(20,30,70,.10);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;
+  --body:Inter,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --night:#0A0D1C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:#FFFFFF}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit}
+.wrap{width:min(1160px,calc(100% - 48px));margin:0 auto;position:relative;z-index:2}
+::selection{background:var(--hl);color:var(--ink)}
+.mark{
+  background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat left 72%/100% 42%;
+  padding:0 .06em;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+.mono-label{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--soft);
+}
+.mono-label b{color:var(--accent);font-weight:700}
+
+/* NAV — barre flottante translucide */
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent);margin-left:1px}
+.logo-glyph{width:34px;height:34px;flex:none;display:block}
+.nav{position:fixed;top:18px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none}
+.nav-inner{pointer-events:auto;height:64px;display:flex;align-items:center;gap:26px;width:min(1180px,calc(100% - 36px));padding:0 14px 0 22px;border-radius:18px;background:rgba(28,18,24,.32);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);border:1px solid rgba(255,255,255,.18);box-shadow:0 12px 40px rgba(20,10,20,.18),inset 0 1px 0 rgba(255,255,255,.22)}
+.nav .brand{color:#fff;margin-right:auto}
+.nav .brand .ext{color:#fff;opacity:.85}
+.nav-links{display:flex;gap:28px;font-size:14px;font-weight:600;color:rgba(255,255,255,.82)}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:#fff}
+.nav-cta{display:flex;gap:9px;align-items:center}
+.nav-burger{width:44px;height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex:none}
+.nav-burger:hover{background:rgba(255,255,255,.16)}
+.nav-burger svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:12px;padding:13px 21px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
+.nav .btn{border-radius:11px;padding:12px 18px;font-size:13.5px;font-weight:700}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3);transform:translateY(-1px)}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 28px rgba(255,45,85,.26)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,45,85,.34)}
+.nav .btn-main{box-shadow:0 8px 22px rgba(255,45,85,.32)}
+.nav .btn-client{background:#fff;color:var(--ink)}
+.nav .btn-client:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+/* MENU BURGER */
+.menu-overlay{position:fixed;inset:0;z-index:80;background:rgba(11,14,26,.5);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
+.menu-overlay.show{opacity:1;pointer-events:auto}
+.menu-panel{position:absolute;top:0;right:0;height:100%;width:min(380px,86vw);background:#fff;box-shadow:-20px 0 60px rgba(20,30,70,.2);padding:28px;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.3,.9,.3,1);overflow-y:auto}
+.menu-overlay.show .menu-panel{transform:none}
+.menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.menu-title{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.menu-close{width:40px;height:40px;border-radius:11px;border:1px solid var(--line-2);background:#fff;color:var(--ink);font-size:24px;cursor:pointer;line-height:1}
+.menu-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.menu-group{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:18px 0 8px}
+.menu-group:first-child{margin-top:0}
+.menu-links a{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);padding:9px 0;transition:color .2s,padding-left .2s}
+.menu-links a:hover{color:var(--accent);padding-left:6px}
+.menu-foot{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+
+/* HERO */
+.hero{
+  position:relative;
+  padding:150px 0 72px;
+  background:
+    radial-gradient(900px 520px at 50% -10%,rgba(255,45,85,.09),transparent 70%),
+    radial-gradient(700px 500px at 86% 28%,rgba(255,95,130,.07),transparent 70%),
+    var(--bg);
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:60px;
+  align-items:end;
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--mute);background:#fff;
+  border:1px solid var(--line);border-radius:999px;padding:10px 18px;margin-bottom:30px;
+  box-shadow:0 6px 24px rgba(20,30,70,.06)
+}
+.kicker i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+h1{
+  font-family:var(--disp);font-weight:800;font-size:clamp(44px,7vw,94px);
+  line-height:1.04;letter-spacing:-.045em;max-width:850px;
+}
+.hero-sub{
+  margin-top:26px;font-size:clamp(17px,1.8vw,20px);line-height:1.62;color:var(--mute);
+  max-width:640px;font-weight:500;
+}
+.hero-card{
+  background:rgba(255,255,255,.78);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:34px;
+  box-shadow:var(--card-shadow);
+  backdrop-filter:blur(16px) saturate(140%);
+}
+.hero-card h2{
+  font-family:var(--disp);font-size:30px;line-height:1.08;letter-spacing:-.03em;margin-bottom:14px;
+}
+.hero-card p{color:var(--mute);line-height:1.62;font-weight:500;font-size:15px}
+.hero-points{margin-top:26px;display:grid;gap:12px}
+.hero-point{
+  display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:15px 16px;font-size:14px;font-weight:600;color:var(--ink)
+}
+.hero-point i{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(255,45,85,.55);margin-top:5px;flex:none}
+.hero-point span{display:block;color:var(--mute);font-weight:500;font-size:12px;margin-top:3px;line-height:1.45}
+
+/* CONTENT */
+.layout{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:38px;
+  padding:34px 0 110px;
+}
+.toc{
+  position:sticky;
+  top:98px;
+  align-self:start;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 10px 36px rgba(20,30,70,.05);
+}
+.toc-title{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);margin-bottom:14px}
+.toc a{
+  display:block;
+  padding:11px 12px;
+  border-radius:11px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--mute);
+  transition:.18s;
+}
+.toc a:hover{background:var(--hl-soft);color:var(--accent)}
+.legal{
+  display:grid;
+  gap:18px;
+}
+.section-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:42px;
+  box-shadow:0 10px 36px rgba(20,30,70,.05);
+}
+.section-card h2{
+  font-family:var(--disp);font-size:clamp(28px,3.2vw,42px);
+  letter-spacing:-.035em;line-height:1.08;margin-bottom:20px;
+}
+.section-card h3{
+  font-family:var(--disp);font-size:22px;letter-spacing:-.02em;margin:24px 0 10px;
+}
+.section-card p{
+  color:var(--mute);line-height:1.78;font-size:15.5px;font-weight:500;margin:12px 0;
+}
+.section-card ul{padding-left:20px;margin:14px 0;display:grid;gap:9px}
+.section-card li{color:var(--mute);line-height:1.65;font-size:15.5px;font-weight:500}
+.section-card strong{color:var(--ink)}
+.callout{
+  margin:22px 0 4px;
+  border:1px solid rgba(255,45,85,.20);
+  background:var(--hl-soft);
+  border-radius:18px;
+  padding:22px;
+}
+.callout p{margin:0;color:#5D1021}
+.warning{
+  border-color:rgba(255,176,32,.28);
+  background:rgba(255,176,32,.08);
+}
+.warning p{color:#6D4600}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.mini{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+}
+.mini b{display:block;font-family:var(--disp);font-size:19px;letter-spacing:-.02em;margin-bottom:8px}
+.mini span{display:block;color:var(--mute);font-size:14px;line-height:1.55;font-weight:500}
+.price-row{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  border:1px solid var(--line);background:var(--bg);border-radius:18px;padding:20px;margin-top:14px
+}
+.price-row b{font-family:var(--disp);font-size:22px;letter-spacing:-.02em}
+.price-row span{font-family:var(--mono);font-size:13px;color:var(--mute)}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;
+  padding:8px 13px;border-radius:999px;border:1px solid var(--line-2);color:var(--mute);margin:4px 6px 4px 0;
+}
+.badge.free{background:linear-gradient(135deg,var(--accent),#E0234A);border:none;color:#fff}
+
+/* RESPONSIBILITY BAND */
+.protect{
+  margin:22px 0;
+  background:
+    radial-gradient(700px 480px at 85% 5%,rgba(255,255,255,.16),transparent 60%),
+    linear-gradient(165deg,#FF3D63 0%,#F0234C 50%,#D11A3F 100%);
+  color:#fff;
+  border-radius:30px;
+  padding:44px;
+  overflow:hidden;
+}
+.protect .mono-label{color:rgba(255,255,255,.70)}
+.protect h2{font-family:var(--disp);font-size:clamp(32px,5vw,62px);line-height:1.04;letter-spacing:-.04em;margin:20px 0}
+.protect p{color:rgba(255,255,255,.86);font-size:16px;line-height:1.72;max-width:800px}
+.protect-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.protect-item{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:18px;font-weight:700}
+.protect-item small{display:block;color:rgba(255,255,255,.72);font-family:var(--mono);font-weight:500;font-size:11px;margin-top:8px;line-height:1.5}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:60px 0 46px;background:#fff}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot-links{display:flex;gap:28px;font-family:var(--mono);font-size:12px;color:var(--mute);flex-wrap:wrap}
+.foot-links a:hover{color:var(--ink)}
+.foot-note{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:30px}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav{top:12px}
+  .nav-inner{height:58px;gap:12px;padding:0 10px 0 16px}
+  .hero{padding:118px 0 50px}
+  .hero-grid{grid-template-columns:1fr;gap:28px}
+  .layout{grid-template-columns:1fr;padding-top:10px}
+  .toc{position:relative;top:auto}
+  .grid-2,.protect-list{grid-template-columns:1fr}
+  .section-card{padding:30px}
+  .protect{padding:32px}
+}
+@media(max-width:560px){
+  .wrap{width:calc(100% - 32px)}
+  .nav-inner{width:calc(100% - 32px)}
+  .brand{font-size:18px;gap:8px}
+  .logo-glyph{width:30px;height:30px}
+  .nav .btn-main{padding:10px 14px;font-size:12.5px}
+  h1{font-size:42px}
+  .hero-card{padding:26px}
+  .section-card{padding:24px;border-radius:22px}
+  .price-row{display:block}
+  .price-row span{display:block;margin-top:8px}
+  .foot{justify-content:center;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="MonContrat.app">
+      <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+        <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+        <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+        <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+      </svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#tools">Outils</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="nav-burger" onclick="openMenu()" aria-label="Menu" aria-expanded="false" id="burgerBtn">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a class="btn btn-client" href="index.html">Espace client</a>
+      <a class="btn btn-main" href="index.html">Trouvez moins cher</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MENU BURGER -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
+  <aside class="menu-panel" role="dialog" aria-label="Menu de navigation">
+    <div class="menu-head">
+      <span class="menu-title">Menu</span>
+      <button class="menu-close" onclick="closeMenu()" aria-label="Fermer">×</button>
+    </div>
+    <nav class="menu-links">
+      <span class="menu-group">Produit</span>
+      <a href="index.html#tools">Outils</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="index.html#economies">Économies</a>
+      <a href="index.html#alertes">Alertes</a>
+      <span class="menu-group">Ressources</span>
+      <a href="blog.html">Le Décodeur — Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <span class="menu-group">Légal</span>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cguv.html">CGU &amp; CGV</a>
+      <a href="politique-confidentialite.html">Confidentialité</a>
+      <a href="politique-cookies.html">Cookies</a>
+    </nav>
+    <div class="menu-foot">
+      <a class="btn btn-client" style="width:100%" href="index.html">Espace client</a>
+      <a class="btn btn-main" style="width:100%;margin-top:10px" href="index.html">Trouvez moins cher</a>
+    </div>
+  </aside>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker"><i></i>Conditions Générales d’Utilisation et de Vente</div>
+      <h1>Un cadre clair.<br><span class="mark">Une utilisation encadrée.</span></h1>
+      <p class="hero-sub">Les présentes conditions définissent les règles d’utilisation de MonContrat.app, les modalités de vente, les abonnements, les crédits et les limites de responsabilité du service.</p>
+    </div>
+    <aside class="hero-card">
+      <h2>À retenir</h2>
+      <p>MonContrat.app est un outil d’aide à la compréhension. Les résultats sont fournis à titre informatif et pédagogique. Ils ne remplacent jamais votre contrat, la loi, un assureur ou un professionnel qualifié.</p>
+      <div class="hero-points">
+        <div class="hero-point"><i></i><div>Résiliation possible à tout moment<span>Demande à effectuer au moins 10 jours avant l’échéance mensuelle suivante.</span></div></div>
+        <div class="hero-point"><i></i><div>Crédits valables 12 mois<span>Les crédits achetés ou obtenus ne sont pas remboursables.</span></div></div>
+        <div class="hero-point"><i></i><div>Aucune garantie de résultat<span>Les analyses, scores et alertes sont indicatifs.</span></div></div>
+      </div>
+    </aside>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <aside class="toc" aria-label="Sommaire">
+    <div class="toc-title">Sommaire</div>
+    <a href="#objet">01. Objet</a>
+    <a href="#compte">02. Compte utilisateur</a>
+    <a href="#services">03. Services</a>
+    <a href="#responsabilite">04. Responsabilité</a>
+    <a href="#credits">05. Crédits</a>
+    <a href="#abonnements">06. Abonnements</a>
+    <a href="#resiliation">07. Résiliation</a>
+    <a href="#moins-cher">08. Trouvez-moi moins cher</a>
+    <a href="#paiement">09. Paiement</a>
+    <a href="#propriete">10. Propriété intellectuelle</a>
+    <a href="#droit">11. Droit applicable</a>
+  </aside>
+
+  <section class="legal">
+
+    <article class="section-card" id="intro">
+      <span class="mono-label"><b>CGUV</b> — Dernière mise à jour : juin 2026</span>
+      <h2>Conditions Générales d’Utilisation et de Vente</h2>
+      <p>Les présentes Conditions Générales d’Utilisation et de Vente, ci-après les « CGUV », régissent l’accès et l’utilisation du site <strong>MonContrat.app</strong>, ainsi que les conditions de vente des crédits, abonnements et services associés.</p>
+      <p>En utilisant MonContrat.app, l’utilisateur reconnaît avoir lu, compris et accepté les présentes CGUV sans réserve.</p>
+    </article>
+
+    <article class="section-card" id="objet">
+      <span class="mono-label"><b>01</b> — Objet du service</span>
+      <h2>Ce que propose MonContrat.app</h2>
+      <p>MonContrat.app est une plateforme numérique permettant notamment :</p>
+      <ul>
+        <li>l’analyse de contrats d’assurance ou de documents contractuels ;</li>
+        <li>la comparaison de deux contrats ;</li>
+        <li>le calcul d’un score ou indice de protection ;</li>
+        <li>l’aide à la compréhension de garanties, franchises, exclusions et déclarations ;</li>
+        <li>la génération de documents, courriers ou contenus administratifs ;</li>
+        <li>l’assistance pédagogique lors de certaines situations de sinistre ;</li>
+        <li>la mise en relation avec des partenaires via le service « Trouvez-moi moins cher ».</li>
+      </ul>
+      <div class="callout">
+        <p><strong>Important :</strong> MonContrat.app n’est pas une compagnie d’assurance, un courtier, un agent général, un avocat ou un expert d’assurance. La plateforme fournit une aide à la compréhension et à la lecture des documents.</p>
+      </div>
+    </article>
+
+    <article class="section-card" id="compte">
+      <span class="mono-label"><b>02</b> — Compte utilisateur</span>
+      <h2>Création et accès au compte</h2>
+      <p>L’accès à certains services peut nécessiter la création d’un compte utilisateur. L’utilisateur s’engage à fournir des informations exactes, complètes et à jour, notamment ses nom, prénom, adresse e-mail et numéro de téléphone lorsque ces informations sont demandées.</p>
+      <p>L’utilisateur est seul responsable de la confidentialité de ses identifiants de connexion et de toute utilisation effectuée depuis son compte.</p>
+      <p>MonContrat.app se réserve le droit de suspendre ou limiter l’accès à un compte en cas d’utilisation frauduleuse, abusive, contraire aux présentes CGUV ou susceptible de porter atteinte au bon fonctionnement du service.</p>
+    </article>
+
+    <article class="section-card" id="services">
+      <span class="mono-label"><b>03</b> — Services proposés</span>
+      <h2>Outils gratuits et outils à crédits</h2>
+      <p>À la date de publication des présentes CGUV, certains outils sont proposés gratuitement, notamment l’analyse d’un contrat et la comparaison de deux contrats.</p>
+      <p>Certains services avancés peuvent nécessiter l’utilisation de crédits, notamment le chat contrat en direct, l’assistant sinistre, la génération de documents ou d’autres fonctionnalités premium.</p>
+      <div>
+        <span class="badge free">Analyse contrat · Gratuit</span>
+        <span class="badge free">Comparaison · Gratuit</span>
+        <span class="badge">Score protection · 1 crédit</span>
+        <span class="badge">Chat contrat · 2 crédits</span>
+        <span class="badge">Assistant sinistre · 2 crédits</span>
+      </div>
+      <div class="warning callout">
+        <p>MonContrat.app se réserve le droit de modifier à tout moment la liste des fonctionnalités gratuites, payantes, incluses ou soumises à crédits. Les conditions applicables sont celles affichées au moment de l’utilisation ou de l’achat.</p>
+      </div>
+    </article>
+
+    <section class="protect" id="responsabilite">
+      <span class="mono-label"><b>04</b> — Responsabilité & limites</span>
+      <h2>Un outil d’aide.<br>Pas une garantie de résultat.</h2>
+      <p>Les analyses, scores, alertes, recommandations, explications, synthèses et documents générés par MonContrat.app sont fournis à titre strictement informatif, pédagogique et indicatif. Ils ne constituent ni un conseil juridique, ni un conseil fiscal, ni un conseil patrimonial, ni un conseil financier, ni un conseil en assurance personnalisé.</p>
+      <div class="protect-list">
+        <div class="protect-item">Aucune exactitude absolue<small>Des erreurs, omissions ou interprétations inexactes peuvent exister.</small></div>
+        <div class="protect-item">Aucun résultat garanti<small>Aucune économie, indemnisation ou amélioration de garantie n’est promise.</small></div>
+        <div class="protect-item">Décision utilisateur<small>L’utilisateur reste seul responsable des décisions prises.</small></div>
+      </div>
+    </section>
+
+    <article class="section-card">
+      <span class="mono-label"><b>04.1</b> — Absence de garantie</span>
+      <h2>Pas de substitution au contrat, à la loi ou à un professionnel</h2>
+      <p>Les résultats fournis par MonContrat.app ne remplacent jamais :</p>
+      <ul>
+        <li>les conditions générales et particulières du contrat analysé ;</li>
+        <li>les dispositions légales ou réglementaires applicables ;</li>
+        <li>l’avis d’un assureur, courtier, agent général ou gestionnaire ;</li>
+        <li>l’avis d’un expert d’assurance ;</li>
+        <li>l’avis d’un avocat ou professionnel du droit.</li>
+      </ul>
+      <p>L’utilisateur reconnaît que les résultats peuvent dépendre de la qualité, de la lisibilité, de l’exhaustivité et de l’actualité des documents transmis.</p>
+      <div class="callout">
+        <p><strong>Limitation expresse :</strong> MonContrat.app ne pourra être tenu responsable d’un refus de garantie, d’une réduction d’indemnisation, d’une perte financière, d’une résiliation de contrat, d’un défaut de couverture, d’une erreur de déclaration, d’une décision prise par l’utilisateur ou de tout dommage direct ou indirect lié à l’utilisation du service.</p>
+      </div>
+    </article>
+
+    <article class="section-card" id="credits">
+      <span class="mono-label"><b>05</b> — Crédits</span>
+      <h2>Fonctionnement des crédits</h2>
+      <p>Certains services nécessitent l’utilisation de crédits. Les crédits peuvent être offerts, inclus dans un abonnement ou achetés séparément.</p>
+      <ul>
+        <li>Les crédits sont personnels et rattachés au compte utilisateur.</li>
+        <li>Les crédits ne peuvent pas être cédés, échangés ou convertis en espèces.</li>
+        <li>Les crédits sont valables pendant une durée de douze (12) mois à compter de leur date d’acquisition.</li>
+        <li>Les crédits achetés ou obtenus ne sont pas remboursables, même lorsqu’ils n’ont pas été utilisés.</li>
+      </ul>
+      <div class="warning callout">
+        <p>En cas de suppression du compte ou de résiliation de l’abonnement, les crédits non utilisés peuvent être perdus selon les conditions techniques et commerciales applicables au moment de la demande.</p>
+      </div>
+    </article>
+
+    <article class="section-card" id="abonnements">
+      <span class="mono-label"><b>06</b> — Abonnements</span>
+      <h2>Premium et Pro</h2>
+      <p>MonContrat.app peut proposer des abonnements mensuels donnant accès à un nombre de crédits ou fonctionnalités déterminées.</p>
+      <div class="grid-2">
+        <div class="mini">
+          <b>Premium</b>
+          <span>9,99 € TTC par mois, incluant 50 crédits mensuels selon les conditions affichées sur la page Tarifs.</span>
+        </div>
+        <div class="mini">
+          <b>Pro</b>
+          <span>29,99 € TTC par mois, incluant 200 crédits mensuels selon les conditions affichées sur la page Tarifs.</span>
+        </div>
+      </div>
+      <p>Les caractéristiques exactes des offres sont celles affichées sur la page Tarifs au moment de la souscription.</p>
+      <div class="price-row">
+        <b>Tout mois commencé est dû.</b>
+        <span>Prélèvement mensuel · Résiliation selon préavis de 10 jours</span>
+      </div>
+    </article>
+
+    <article class="section-card" id="resiliation">
+      <span class="mono-label"><b>07</b> — Résiliation</span>
+      <h2>Résiliation de l’abonnement</h2>
+      <p>L’utilisateur peut demander la résiliation de son abonnement à tout moment via le formulaire de contact disponible sur le site.</p>
+      <p>Pour être prise en compte à l’échéance mensuelle suivante, la demande de résiliation doit être reçue au minimum dix (10) jours avant la date de renouvellement mensuel de l’abonnement.</p>
+      <p>À défaut de respect de ce délai, la résiliation prendra effet à l’échéance mensuelle suivante.</p>
+      <div class="callout">
+        <p><strong>Exemple :</strong> si l’échéance mensuelle intervient le 25 du mois, la demande de résiliation doit être transmise au plus tard le 15 du mois. Si elle est envoyée après cette date, l’abonnement pourra être renouvelé une dernière fois et la résiliation prendra effet le mois suivant.</p>
+      </div>
+      <p>Toute période d’abonnement déjà facturée ou entamée reste intégralement due et ne donne lieu à aucun remboursement.</p>
+    </article>
+
+    <article class="section-card" id="moins-cher">
+      <span class="mono-label"><b>08</b> — Trouvez-moi moins cher</span>
+      <h2>Mise en relation avec des partenaires</h2>
+      <p>Le service « Trouvez-moi moins cher » permet à l’utilisateur de demander l’étude de son dossier par un ou plusieurs partenaires assureurs, courtiers, agents généraux, compagnies d’assurance ou intermédiaires spécialisés.</p>
+      <p>Lorsque l’utilisateur active volontairement ce service, il accepte que les informations nécessaires à l’étude de son dossier, y compris certains documents transmis, puissent être communiquées aux partenaires concernés.</p>
+      <p>Cette transmission peut donner lieu à une rémunération de MonContrat.app par les partenaires. Ce modèle vise à permettre une étude concurrentielle du dossier et à inciter les professionnels sollicités à proposer une offre pertinente, lorsqu’ils sont en mesure de le faire.</p>
+      <ul>
+        <li>MonContrat.app ne garantit aucune économie.</li>
+        <li>MonContrat.app ne garantit aucune amélioration de garanties.</li>
+        <li>MonContrat.app ne garantit aucune proposition commerciale.</li>
+        <li>MonContrat.app ne garantit aucune souscription.</li>
+        <li>Le délai de 48 heures ouvrées constitue un objectif de traitement et non une garantie contractuelle.</li>
+      </ul>
+      <div class="callout">
+        <p>Les offres éventuellement proposées sont émises par les partenaires sous leur seule responsabilité. L’utilisateur demeure libre de les accepter ou de les refuser.</p>
+      </div>
+    </article>
+
+    <article class="section-card" id="paiement">
+      <span class="mono-label"><b>09</b> — Paiement & facturation</span>
+      <h2>Modalités de paiement</h2>
+      <p>Les paiements peuvent être réalisés via les moyens de paiement proposés sur le site. Les prix sont indiqués en euros toutes taxes comprises lorsque applicable.</p>
+      <p>En cas d’échec de paiement, MonContrat.app peut suspendre ou limiter l’accès aux services concernés jusqu’à régularisation.</p>
+      <p>Les crédits, abonnements ou prestations déjà facturés ne sont pas remboursables, sauf disposition légale impérative contraire.</p>
+    </article>
+
+    <article class="section-card" id="documents">
+      <span class="mono-label"><b>10</b> — Documents transmis</span>
+      <h2>Responsabilité de l’utilisateur</h2>
+      <p>L’utilisateur est seul responsable des documents, informations, données et contenus qu’il transmet à MonContrat.app.</p>
+      <p>Il garantit disposer des droits et autorisations nécessaires pour déposer, analyser ou transmettre les documents concernés.</p>
+      <p>MonContrat.app ne peut être tenu responsable des conséquences résultant de documents incomplets, erronés, falsifiés, obsolètes, illisibles ou transmis sans autorisation.</p>
+    </article>
+
+    <article class="section-card" id="ia">
+      <span class="mono-label"><b>11</b> — Intelligence artificielle</span>
+      <h2>Fonctionnement et limites des outils automatisés</h2>
+      <p>MonContrat.app peut utiliser des technologies d’intelligence artificielle ou d’automatisation pour lire, analyser, synthétiser, comparer ou générer des contenus.</p>
+      <p>L’utilisateur reconnaît que ces technologies peuvent produire des résultats imparfaits, incomplets, approximatifs ou inadaptés à certaines situations.</p>
+      <div class="warning callout">
+        <p>Les résultats générés doivent toujours être relus, vérifiés et confrontés aux documents contractuels originaux ainsi qu’aux conseils des professionnels compétents.</p>
+      </div>
+    </article>
+
+    <article class="section-card" id="propriete">
+      <span class="mono-label"><b>12</b> — Propriété intellectuelle</span>
+      <h2>Contenus, marque et interface</h2>
+      <p>L’ensemble des éléments du site MonContrat.app, notamment la marque, le nom, le logo, les textes, interfaces, graphismes, codes, éléments visuels et contenus éditoriaux, est protégé par les règles applicables en matière de propriété intellectuelle.</p>
+      <p>Toute reproduction, représentation, extraction, réutilisation, diffusion ou exploitation non autorisée est interdite.</p>
+    </article>
+
+    <article class="section-card" id="disponibilite">
+      <span class="mono-label"><b>13</b> — Disponibilité</span>
+      <h2>Accès au service</h2>
+      <p>MonContrat.app s’efforce d’assurer la disponibilité du service, sans garantir un accès permanent, continu ou exempt d’erreurs.</p>
+      <p>Des interruptions peuvent intervenir pour maintenance, mise à jour, incident technique, évolution du service, force majeure ou intervention d’un prestataire tiers.</p>
+    </article>
+
+    <article class="section-card" id="modification">
+      <span class="mono-label"><b>14</b> — Modification des CGUV</span>
+      <h2>Évolution des conditions</h2>
+      <p>MonContrat.app se réserve le droit de modifier les présentes CGUV à tout moment afin de tenir compte de l’évolution du service, de la réglementation ou de son modèle économique.</p>
+      <p>Les conditions applicables sont celles en vigueur au moment de l’utilisation du service ou de la souscription.</p>
+    </article>
+
+    <article class="section-card" id="droit">
+      <span class="mono-label"><b>15</b> — Droit applicable</span>
+      <h2>Droit français</h2>
+      <p>Les présentes CGUV sont soumises au droit français.</p>
+      <p>En cas de litige, les parties s’efforceront de rechercher une solution amiable. À défaut, le litige relèvera des juridictions françaises compétentes.</p>
+    </article>
+
+    <article class="section-card" id="editeur">
+      <span class="mono-label"><b>16</b> — Éditeur</span>
+      <h2>Identification</h2>
+      <p><strong>World Wide Seller Life</strong><br>Auto-entreprise<br>140 chemin de la Costière<br>06000 Nice<br>SIRET : 81320731300012</p>
+      <p>Contact : via le formulaire de contact disponible sur le site.</p>
+    </article>
+
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="index.html" aria-label="MonContrat.app">
+        <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+          <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+          <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+          <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+          <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+          <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        </svg>
+        MonContrat<span class="ext">.app</span>
+      </a>
+      <div class="foot-links">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="politique-confidentialite.html">Confidentialité</a>
+        <a href="cguv.html">CGUV</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+    <div class="foot-note">© 2026 moncontrat.app — Conditions Générales d’Utilisation et de Vente.</div>
+  </div>
+</footer>
+
+<script>
+function openMenu(){document.getElementById('menuOverlay').classList.add('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','true');}
+function closeMenu(e){if(e&&e.type==='click'&&e.target.id!=='menuOverlay'&&!e.target.classList.contains('menu-close'))return;document.getElementById('menuOverlay').classList.remove('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','false');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+</script>
+</body>
+</html>
