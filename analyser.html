@@ -9,13 +9,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- PDF.js pour extraction texte côté client -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root{
-  --bg:#FFFFFF;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
-  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
-  --line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);--ok:#13C29C;
-  --card-shadow:0 24px 70px rgba(20,30,70,.10);
-  --disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+--bg:#FFFFFF;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+--accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+--line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);--ok:#13C29C;
+--card-shadow:0 24px 70px rgba(20,30,70,.10);
+--disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;color-scheme:light;background:#FFFFFF}
@@ -24,8 +26,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .wrap{width:min(760px,calc(100% - 40px));margin:0 auto;position:relative;z-index:2}
 ::selection{background:var(--hl);color:var(--ink)}
 .mark{background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat left 82%/100% 40%;padding:0 .06em}
-
-/* TOPBAR simple */
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em}
 .brand .ext{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--accent)}
 .logo-glyph{width:30px;height:30px;flex:none}
@@ -33,18 +33,12 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .topbar .wrap{width:min(1100px,calc(100% - 40px));display:flex;align-items:center;justify-content:space-between}
 .back{font-size:14px;font-weight:600;color:var(--mute);display:flex;align-items:center;gap:7px}
 .back:hover{color:var(--ink)}
-
-/* HERO */
 .head{text-align:center;padding:30px 0 26px}
 .head .kicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;margin-bottom:20px;box-shadow:0 6px 24px rgba(20,30,70,.06)}
 .head .kicker i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
 h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.03em}
 .head p{margin:16px auto 0;font-size:16px;line-height:1.55;color:var(--mute);max-width:480px;font-weight:500}
-
-/* CARD */
 .card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--card-shadow);margin-bottom:40px}
-
-/* DROPZONE */
 .drop{border:2px dashed var(--line-2);border-radius:18px;padding:46px 24px;text-align:center;cursor:pointer;transition:.2s;background:#fff}
 .drop:hover,.drop.drag{border-color:var(--accent);background:var(--hl-soft)}
 .drop .ic{width:60px;height:60px;border-radius:16px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
@@ -52,8 +46,6 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,46px);line-h
 .drop h3{font-family:var(--disp);font-weight:800;font-size:19px;margin-bottom:7px}
 .drop p{color:var(--mute);font-size:14px;font-weight:500}
 .drop .formats{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:14px;letter-spacing:.05em}
-
-/* FICHIER chargé */
 .file-loaded{display:none;align-items:center;gap:14px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.2);border-radius:14px;padding:16px 18px}
 .file-loaded.show{display:flex}
 .file-loaded .fic{width:42px;height:42px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
@@ -63,32 +55,24 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,46px);line-h
 .file-loaded .finfo small{font-family:var(--mono);font-size:11px;color:var(--soft)}
 .file-remove{background:none;border:none;color:var(--soft);cursor:pointer;font-size:20px;padding:4px}
 .file-remove:hover{color:var(--accent)}
-
-/* TONS */
 .tone-block{margin:26px 0 6px}
 .tone-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);display:block;margin-bottom:12px}
 .tones{display:flex;flex-wrap:wrap;gap:9px}
 .tone{font-size:13.5px;font-weight:600;border:1px solid var(--line-2);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:7px}
 .tone:hover{border-color:var(--accent)}
 .tone.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(255,45,85,.25)}
-
-/* BTN */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;font-weight:700;font-size:15px;border-radius:13px;padding:16px 22px;transition:transform .2s,box-shadow .2s,opacity .2s;width:100%;margin-top:26px}
-.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 12px 30px rgba(255,45,85,.28)}
-.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,45,85,.36)}
-.btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-
 .consent{display:flex;gap:11px;align-items:flex-start;margin-top:20px;cursor:pointer;font-size:12.5px;line-height:1.5;color:var(--mute);font-weight:500}
 .consent input{position:absolute;opacity:0;width:0;height:0}
 .cm-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--line-2);flex:none;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:.18s}
 .consent input:checked + .cm-box{background:var(--accent);border-color:var(--accent)}
 .consent input:checked + .cm-box:after{content:"✓";color:#fff;font-size:12px;font-weight:800}
 .consent a{color:var(--accent);text-decoration:underline}
-
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;font-weight:700;font-size:15px;border-radius:13px;padding:16px 22px;transition:transform .2s,box-shadow .2s,opacity .2s;width:100%;margin-top:26px}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 12px 30px rgba(255,45,85,.28)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(255,45,85,.36)}
+.btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 .err-msg{display:none;margin-top:16px;padding:13px 16px;border-radius:11px;background:rgba(255,59,59,.08);color:#D33;border:1px solid rgba(255,59,59,.25);font-size:13.5px;font-weight:600}
 .err-msg.show{display:block}
-
-/* OVERLAY SCAN (chargement) */
 .scan-overlay{position:fixed;inset:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}
 .scan-overlay.show{display:flex}
 .scan-doc{width:120px;height:150px;border-radius:14px;border:2px solid var(--line-2);position:relative;overflow:hidden;background:#fff;box-shadow:var(--card-shadow);margin-bottom:30px}
@@ -100,188 +84,223 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5vw,46px);line-h
 .scan-overlay h2{font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.02em;margin-bottom:10px}
 .scan-overlay p{color:var(--mute);font-size:14.5px;font-weight:500;max-width:340px}
 .scan-steps{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:18px;height:18px}
-
-@media(max-width:560px){
-  .card{padding:24px}
-  .drop{padding:36px 18px}
-}
+.progress-bar{width:260px;height:4px;background:var(--line);border-radius:2px;margin-top:14px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease;width:0%}
+@media(max-width:560px){.card{padding:24px}.drop{padding:36px 18px}}
 </style>
 </head>
 <body>
-
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+<linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
 </defs></svg>
 
 <header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="index.html">
-      <svg class="logo-glyph" viewBox="0 0 34 34"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
-      MonContrat<span class="ext">.app</span>
-    </a>
-    <a class="back" href="index.html">← Retour</a>
-  </div>
+<div class="wrap">
+  <a class="brand" href="index.html">
+    <svg class="logo-glyph" viewBox="0 0 34 34"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+    MonContrat<span class="ext">.app</span>
+  </a>
+  <a class="back" href="index.html">← Retour</a>
+</div>
 </header>
 
 <div class="head">
-  <div class="wrap">
-    <div class="kicker"><i></i>Analyse gratuite</div>
-    <h1>Déposez votre contrat,<br>on vous dit <span class="mark">tout.</span></h1>
-    <p>PDF de votre contrat d'assurance habitation ou auto. L'analyse prend quelques secondes.</p>
-  </div>
+<div class="wrap">
+  <div class="kicker"><i></i>Analyse gratuite</div>
+  <h1>Déposez votre contrat,<br>on vous dit <span class="mark">tout.</span></h1>
+  <p>PDF de votre contrat d'assurance habitation ou auto. L'analyse prend quelques secondes.</p>
+</div>
 </div>
 
 <div class="wrap">
-  <div class="card">
-    <!-- Dropzone -->
-    <div class="drop" id="drop" onclick="document.getElementById('fileInput').click()">
-      <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
-      <h3>Glissez votre contrat ici</h3>
-      <p>ou cliquez pour choisir un fichier</p>
-      <div class="formats">PDF · jusqu'à 10 Mo</div>
-    </div>
-    <input type="file" id="fileInput" accept="application/pdf" style="display:none" onchange="onFile(this.files[0])">
-
-    <!-- Fichier chargé -->
-    <div class="file-loaded" id="fileLoaded">
-      <div class="fic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
-      <div class="finfo"><b id="fileName">contrat.pdf</b><small id="fileSize">—</small></div>
-      <button class="file-remove" onclick="clearFile()" aria-label="Retirer">×</button>
-    </div>
-
-    <!-- Tons -->
-    <div class="tone-block">
-      <span class="tone-label">Ton de l'analyse</span>
-      <div class="tones" id="tones">
-        <button class="tone active" data-ton="Classique" onclick="setTon(this)">📋 Classique</button>
-        <button class="tone" data-ton="Simplifié" onclick="setTon(this)">💡 Simplifié</button>
-        <button class="tone" data-ton="Frérot" onclick="setTon(this)">😎 Frérot</button>
-      </div>
-    </div>
-
-    <!-- Consentement (optionnel ici, sert au lead) -->
-    <label class="consent">
-      <input type="checkbox" id="leadConsent">
-      <span class="cm-box" aria-hidden="true"></span>
-      <span>Je souhaite aussi recevoir des offres moins chères : mon dossier pourra être transmis <b>uniquement aux assureurs partenaires</b>, conformément à la <a href="politique-confidentialite.html" target="_blank">politique de confidentialité</a>. <i>(facultatif)</i></span>
-    </label>
-
-    <button class="btn btn-main" id="analyzeBtn" onclick="launch()" disabled>Analyser mon contrat</button>
-    <div class="err-msg" id="errMsg"></div>
+<div class="card">
+  <div class="drop" id="drop" onclick="document.getElementById('fileInput').click()">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+    <h3>Glissez votre contrat ici</h3>
+    <p>ou cliquez pour choisir un fichier</p>
+    <div class="formats">PDF · jusqu'à 20 Mo</div>
   </div>
+  <input type="file" id="fileInput" accept="application/pdf" style="display:none" onchange="onFile(this.files[0])">
+
+  <div class="file-loaded" id="fileLoaded">
+    <div class="fic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+    <div class="finfo"><b id="fileName">contrat.pdf</b><small id="fileSize">—</small></div>
+    <button class="file-remove" onclick="clearFile()" aria-label="Retirer">×</button>
+  </div>
+
+  <div class="tone-block">
+    <span class="tone-label">Ton de l'analyse</span>
+    <div class="tones" id="tones">
+      <button class="tone active" data-ton="Classique" onclick="setTon(this)">📋 Classique</button>
+      <button class="tone" data-ton="Simplifié" onclick="setTon(this)">💡 Simplifié</button>
+      <button class="tone" data-ton="Frérot" onclick="setTon(this)">😎 Frérot</button>
+    </div>
+  </div>
+
+  <label class="consent">
+    <input type="checkbox" id="leadConsent">
+    <span class="cm-box" aria-hidden="true"></span>
+    <span>Je souhaite aussi recevoir des offres moins chères : mon dossier pourra être transmis <b>uniquement aux assureurs partenaires</b>, conformément à la <a href="politique-confidentialite.html" target="_blank">politique de confidentialité</a>. <i>(facultatif)</i></span>
+  </label>
+
+  <button class="btn btn-main" id="analyzeBtn" onclick="launch()" disabled>Analyser mon contrat</button>
+  <div class="err-msg" id="errMsg"></div>
+</div>
 </div>
 
 <!-- OVERLAY DE SCAN -->
 <div class="scan-overlay" id="scanOverlay">
-  <div class="scan-doc">
-    <div class="lines"><i></i><i></i><i></i><i></i><i></i></div>
-    <div class="scan-beam"></div>
-  </div>
-  <h2>Analyse en cours…</h2>
-  <p>Notre IA lit votre contrat ligne par ligne et identifie les points clés.</p>
-  <div class="scan-steps" id="scanSteps">Lecture du document…</div>
+<div class="scan-doc">
+  <div class="lines"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="scan-beam"></div>
+</div>
+<h2 id="scanTitle">Lecture du PDF…</h2>
+<p id="scanDesc">Extraction du texte de votre contrat en cours.</p>
+<div class="scan-steps" id="scanSteps"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 </div>
 
 <script>
-let currentFile=null;
-let currentTon='Classique';
+// Config PDF.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// pré-sélectionner le ton depuis l'URL (?ton=...) si présent
+let currentFile = null;
+let currentTon = 'Classique';
+
+// Pré-sélectionner le ton depuis l'URL (?ton=...)
 (function(){
-  const p=new URLSearchParams(location.search);
-  const t=p.get('ton');
+  const p = new URLSearchParams(location.search);
+  const t = p.get('ton');
   if(t){
-    const btn=document.querySelector(`.tone[data-ton="${t}"]`);
-    if(btn){document.querySelectorAll('.tone').forEach(x=>x.classList.remove('active'));btn.classList.add('active');currentTon=t;}
+    const btn = document.querySelector(`.tone[data-ton="${t}"]`);
+    if(btn){ document.querySelectorAll('.tone').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); currentTon=t; }
   }
 })();
 
 function setTon(btn){
   document.querySelectorAll('.tone').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  currentTon=btn.dataset.ton;
+  currentTon = btn.dataset.ton;
 }
 
 function onFile(file){
-  if(!file)return;
-  if(file.type!=='application/pdf'){showErr("Merci de déposer un fichier PDF.");return;}
-  if(file.size>10*1024*1024){showErr("Le fichier dépasse 10 Mo.");return;}
+  if(!file) return;
+  if(file.type !== 'application/pdf'){ showErr("Merci de déposer un fichier PDF."); return; }
+  if(file.size > 20*1024*1024){ showErr("Le fichier dépasse 20 Mo."); return; }
   hideErr();
-  currentFile=file;
-  document.getElementById('drop').style.display='none';
-  document.getElementById('fileName').textContent=file.name;
-  document.getElementById('fileSize').textContent=(file.size/1024/1024).toFixed(2)+' Mo';
+  currentFile = file;
+  document.getElementById('drop').style.display = 'none';
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = (file.size/1024/1024).toFixed(2) + ' Mo';
   document.getElementById('fileLoaded').classList.add('show');
-  document.getElementById('analyzeBtn').disabled=false;
+  document.getElementById('analyzeBtn').disabled = false;
 }
-function clearFile(){
-  currentFile=null;
-  document.getElementById('fileInput').value='';
-  document.getElementById('drop').style.display='block';
-  document.getElementById('fileLoaded').classList.remove('show');
-  document.getElementById('analyzeBtn').disabled=true;
-}
-function showErr(m){const e=document.getElementById('errMsg');e.textContent=m;e.classList.add('show');}
-function hideErr(){document.getElementById('errMsg').classList.remove('show');}
 
-/* drag & drop */
-const drop=document.getElementById('drop');
+function clearFile(){
+  currentFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('drop').style.display = 'block';
+  document.getElementById('fileLoaded').classList.remove('show');
+  document.getElementById('analyzeBtn').disabled = true;
+}
+
+function showErr(m){ const e=document.getElementById('errMsg'); e.textContent=m; e.classList.add('show'); }
+function hideErr(){ document.getElementById('errMsg').classList.remove('show'); }
+
+// Drag & drop
+const drop = document.getElementById('drop');
 ['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
 ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
-drop.addEventListener('drop',e=>{if(e.dataTransfer.files[0])onFile(e.dataTransfer.files[0]);});
+drop.addEventListener('drop',e=>{ if(e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
 
-/* étapes animées pendant le scan */
-const steps=["Lecture du document…","Identification du type de contrat…","Analyse des garanties…","Vérification des franchises…","Calcul du score de protection…","Finalisation…"];
-let stepIdx=0,stepTimer=null;
-function cycleSteps(){
-  document.getElementById('scanSteps').textContent=steps[stepIdx%steps.length];
-  stepIdx++;
+// Extraire le texte du PDF avec PDF.js (côté client, rapide)
+async function extractTextFromPDF(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const totalPages = pdf.numPages;
+  let fullText = '';
+
+  setProgress(10, `Lecture page 1/${totalPages}…`);
+
+  for(let i = 1; i <= totalPages; i++){
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    const pageText = content.items.map(item => item.str).join(' ');
+    fullText += pageText + '\n';
+    const pct = 10 + Math.round((i / totalPages) * 50);
+    setProgress(pct, `Lecture page ${i}/${totalPages}…`);
+  }
+
+  return fullText.trim();
 }
 
-/* lancer l'analyse */
+function setProgress(pct, label){
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('scanSteps').textContent = label;
+}
+
+function setScanState(title, desc){
+  document.getElementById('scanTitle').textContent = title;
+  document.getElementById('scanDesc').textContent = desc;
+}
+
 async function launch(){
-  if(!currentFile)return;
+  if(!currentFile) return;
   hideErr();
   document.getElementById('scanOverlay').classList.add('show');
-  stepIdx=0;cycleSteps();stepTimer=setInterval(cycleSteps,2200);
 
-  try{
-    // PDF -> base64
-    const base64=await fileToBase64(currentFile);
+  try {
+    // ÉTAPE 1 : Extraction texte PDF côté client
+    setScanState('Lecture du PDF…', 'Extraction du texte de votre contrat.');
+    setProgress(5, 'Initialisation…');
 
-    const res=await fetch('/api/analyze',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({pdf_base64:base64,ton:currentTon})
-    });
-    const data=await res.json();
+    const texte = await extractTextFromPDF(currentFile);
 
-    if(!res.ok||!data.ok){
-      throw new Error(data.error||"L'analyse a échoué.");
+    if(!texte || texte.length < 100){
+      throw new Error("Le PDF semble vide ou non lisible. Essayez un autre fichier.");
     }
 
-    // si l'utilisateur a coché le lead, on l'enregistrera après (page résultat).
-    // On stocke le résultat + le flag lead pour la page résultat.
-    sessionStorage.setItem('mc_analysis',JSON.stringify(data.analysis));
-    sessionStorage.setItem('mc_lead_optin',document.getElementById('leadConsent').checked?'1':'0');
+    // Limite à 80 000 caractères (largement suffisant pour un contrat)
+    const texteEnvoye = texte.slice(0, 80000);
 
-    // redirection vers la page résultat
-    window.location.href='resultat.html';
+    // ÉTAPE 2 : Envoi à l'API
+    setScanState('Analyse en cours…', 'Notre IA lit votre contrat ligne par ligne.');
+    setProgress(65, 'Envoi à l\'IA…');
 
-  }catch(err){
-    clearInterval(stepTimer);
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ texte: texteEnvoye, ton: currentTon })
+    });
+
+    setProgress(85, 'Traitement de l\'analyse…');
+
+    // Lire la réponse en texte d'abord pour débugger si besoin
+    const rawText = await res.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch(e) {
+      console.error('Réponse non-JSON reçue:', rawText.slice(0, 300));
+      throw new Error("Réponse inattendue du serveur. Réessayez dans un instant.");
+    }
+
+    if(!res.ok || !data.ok){
+      throw new Error(data.error || "L'analyse a échoué.");
+    }
+
+    setProgress(100, 'Terminé !');
+
+    // Stocker et rediriger
+    sessionStorage.setItem('mc_analysis', JSON.stringify(data.analysis));
+    sessionStorage.setItem('mc_lead_optin', document.getElementById('leadConsent').checked ? '1' : '0');
+
+    setTimeout(() => { window.location.href = 'resultat.html'; }, 400);
+
+  } catch(err) {
     document.getElementById('scanOverlay').classList.remove('show');
-    showErr(err.message||"Une erreur est survenue. Réessayez.");
+    showErr(err.message || "Une erreur est survenue. Réessayez.");
   }
-}
-
-function fileToBase64(file){
-  return new Promise((resolve,reject)=>{
-    const r=new FileReader();
-    r.onload=()=>resolve(r.result.split(',')[1]); // retire le préfixe data:...
-    r.onerror=()=>reject(new Error("Lecture du fichier impossible."));
-    r.readAsDataURL(file);
-  });
 }
 </script>
 </body>
