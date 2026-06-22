@@ -250,39 +250,32 @@ async function launch(){
   document.getElementById('scanOverlay').classList.add('show');
 
   try {
-    // ÉTAPE 1 : Extraction texte PDF côté client
-    setScanState('Lecture du PDF…', 'Extraction du texte de votre contrat.');
-    setProgress(5, 'Initialisation…');
+    // ÉTAPE 1 : Convertir le PDF en base64
+    setScanState('Lecture du PDF…', 'Préparation de votre contrat.');
+    setProgress(10, 'Chargement du fichier…');
 
-    const texte = await extractTextFromPDF(currentFile);
+    const pdf_base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = () => reject(new Error("Impossible de lire le fichier."));
+      reader.readAsDataURL(currentFile);
+    });
 
-    if(!texte || texte.length < 100){
-      throw new Error("Le PDF semble vide ou non lisible. Essayez un autre fichier.");
-    }
+    // ÉTAPE 2 : Envoi à Cloudflare Worker
+    setScanState('Analyse en cours…', 'Notre IA lit votre contrat page par page.');
+    setProgress(30, "Envoi à l'IA…");
 
-    // Limite à 80 000 caractères (largement suffisant pour un contrat)
-    // On prend le début ET la fin du contrat (conditions générales souvent à la fin)
-const debut = texte.slice(0, 3000);
-const fin = texte.slice(-2000);
-const texteEnvoye = debut + '\n\n[...]\n\n' + fin;
-
-    // ÉTAPE 2 : Envoi à l'API
-    setScanState('Analyse en cours…', 'Notre IA lit votre contrat ligne par ligne.');
-    setProgress(65, 'Envoi à l\'IA…');
-
-    // Animation de progression pendant l'attente Anthropic
-    let pct = 65;
+    let pct = 30;
     const progressMessages = ['Lecture des garanties…','Détection des exclusions…','Calcul du score…','Vérification des franchises…','Finalisation du rapport…'];
     let msgIdx = 0;
-    setScanState('Analyse en cours…', 'Notre IA lit votre contrat ligne par ligne.');
     const progressTimer = setInterval(() => {
-      if(pct < 92){ pct += 3; setProgress(pct, progressMessages[msgIdx % progressMessages.length]); msgIdx++; }
-    }, 1800);
+      if(pct < 92){ pct += 2; setProgress(pct, progressMessages[msgIdx % progressMessages.length]); msgIdx++; }
+    }, 2000);
 
     const res = await fetch('https://moncontrat-analyze.mxm-lefevre.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ texte: texteEnvoye, ton: currentTon })
+      body: JSON.stringify({ pdf_base64, ton: currentTon })
     });
 
     clearInterval(progressTimer);
