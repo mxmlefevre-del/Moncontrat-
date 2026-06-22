@@ -261,7 +261,10 @@ async function launch(){
     }
 
     // Limite à 80 000 caractères (largement suffisant pour un contrat)
-    const texteEnvoye = texte.slice(0, 15000);
+    // On prend le début ET la fin du contrat (conditions générales souvent à la fin)
+const debut = texte.slice(0, 3000);
+const fin = texte.slice(-2000);
+const texteEnvoye = debut + '\n\n[...]\n\n' + fin;
 
     // ÉTAPE 2 : Envoi à l'API
     setScanState('Analyse en cours…', 'Notre IA lit votre contrat ligne par ligne.');
