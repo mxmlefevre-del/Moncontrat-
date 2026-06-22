@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Erreur comparaison — MonContrat.app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;--accent:#FF2D55;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);--line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);--card-shadow:0 24px 60px rgba(20,30,70,.10);--disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--body);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(800px 500px at 50% -10%,rgba(255,45,85,.08),transparent 70%),#fff}
+
+/* NAV */
+.nav{border-bottom:1px solid var(--line);padding:0 28px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.85);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:-.02em;text-decoration:none;color:var(--ink)}
+.brand .ext{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.logo-glyph{width:30px;height:30px}
+
+/* MAIN */
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+
+.card{max-width:600px;width:100%;text-align:center}
+
+/* ILLUSTRATION ANIMÉE */
+.illustration{position:relative;width:180px;height:180px;margin:0 auto 36px}
+.doc{width:110px;height:135px;background:#fff;border:2px solid var(--line-2);border-radius:14px;position:absolute;box-shadow:var(--card-shadow);padding:16px;display:flex;flex-direction:column;gap:8px}
+.doc .bar{height:7px;border-radius:4px;background:#EEF0F4}
+.doc .bar.s{width:65%}.doc .bar.hl{background:var(--hl)}
+.doc-a{left:0;top:18px;transform:rotate(-8deg);animation:wobbleA 3s ease-in-out infinite}
+.doc-b{right:0;top:18px;transform:rotate(8deg);animation:wobbleB 3s ease-in-out infinite}
+@keyframes wobbleA{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(-10deg) translateY(-4px)}}
+@keyframes wobbleB{0%,100%{transform:rotate(8deg) translateY(0)}50%{transform:rotate(10deg) translateY(-4px)}}
+.clash{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:36px;animation:pop 1.2s ease-in-out infinite}
+@keyframes pop{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-55%) scale(1.15)}}
+
+/* TEXTE */
+.kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:14px}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(26px,5vw,38px);letter-spacing:-.035em;line-height:1.08;margin-bottom:16px}
+.subtitle{color:var(--mute);font-size:15.5px;line-height:1.65;font-weight:500;max-width:460px;margin:0 auto 32px}
+
+/* BADGES TYPES */
+.type-badges{display:flex;gap:10px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
+.type-badge{font-family:var(--mono);font-size:11.5px;font-weight:700;border:1px solid var(--line-2);border-radius:999px;padding:8px 15px;color:var(--mute);background:#fff}
+.type-badge.a{border-color:rgba(255,45,85,.3);background:var(--hl-soft);color:#9B1733}
+.type-badge.b{border-color:rgba(61,91,245,.25);background:rgba(61,91,245,.06);color:#26379E}
+
+/* ACTIONS */
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:12px;padding:13px 22px;transition:transform .2s,box-shadow .2s;font-family:inherit}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 28px rgba(255,45,85,.26)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(255,45,85,.34)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3)}
+
+/* TIPS */
+.tips{background:var(--hl-soft);border:1px solid rgba(255,45,85,.15);border-radius:18px;padding:24px 28px;text-align:left;max-width:500px;margin:0 auto}
+.tips-title{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.tips ul{display:flex;flex-direction:column;gap:9px;list-style:none}
+.tips ul li{font-size:13.5px;color:var(--mute);line-height:1.5;font-weight:500;display:flex;gap:10px;align-items:flex-start}
+.tips ul li:before{content:"→";color:var(--accent);font-weight:700;flex:none;margin-top:1px}
+
+footer{border-top:1px solid var(--line);padding:22px 24px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--soft)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient></defs></svg>
+
+<nav class="nav">
+  <a class="brand" href="index.html">
+    <svg class="logo-glyph" viewBox="0 0 34 34"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+    MonContrat<span class="ext">.app</span>
+  </a>
+</nav>
+
+<main>
+  <div class="card">
+
+    <div class="illustration">
+      <div class="doc doc-a"><div class="bar hl"></div><div class="bar"></div><div class="bar s"></div><div class="bar"></div></div>
+      <div class="clash" id="clashIcon">💥</div>
+      <div class="doc doc-b"><div class="bar hl" style="background:#C7D2FF"></div><div class="bar"></div><div class="bar s"></div><div class="bar"></div></div>
+    </div>
+
+    <span class="kicker" id="kicker">Erreur de comparaison</span>
+    <h1 id="title">Ces deux-là ne s'entendent pas très bien.</h1>
+    <p class="subtitle" id="msg">On a tout essayé pour les réconcilier, mais certaines choses ne se comparent pas — comme une pizza et une crêpe. Délicieuses, mais pas interchangeables.</p>
+
+    <div class="type-badges" id="badges" style="display:none"></div>
+
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="history.back()">← Réessayer</button>
+      <button class="btn btn-main" onclick="location.href='comparateur.html'">Nouvelle comparaison</button>
+    </div>
+
+    <div class="tips" id="tips">
+      <div class="tips-title">Pour que ça marche du premier coup</div>
+      <ul id="tipsList"></ul>
+    </div>
+
+  </div>
+</main>
+
+<footer>© 2026 moncontrat.app — On fait mieux la prochaine fois, promis.</footer>
+
+<script>
+const p = new URLSearchParams(location.search);
+const cas = p.get('cas');
+const typeA = p.get('a');
+const typeB = p.get('b');
+
+const configs = {
+  types_incompatibles: {
+    icon: '🤝',
+    kicker: 'Types incompatibles',
+    title: 'Ces deux-là ne jouent pas dans la même cour.',
+    msg: 'On ne peut comparer que des contrats du même type — habitation avec habitation, auto avec auto. Là vous nous avez mis deux adversaires de catégories différentes. C\'est comme comparer un vélo et un bateau : les deux transportent, mais pas pareil.',
+    badges: true,
+    tips: [
+      'Vérifiez que vos deux PDFs sont bien du même type (tous les deux habitation, ou tous les deux auto)',
+      'Si vous avez un contrat habitation et un contrat auto, analysez-les séparément',
+      'Vous pouvez aussi analyser chaque contrat individuellement avec notre outil d\'analyse'
+    ]
+  },
+  non_contrat: {
+    icon: '🤔',
+    kicker: 'Document non reconnu',
+    title: 'Hm, ça ressemble pas vraiment à un contrat.',
+    msg: 'L\'un de vos fichiers a l\'air d\'être autre chose qu\'un contrat d\'assurance. Facture, relevé de compte, photo de vacances — on accepte tout, sauf ça. Vérifiez que vous avez bien déposé les bons PDFs.',
+    badges: false,
+    tips: [
+      'Assurez-vous que les deux fichiers sont bien des contrats d\'assurance (conditions particulières ou générales)',
+      'Le PDF doit être lisible — pas une photo scannée en basse résolution',
+      'Si le fichier est protégé par un mot de passe, retirez-le d\'abord'
+    ]
+  },
+  illisible: {
+    icon: '🔍',
+    kicker: 'Fichier illisible',
+    title: 'On n\'a pas réussi à lire vos contrats.',
+    msg: 'L\'un de vos PDFs nous résiste. Il est peut-être protégé, corrompu, ou simplement en très mauvaise forme. Ça arrive même aux meilleurs contrats.',
+    badges: false,
+    tips: [
+      'Ouvrez d\'abord le PDF dans votre lecteur habituel pour vérifier qu\'il s\'affiche correctement',
+      'Si le fichier est protégé par un mot de passe, vous devez le retirer avant de le déposer',
+      'Essayez de réexporter le PDF depuis votre espace client assureur'
+    ]
+  }
+};
+
+const cfg = configs[cas] || {
+  icon: '💥',
+  kicker: 'Erreur inattendue',
+  title: 'Aïe. Quelque chose s\'est mal passé.',
+  msg: 'Notre IA a rencontré un problème inattendu. C\'est rare, c\'est gênant, et c\'est notre faute. Réessayez dans quelques instants — ça devrait rentrer dans l\'ordre.',
+  badges: false,
+  tips: [
+    'Réessayez la comparaison dans quelques secondes',
+    'Si le problème persiste, essayez avec des fichiers moins lourds (moins de 5 Mo chacun)',
+    'Contactez-nous à contact@moncontrat.app si ça continue'
+  ]
+};
+
+document.getElementById('clashIcon').textContent = cfg.icon;
+document.getElementById('kicker').textContent = cfg.kicker;
+document.getElementById('title').textContent = cfg.title;
+document.getElementById('msg').textContent = cfg.msg;
+
+if(cfg.badges && (typeA || typeB)){
+  const bd = document.getElementById('badges');
+  bd.style.display = 'flex';
+  if(typeA) bd.innerHTML += `<div class="type-badge a">Contrat A : ${typeA}</div>`;
+  if(typeB) bd.innerHTML += `<div class="type-badge b">Contrat B : ${typeB}</div>`;
+}
+
+const tipsList = document.getElementById('tipsList');
+(cfg.tips||[]).forEach(t => {
+  tipsList.innerHTML += `<li>${t}</li>`;
+});
+</script>
+</body>
+</html>

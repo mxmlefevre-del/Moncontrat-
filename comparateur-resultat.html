@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Résultat comparaison — MonContrat.app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF;--bg-2:#FBFBFD;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+  --blue:#3D5BF5;--blue-soft:rgba(61,91,245,.07);--hl-blue:#C7D2FF;
+  --risk:#FF3B3B;--warn:#FF9F1C;--ok:#13C29C;--info:#3D5BF5;
+  --line:rgba(11,14,26,.09);--line-2:rgba(11,14,26,.14);
+  --card-shadow:0 18px 50px rgba(20,30,70,.08);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;--body:Inter,-apple-system,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light;background:#fff}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{font-family:inherit}
+.wrap{width:min(1080px,calc(100% - 48px));margin:0 auto}
+::selection{background:var(--hl);color:var(--ink)}
+.mono-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
+.logo-glyph{width:32px;height:32px;flex:none}
+.nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.85);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid var(--line)}
+.nav-inner{height:68px;display:flex;align-items:center;justify-content:space-between;width:min(1080px,calc(100% - 48px));margin:0 auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:11px;padding:11px 18px;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-main{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;box-shadow:0 10px 26px rgba(255,45,85,.25)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,45,85,.33)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:rgba(11,14,26,.3)}
+
+/* SCAN INTRO */
+.scan{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;transition:opacity .6s ease}
+.scan.done{opacity:0;pointer-events:none}
+.scan-docs{display:flex;gap:18px;align-items:center}
+.scan-doc{width:90px;height:115px;background:#fff;border:1px solid var(--line);border-radius:10px;position:relative;overflow:hidden;box-shadow:var(--card-shadow);padding:14px}
+.scan-doc .l{height:6px;border-radius:4px;background:#EEF0F4;margin-bottom:9px}
+.scan-doc .l.s{width:60%}
+.scan-doc.a .l.hl{background:var(--hl)}
+.scan-doc.b .l.hl{background:var(--hl-blue)}
+.scan-beam{position:absolute;left:0;right:0;height:28px;animation:scanmove 1.6s ease-in-out infinite}
+.scan-doc.a .scan-beam{background:linear-gradient(180deg,transparent,rgba(255,45,85,.3),transparent)}
+.scan-doc.b .scan-beam{background:linear-gradient(180deg,transparent,rgba(61,91,245,.25),transparent);animation-delay:.3s}
+@keyframes scanmove{0%,100%{top:-28px}50%{top:115px}}
+.scan-vs{font-family:var(--disp);font-weight:800;font-size:18px;color:var(--soft)}
+.scan-txt{font-family:var(--mono);font-size:13px;color:var(--mute);letter-spacing:.06em}
+.scan-txt b{color:var(--accent)}
+
+/* HERO COMPARAISON */
+.head{padding:48px 0 36px}
+.head-top{margin-bottom:30px}
+.head-top h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+.head-meta{font-family:var(--mono);font-size:12.5px;color:var(--mute);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.head-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--soft);margin:0 4px}
+
+/* WINNER BANNER */
+.winner-banner{border-radius:22px;padding:36px;margin-bottom:32px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.winner-banner.A{background:linear-gradient(135deg,var(--hl-soft),#FFF0F4);border:1px solid rgba(255,45,85,.2)}
+.winner-banner.B{background:linear-gradient(135deg,var(--blue-soft),#EEF2FF);border:1px solid rgba(61,91,245,.2)}
+.winner-crown{font-size:52px;flex:none}
+.winner-body{flex:1}
+.winner-body h2{font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.02em;margin-bottom:8px}
+.winner-body p{color:var(--mute);font-size:15px;line-height:1.6;font-weight:500;max-width:540px}
+.winner-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 13px;border-radius:999px;margin-bottom:12px;display:inline-block}
+.winner-banner.A .winner-tag{background:var(--hl);color:#9B1733}
+.winner-banner.B .winner-tag{background:var(--hl-blue);color:#26379E}
+
+/* SCORES */
+.scores-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin-bottom:32px}
+.score-col{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--card-shadow);text-align:center;position:relative}
+.score-col.winner{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,45,85,.12),var(--card-shadow)}
+.score-col.winner-b{border-color:var(--blue);box-shadow:0 0 0 3px rgba(61,91,245,.12),var(--card-shadow)}
+.score-col-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:14px;display:inline-block}
+.score-col.winner .score-col-tag{background:var(--hl);color:#9B1733}
+.score-col.winner-b .score-col-tag{background:var(--hl-blue);color:#26379E}
+.score-col:not(.winner):not(.winner-b) .score-col-tag{background:var(--bg-2);color:var(--soft)}
+.score-col h3{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.02em;margin-bottom:16px}
+.score-num{font-family:var(--disp);font-weight:800;font-size:56px;letter-spacing:-.04em;line-height:1}
+.score-num small{font-size:18px;color:var(--soft)}
+.score-verdict{font-size:13px;color:var(--mute);line-height:1.5;margin-top:10px;font-weight:500}
+.vs-mid{font-family:var(--disp);font-weight:800;font-size:20px;color:var(--soft);text-align:center}
+
+/* TABLEAU COMPARAISON */
+.sec-head{display:flex;align-items:center;gap:12px;margin:34px 0 18px}
+.sec-head .idx{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.sec-head h3{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em}
+.sec-head .line{flex:1;height:1px;background:var(--line)}
+
+.cmp-table{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--card-shadow)}
+.cmp-table th{padding:14px 18px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);background:var(--bg-2);border-bottom:1px solid var(--line)}
+.cmp-table th:nth-child(2){background:rgba(255,45,85,.05);color:#9B1733}
+.cmp-table th:nth-child(3){background:rgba(61,91,245,.05);color:#26379E}
+.cmp-table td{padding:13px 18px;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:middle}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table tr:nth-child(even) td{background:rgba(11,14,26,.02)}
+.cmp-table td:nth-child(2){background:rgba(255,45,85,.03)}
+.cmp-table td:nth-child(3){background:rgba(61,91,245,.03)}
+.cmp-table td:first-child{font-weight:600;color:var(--ink)}
+.g-chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600}
+.g-chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.g-chip.ok .dot{background:var(--ok)}.g-chip.absent .dot{background:var(--risk)}.g-chip.check .dot{background:var(--warn)}
+.g-chip.ok{color:#0A8E72}.g-chip.absent{color:var(--risk)}.g-chip.check{color:#C77800}
+.g-chip small{color:var(--mute);font-weight:400}
+.avantage{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.avantage.A{background:var(--hl);color:#9B1733}
+.avantage.B{background:var(--hl-blue);color:#26379E}
+.avantage.egal{background:#F0F0F4;color:var(--soft)}
+
+/* POINTS CLÉS */
+.points{display:grid;gap:12px}
+.point{border:1px solid var(--line);border-radius:15px;padding:20px 22px;background:#fff;display:flex;gap:16px;align-items:flex-start}
+.point .pic{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-size:19px}
+.point.risk{border-left:3px solid var(--risk)}.point.risk .pic{background:rgba(255,59,59,.1)}
+.point.warn{border-left:3px solid var(--warn)}.point.warn .pic{background:rgba(255,159,28,.12)}
+.point.good{border-left:3px solid var(--ok)}.point.good .pic{background:rgba(19,194,156,.12)}
+.point.info{border-left:3px solid var(--info)}.point.info .pic{background:rgba(61,91,245,.1)}
+.point h4{font-family:var(--disp);font-weight:800;font-size:16.5px;letter-spacing:-.01em;margin-bottom:6px}
+.point p{color:var(--mute);font-size:14.5px;line-height:1.6;font-weight:500}
+
+/* CONSEIL FINAL */
+.conseil{background:linear-gradient(135deg,#F4F7FF,#EFF3FF);border:1px solid rgba(61,91,245,.18);border-radius:16px;padding:28px 30px;margin-bottom:32px}
+.conseil h4{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:-.01em;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.conseil p{color:var(--mute);font-size:15px;line-height:1.65;font-weight:500}
+
+/* CTA */
+.cta-final{margin:46px 0 30px;background:linear-gradient(160deg,#FF3D63,#E0234A);border-radius:24px;padding:44px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.cta-final:before{content:"";position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 60%)}
+.cta-final h3{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.035em;line-height:1.05;margin-bottom:24px;position:relative}
+.cta-eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.8);position:relative;display:block;margin-bottom:16px}
+.cta-go{background:#fff;color:#E0234A;font-size:17px;font-weight:800;padding:18px 34px;border-radius:14px;position:relative;box-shadow:0 14px 34px rgba(120,0,25,.34)}
+.cta-go:hover{transform:translateY(-3px);box-shadow:0 20px 44px rgba(120,0,25,.42)}
+.cta-sub{display:block;margin-top:14px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.78);position:relative}
+
+.disclaimer{font-family:var(--mono);font-size:11.5px;color:var(--soft);line-height:1.7;text-align:center;max-width:680px;margin:0 auto;padding:30px 0 60px}
+footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--soft)}
+.reveal{opacity:0;transform:translateY(20px);animation:rise .7s ease forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+@media(max-width:680px){.scores-grid{grid-template-columns:1fr;}.vs-mid{display:none}.cmp-table{font-size:12px}.cmp-table td,.cmp-table th{padding:10px 12px}}
+@media(max-width:560px){.wrap{width:calc(100% - 32px)}.nav-inner{width:calc(100% - 32px)}.cta-final{padding:32px 22px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
+</defs></svg>
+
+<!-- SCAN INTRO -->
+<div class="scan" id="scan">
+  <div class="scan-docs">
+    <div class="scan-doc a"><div class="l hl"></div><div class="l"></div><div class="l s"></div><div class="l"></div><div class="scan-beam"></div></div>
+    <div class="scan-vs">VS</div>
+    <div class="scan-doc b"><div class="l hl"></div><div class="l"></div><div class="l s"></div><div class="l"></div><div class="scan-beam"></div></div>
+  </div>
+  <div class="scan-txt" id="scanTxt">Comparaison en cours<b>...</b></div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="logo-glyph" viewBox="0 0 34 34"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <button class="btn btn-ghost" onclick="location.href='comparateur.html'">Comparer à nouveau</button>
+  </div>
+</nav>
+
+<main class="wrap" id="result" style="visibility:hidden">
+  <header class="head">
+    <div class="head-top">
+      <span class="mono-label">Résultat de comparaison</span>
+      <h1 id="cTitle">Comparaison de deux contrats</h1>
+      <div class="head-meta" id="cMeta"></div>
+    </div>
+    <div class="winner-banner" id="winnerBanner">
+      <div class="winner-crown" id="winnerCrown">🏆</div>
+      <div class="winner-body">
+        <div class="winner-tag" id="winnerTag">Contrat A</div>
+        <h2 id="winnerTitle"></h2>
+        <p id="winnerRaison"></p>
+      </div>
+    </div>
+    <div class="scores-grid">
+      <div class="score-col" id="scoreColA">
+        <div class="score-col-tag">Contrat A</div>
+        <h3 id="titreA"></h3>
+        <div class="score-num"><span id="scoreA">0</span><small>/100</small></div>
+        <div class="score-verdict" id="verdictA"></div>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="score-col" id="scoreColB">
+        <div class="score-col-tag">Contrat B</div>
+        <h3 id="titreB"></h3>
+        <div class="score-num"><span id="scoreB">0</span><small>/100</small></div>
+        <div class="score-verdict" id="verdictB"></div>
+      </div>
+    </div>
+  </header>
+
+  <div id="sections"></div>
+
+  <section class="cta-final">
+    <span class="cta-eyebrow">Vous méritez le meilleur des deux</span>
+    <h3>Comparer c'est bien.<br>Économiser c'est mieux.</h3>
+    <button class="btn cta-go" onclick="location.href='analyser.html'">Analyser un contrat en détail</button>
+    <span class="cta-sub">Gratuit · sans engagement</span>
+  </section>
+
+  <p class="disclaimer" id="disclaimer"></p>
+</main>
+
+<footer><div class="wrap"><div class="foot">
+  <span>© 2026 moncontrat.app</span>
+  <span>Comparaison informative — ne constitue pas un conseil personnalisé</span>
+</div></div></footer>
+
+<script>
+let C = null;
+try {
+  const raw = sessionStorage.getItem('mc_compare');
+  if(raw) C = JSON.parse(raw);
+} catch(e){}
+
+if(!C){ document.getElementById('scan').classList.add('done'); document.getElementById('result').style.visibility='visible'; document.getElementById('cTitle').textContent="Aucune comparaison disponible"; }
+
+const $=id=>document.getElementById(id);
+
+function render(){
+  if(!C) return;
+
+  const g = C.gagnant; // "A" ou "B"
+  const ca = C.contrat_a || {};
+  const cb = C.contrat_b || {};
+
+  // Titre
+  $('cTitle').textContent = `${ca.titre||'Contrat A'} vs ${cb.titre||'Contrat B'}`;
+  $('cMeta').innerHTML = [C.type_analyse, 'Ton : '+(C.ton||'Classique')].filter(Boolean).map(x=>`<span>${x}</span>`).join('<span class="dot"></span>');
+
+  // Winner banner
+  const banner = $('winnerBanner');
+  banner.classList.add(g);
+  $('winnerTag').textContent = g === 'A' ? 'Contrat A — Gagnant' : 'Contrat B — Gagnant';
+  $('winnerTitle').textContent = g === 'A' ? (ca.titre||'Contrat A') : (cb.titre||'Contrat B');
+  $('winnerRaison').textContent = C.gagnant_raison || '';
+
+  // Scores
+  const colA = $('scoreColA');
+  const colB = $('scoreColB');
+  if(g === 'A') colA.classList.add('winner');
+  else colB.classList.add('winner-b');
+
+  $('titreA').textContent = ca.titre || 'Contrat A';
+  $('titreB').textContent = cb.titre || 'Contrat B';
+  $('verdictA').textContent = ca.verdict || '';
+  $('verdictB').textContent = cb.verdict || '';
+
+  // Animation scores
+  setTimeout(()=>{
+    let nA=0, nB=0;
+    const sA = typeof ca.score==='number' ? ca.score : 0;
+    const sB = typeof cb.score==='number' ? cb.score : 0;
+    const t=setInterval(()=>{
+      nA=Math.min(nA+2,sA); nB=Math.min(nB+2,sB);
+      $('scoreA').textContent=nA; $('scoreB').textContent=nB;
+      if(nA>=sA && nB>=sB) clearInterval(t);
+    },22);
+  },300);
+
+  // Sections
+  let html = '';
+
+  // Tableau comparaison garanties
+  const cmp = C.comparaison || [];
+  if(cmp.length){
+    html += `<section class="reveal"><div class="sec-head"><span class="idx">01</span><h3>Garantie par garantie</h3><div class="line"></div></div>
+    <table class="cmp-table">
+      <thead><tr><th>Garantie</th><th>Contrat A</th><th>Contrat B</th><th>Avantage</th></tr></thead>
+      <tbody>${cmp.map(row=>{
+        const av = row.avantage||'egal';
+        const avLabel = av==='A'?'A':av==='B'?'B':'Égal';
+        const avClass = av==='A'?'A':av==='B'?'B':'egal';
+        const chipA = `<div class="g-chip ${row.a?.etat||'check'}"><span class="dot"></span>${row.a?.detail||'—'}</div>`;
+        const chipB = `<div class="g-chip ${row.b?.etat||'check'}"><span class="dot"></span>${row.b?.detail||'—'}</div>`;
+        return `<tr><td>${row.garantie||''}</td><td>${chipA}</td><td>${chipB}</td><td><span class="avantage ${avClass}">${avLabel}</span></td></tr>`;
+      }).join('')}</tbody>
+    </table></section>`;
+  }
+
+  // Points clés
+  const pts = C.points_cles || [];
+  if(pts.length){
+    const icons={risk:"⚠️",warn:"🔍",good:"✓",info:"ℹ️"};
+    html += `<section class="reveal"><div class="sec-head"><span class="idx">02</span><h3>Points clés</h3><div class="line"></div></div>
+    <div class="points">${pts.map(p=>`
+      <div class="point ${p.type||'info'}">
+        <div class="pic">${icons[p.type]||'ℹ️'}</div>
+        <div><h4>${p.titre||''}</h4><p>${p.texte||''}</p></div>
+      </div>`).join('')}</div></section>`;
+  }
+
+  // Conseil final
+  if(C.conseil_final){
+    html += `<div class="conseil reveal"><h4>💡 En résumé</h4><p>${C.conseil_final}</p></div>`;
+  }
+
+  $('sections').innerHTML = html;
+  $('disclaimer').textContent = C.disclaimer || "Cette comparaison est fournie à titre informatif. Elle ne constitue pas un conseil en assurance personnalisé.";
+}
+
+// Scan intro
+const steps=["Lecture des contrats","Comparaison des garanties","Analyse des franchises","Calcul des scores","Préparation du verdict"];
+let si=0;
+const txt=$("scanTxt");
+const cycle=setInterval(()=>{si++;if(si<steps.length)txt.innerHTML=steps[si]+'<b>...</b>';},700);
+setTimeout(()=>{
+  clearInterval(cycle);
+  $("scan").classList.add("done");
+  $("result").style.visibility="visible";
+  render();
+},3500);
+
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+  clearInterval(cycle);$("scan").style.display="none";$("result").style.visibility="visible";render();
+}
+</script>
+</body>
+</html>
