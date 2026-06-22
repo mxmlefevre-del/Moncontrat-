@@ -25,8 +25,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 ::selection{background:var(--hl);color:var(--ink)}
 .wrap{width:min(1180px,calc(100% - 36px));margin:0 auto}
 .mark{background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat;background-size:100% .32em;background-position:0 88%;padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
-
-/* NAV flottante */
 .brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
 .brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
 .logo-glyph{width:32px;height:32px;flex:none}
@@ -48,8 +46,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .btn-main:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 .nav .btn-main{box-shadow:0 8px 22px rgba(255,45,85,.32)}
 .nav .btn-client{background:#fff;color:var(--ink)}
-
-/* MENU BURGER */
 .menu-overlay{position:fixed;inset:0;z-index:80;background:rgba(11,14,26,.5);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s}
 .menu-overlay.show{opacity:1;pointer-events:auto}
 .menu-panel{position:absolute;top:0;right:0;height:100%;width:min(380px,86vw);background:#fff;box-shadow:-20px 0 60px rgba(20,30,70,.2);padding:28px;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s cubic-bezier(.3,.9,.3,1);overflow-y:auto}
@@ -63,21 +59,14 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .menu-links a{font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--ink);padding:9px 0;transition:color .2s,padding-left .2s}
 .menu-links a:hover{color:var(--accent);padding-left:6px}
 .menu-foot{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
-
-/* HERO */
 .hero{padding:132px 0 16px;text-align:center}
 .hero-kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 18px;margin-bottom:22px;box-shadow:0 6px 24px rgba(20,30,70,.06)}
 .hero-kicker i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
 h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,5vw,54px);line-height:1.05;letter-spacing:-.04em}
 .hero-sub{margin:16px auto 0;font-size:clamp(15px,1.6vw,18px);line-height:1.55;color:var(--mute);max-width:540px;font-weight:500}
-
-/* SHELL */
 .shell{width:min(900px,calc(100% - 36px));margin:24px auto 60px}
-
-/* DEUX ZONES DE DÉPÔT */
 .drops{display:grid;grid-template-columns:1fr 1fr;gap:18px;position:relative}
 .vs-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;width:48px;height:48px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:var(--card-shadow);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:15px;color:var(--ink)}
-
 .col{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--card-shadow);overflow:hidden}
 .col-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
 .col.A .col-head{background:linear-gradient(180deg,var(--hl-soft),transparent)}
@@ -86,7 +75,6 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,5vw,54px);line-h
 .col.A .col-tag{background:var(--hl);color:#9B1733}
 .col.B .col-tag{background:var(--hl-blue);color:#26379E}
 .col-head b{font-family:var(--disp);font-weight:800;font-size:15px}
-
 .drop{margin:18px;border:2px dashed var(--line-2);border-radius:16px;padding:34px 18px;text-align:center;cursor:pointer;transition:.2s}
 .col.A .drop:hover,.col.A .drop.drag{border-color:var(--accent);background:var(--hl-soft)}
 .col.B .drop:hover,.col.B .drop.drag{border-color:var(--blue);background:var(--blue-soft)}
@@ -99,7 +87,6 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,5vw,54px);line-h
 .drop h3{font-family:var(--disp);font-weight:800;font-size:16px;margin-bottom:5px}
 .drop p{color:var(--mute);font-size:13px;font-weight:500}
 .drop .formats{font-family:var(--mono);font-size:10.5px;color:var(--soft);margin-top:11px;letter-spacing:.04em}
-
 .file-loaded{display:none;align-items:center;gap:12px;margin:18px;padding:14px 16px;border-radius:13px}
 .file-loaded.show{display:flex}
 .col.A .file-loaded{background:var(--hl-soft);border:1px solid rgba(255,45,85,.2)}
@@ -110,20 +97,15 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,5vw,54px);line-h
 .file-loaded .finfo small{font-family:var(--mono);font-size:10.5px;color:var(--soft)}
 .file-remove{background:none;border:none;color:var(--soft);cursor:pointer;font-size:19px;padding:4px}
 .file-remove:hover{color:var(--accent)}
-
-/* TON */
 .tone-block{margin:26px auto 0;text-align:center}
 .tone-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);display:block;margin-bottom:12px}
 .tones{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
 .tone{font-size:13.5px;font-weight:600;border:1px solid var(--line-2);background:#fff;color:var(--ink);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.18s}
 .tone:hover{border-color:var(--accent)}
 .tone.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(255,45,85,.25)}
-
 .cmp-btn{margin:26px auto 0;display:block;width:min(420px,100%);font-size:15px;padding:16px 22px}
 .err-msg{display:none;margin:16px auto 0;max-width:520px;padding:13px 16px;border-radius:11px;background:rgba(255,59,59,.08);color:#D33;border:1px solid rgba(255,59,59,.25);font-size:13.5px;font-weight:600;text-align:center}
 .err-msg.show{display:block}
-
-/* OVERLAY SCAN */
 .scan-overlay{position:fixed;inset:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}
 .scan-overlay.show{display:flex}
 .scan-docs{display:flex;gap:20px;align-items:center;margin-bottom:28px}
@@ -139,32 +121,21 @@ h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,5vw,54px);line-h
 .scan-overlay h2{font-family:var(--disp);font-weight:800;font-size:23px;letter-spacing:-.02em;margin-bottom:9px}
 .scan-overlay p{color:var(--mute);font-size:14px;font-weight:500;max-width:340px}
 .scan-steps{font-family:var(--mono);font-size:12px;color:var(--accent);margin-top:16px;height:18px}
-
 footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
 .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
 .foot-links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;color:var(--soft);flex-wrap:wrap}
 .foot-links a:hover{color:var(--ink)}
 .foot-note{font-family:var(--mono);font-size:11px;color:var(--soft);width:100%;margin-top:8px}
-
 @media(max-width:880px){.nav-links{display:none}}
-@media(max-width:680px){
-  .drops{grid-template-columns:1fr;gap:14px}
-  .vs-badge{display:none}
-}
-@media(max-width:560px){
-  .hero{padding:118px 0 10px}
-  .nav.nav-hidden{transform:translateY(-140%);opacity:0}
-  .foot{justify-content:center;text-align:center}.foot-links{justify-content:center}
-}
+@media(max-width:680px){.drops{grid-template-columns:1fr;gap:14px}.vs-badge{display:none}}
+@media(max-width:560px){.hero{padding:118px 0 10px}.nav.nav-hidden{transform:translateY(-140%);opacity:0}.foot{justify-content:center;text-align:center}.foot-links{justify-content:center}}
 </style>
 </head>
 <body>
-
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
 </defs></svg>
 
-<!-- NAV -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html" aria-label="MonContrat.app">
@@ -193,7 +164,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   </div>
 </nav>
 
-<!-- MENU BURGER -->
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu(event)">
   <aside class="menu-panel" role="dialog" aria-label="Menu de navigation">
     <div class="menu-head"><span class="menu-title">Menu</span><button class="menu-close" onclick="closeMenu()" aria-label="Fermer">×</button></div>
@@ -209,7 +179,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   </aside>
 </div>
 
-<!-- HERO -->
 <header class="hero">
   <div class="wrap">
     <div class="hero-kicker"><i></i>Comparaison gratuite</div>
@@ -218,12 +187,9 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   </div>
 </header>
 
-<!-- SHELL -->
 <div class="shell">
   <div class="drops">
     <div class="vs-badge">VS</div>
-
-    <!-- CONTRAT A -->
     <div class="col A">
       <div class="col-head"><span class="col-tag">Contrat A</span><b>Votre contrat actuel</b></div>
       <div class="drop" id="dropA" onclick="document.getElementById('fileA').click()">
@@ -239,8 +205,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
         <button class="file-remove" onclick="clearFile('A')" aria-label="Retirer">×</button>
       </div>
     </div>
-
-    <!-- CONTRAT B -->
     <div class="col B">
       <div class="col-head"><span class="col-tag">Contrat B</span><b>L'autre offre</b></div>
       <div class="drop" id="dropB" onclick="document.getElementById('fileB').click()">
@@ -258,7 +222,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
     </div>
   </div>
 
-  <!-- TON -->
   <div class="tone-block">
     <span class="tone-label">Ton de la comparaison</span>
     <div class="tones" id="tones">
@@ -272,7 +235,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   <div class="err-msg" id="errMsg"></div>
 </div>
 
-<!-- OVERLAY SCAN -->
 <div class="scan-overlay" id="scanOverlay">
   <div class="scan-docs">
     <div class="scan-doc a"><div class="l hl"></div><div class="l"></div><div class="l s"></div><div class="l"></div><div class="scan-beam"></div></div>
@@ -284,7 +246,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   <div class="scan-steps" id="scanSteps">Lecture des contrats…</div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="wrap">
     <div class="foot">
@@ -306,12 +267,10 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
 </footer>
 
 <script>
-/* menu burger */
 function openMenu(){document.getElementById('menuOverlay').classList.add('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','true');}
 function closeMenu(e){if(e&&e.type==='click'&&e.target.id!=='menuOverlay'&&!e.target.classList.contains('menu-close'))return;document.getElementById('menuOverlay').classList.remove('show');document.getElementById('burgerBtn').setAttribute('aria-expanded','false');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
 
-/* nav cachée au scroll (mobile) */
 (function(){
   const nav=document.getElementById('nav'); if(!nav)return;
   let lastY=window.scrollY;
@@ -324,7 +283,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
   },{passive:true});
 })();
 
-/* ===== dépôt des fichiers ===== */
 let fileA=null, fileB=null, currentTon='Classique';
 
 function setTon(btn){
@@ -355,7 +313,6 @@ function refreshBtn(){ document.getElementById('cmpBtn').disabled = !(fileA && f
 function showErr(m){const e=document.getElementById('errMsg');e.textContent=m;e.classList.add('show');}
 function hideErr(){document.getElementById('errMsg').classList.remove('show');}
 
-/* drag & drop pour chaque zone */
 ['A','B'].forEach(side=>{
   const d=document.getElementById('drop'+side);
   ['dragover','dragenter'].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add('drag');}));
@@ -363,7 +320,6 @@ function hideErr(){document.getElementById('errMsg').classList.remove('show');}
   d.addEventListener('drop',e=>{if(e.dataTransfer.files[0])onFile(side,e.dataTransfer.files[0]);});
 });
 
-/* étapes animées */
 const steps=["Lecture des contrats…","Identification des types…","Extraction des garanties…","Comparaison ligne par ligne…","Calcul des scores…","Préparation du verdict…"];
 let stepIdx=0,stepTimer=null;
 function cycleSteps(){document.getElementById('scanSteps').textContent=steps[stepIdx%steps.length];stepIdx++;}
@@ -377,7 +333,6 @@ function fileToBase64(file){
   });
 }
 
-/* lancer la comparaison */
 async function launch(){
   if(!fileA||!fileB)return;
   hideErr();
@@ -386,13 +341,22 @@ async function launch(){
 
   try{
     const [b64A,b64B]=await Promise.all([fileToBase64(fileA),fileToBase64(fileB)]);
-    const res=await fetch('/api/compare',{
+
+    const rawRes=await fetch('https://moncontrat-compare.mxm-lefevre.workers.dev',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({pdf_a:b64A,pdf_b:b64B,ton:currentTon})
     });
-    const data=await res.json();
 
-    // cas d'erreur métier (types incompatibles, illisible, pas un contrat)
+    clearInterval(stepTimer);
+
+    const rawText=await rawRes.text();
+    let data;
+    try{ data=JSON.parse(rawText); }
+    catch(e){
+      console.error('Réponse non-JSON:',rawText.slice(0,300));
+      throw new Error("Réponse inattendue du serveur. Réessayez.");
+    }
+
     if(data && data.cas){
       const params=new URLSearchParams({cas:data.cas});
       if(data.type_a)params.set('a',data.type_a);
@@ -400,7 +364,7 @@ async function launch(){
       window.location.href='comparateur-erreur.html?'+params.toString();
       return;
     }
-    if(!res.ok||!data.ok){ throw new Error(data.error||"La comparaison a échoué."); }
+    if(!rawRes.ok||!data.ok){ throw new Error(data.error||"La comparaison a échoué."); }
 
     sessionStorage.setItem('mc_compare',JSON.stringify(data.comparison));
     window.location.href='comparateur-resultat.html';
