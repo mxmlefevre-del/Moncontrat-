@@ -279,7 +279,7 @@ const texteEnvoye = debut + '\n\n[...]\n\n' + fin;
       if(pct < 92){ pct += 3; setProgress(pct, progressMessages[msgIdx % progressMessages.length]); msgIdx++; }
     }, 1800);
 
-    const res = await fetch('/api/analyze', {
+    const res = await fetch('https://moncontrat-analyze.mxm-lefevre.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ texte: texteEnvoye, ton: currentTon })
