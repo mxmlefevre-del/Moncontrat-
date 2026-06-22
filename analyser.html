@@ -267,13 +267,22 @@ async function launch(){
     setScanState('Analyse en cours…', 'Notre IA lit votre contrat ligne par ligne.');
     setProgress(65, 'Envoi à l\'IA…');
 
+    // Animation de progression pendant l'attente Anthropic
+    let pct = 65;
+    const progressMessages = ['Lecture des garanties…','Détection des exclusions…','Calcul du score…','Vérification des franchises…','Finalisation du rapport…'];
+    let msgIdx = 0;
+    setScanState('Analyse en cours…', 'Notre IA lit votre contrat ligne par ligne.');
+    const progressTimer = setInterval(() => {
+      if(pct < 92){ pct += 3; setProgress(pct, progressMessages[msgIdx % progressMessages.length]); msgIdx++; }
+    }, 1800);
+
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ texte: texteEnvoye, ton: currentTon })
     });
 
-    setProgress(85, 'Traitement de l\'analyse…');
+    clearInterval(progressTimer);
 
     // Lire la réponse en texte d'abord pour débugger si besoin
     const rawText = await res.text();
