@@ -448,7 +448,7 @@ async function generate(){
   document.getElementById('genLoading').classList.add('show');
 
   try{
-    const res = await fetch('/api/document',{
+    const res = await fetch('https://moncontrat-resiliation.mxm-lefevre.workers.dev',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({type:motif, infos})
     });
@@ -538,7 +538,7 @@ async function sendDeal(){
       file_base64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej();r.readAsDataURL(dealFile);});
       file_name=dealFile.name;
     }
-    const res=await fetch('/api/lead',{
+    const res=await fetch('https://moncontrat-analyze.mxm-lefevre.workers.dev/lead',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         consent_partner:true,

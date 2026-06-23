@@ -344,7 +344,7 @@ async function send(){
   sendBtn.disabled=true;
   showTyping();
   try{
-    const res=await fetch('/api/sinistre',{
+    const res=await fetch('https://moncontrat-sinistre.mxm-lefevre.workers.dev',{
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({messages:history})
     });
