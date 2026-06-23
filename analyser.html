@@ -11,6 +11,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <!-- PDF.js pour extraction texte côté client -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, doc, updateDoc, increment, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDgY9s8tv6qG7f0fWHEeUpa6wJGjf6ZhuM",
+    authDomain: "moncontrat.firebaseapp.com",
+    projectId: "moncontrat",
+    storageBucket: "moncontrat.firebasestorage.app",
+    messagingSenderId: "770067071270",
+    appId: "1:770067071270:web:4614ca8716478be80c41e7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  window._mcDb = db;
+  window._mcCollection = collection;
+  window._mcAddDoc = addDoc;
+  window._mcDoc = doc;
+  window._mcUpdateDoc = updateDoc;
+  window._mcIncrement = increment;
+  window._mcServerTimestamp = serverTimestamp;
+
+  onAuthStateChanged(auth, (user) => {
+    window._mcCurrentUser = user;
+    if (!user) {
+      // Non connecté → rediriger vers index avec flag
+      localStorage.setItem('mc_pending_url', 'analyser.html');
+      window.location.href = 'index.html#login';
+    }
+  });
+</script>
 <style>
 :root{
 --bg:#FFFFFF;--ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
@@ -296,9 +332,31 @@ async function launch(){
 
     setProgress(100, 'Terminé !');
 
-    // Stocker et rediriger
+    // Stocker en session pour la page résultat
     sessionStorage.setItem('mc_analysis', JSON.stringify(data.analysis));
     sessionStorage.setItem('mc_lead_optin', document.getElementById('leadConsent').checked ? '1' : '0');
+
+    // Sauvegarder dans Firestore si connecté
+    const user = window._mcCurrentUser;
+    if(user && window._mcDb){
+      try {
+        const analysis = data.analysis;
+        const userAnalysesRef = window._mcCollection(window._mcDb, 'users', user.uid, 'analyses');
+        await window._mcAddDoc(userAnalysesRef, {
+          type_analyse: analysis.type || 'generique',
+          titre: analysis.titre || analysis.type_contrat || currentFile.name.replace('.pdf',''),
+          score: analysis.score || null,
+          ton: currentTon,
+          date: window._mcServerTimestamp(),
+          json_complet: analysis
+        });
+        // Décrémenter un crédit
+        const userRef = window._mcDoc(window._mcDb, 'users', user.uid);
+        await window._mcUpdateDoc(userRef, { credits_left: window._mcIncrement(-1) });
+      } catch(e){
+        console.warn('Sauvegarde Firestore échouée (non bloquant):', e);
+      }
+    }
 
     setTimeout(() => { window.location.href = 'resultat.html'; }, 400);
 

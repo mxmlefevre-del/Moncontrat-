@@ -129,6 +129,14 @@ h1 .mark,h2 .mark{background-size:100% 40%;background-position:left 90%;box-deco
 .consent-mini input:focus-visible + .cm-box{outline:2px solid var(--accent);outline-offset:2px}
 .auth-skip{display:block;width:100%;background:none;border:none;color:var(--soft);font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;padding:6px}
 .auth-skip:hover{color:var(--mute)}
+.auth-back{background:none;border:none;color:var(--mute);font-size:13px;font-weight:600;cursor:pointer;padding:0 0 14px;display:block}
+.auth-back:hover{color:var(--ink)}
+.pwd-toggle{position:absolute;right:12px;bottom:13px;background:none;border:none;cursor:pointer;font-size:16px;opacity:.5;padding:2px}
+.pwd-toggle:hover{opacity:1}
+.auth-field{position:relative}
+.auth-err{font-size:13px;font-weight:600;color:#D33;background:rgba(255,59,59,.07);border:1px solid rgba(255,59,59,.2);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:none}
+.auth-err.show{display:block}
+.auth-ok{font-size:13px;font-weight:600;color:var(--ok);background:rgba(19,194,156,.07);border:1px solid rgba(19,194,156,.25);border-radius:10px;padding:10px 14px;margin-bottom:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-weight:700;font-size:14px;border-radius:12px;padding:13px 21px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
@@ -1272,64 +1280,165 @@ button{
   </div>
 </div>
 
-<!-- ====== MODALE AUTH (inscription / connexion) ====== -->
+<!-- ====== MODALE AUTH ====== -->
 <div class="modal" id="authModal" onclick="closeAuth(event)">
   <div class="modal-box auth-box">
     <button class="modal-close" onclick="hideAuth()" aria-label="Fermer">×</button>
 
-    <!-- ÉTAPE 1 : compte -->
-    <div class="auth-step" id="authStep1">
+    <!-- Vue : choix initial -->
+    <div class="auth-step" id="authViewChoice">
       <div class="auth-brandline">
-        <svg class="logo-glyph" viewBox="0 0 34 34" style="width:30px;height:30px"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
+        <svg class="logo-glyph" viewBox="0 0 34 34" style="width:32px;height:32px"><rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/><rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/><rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/><rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/><rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/></svg>
       </div>
-      <h3 class="auth-title">Créez votre espace gratuit</h3>
-      <p class="auth-sub">Analysez vos contrats et suivez vos économies. Sans carte bancaire.</p>
+      <h3 class="auth-title">Bienvenue sur MonContrat</h3>
+      <p class="auth-sub">Analysez vos contrats d'assurance gratuitement. Sans carte bancaire.</p>
 
-      <button class="sso sso-google" onclick="afterSSO('Google')">
+      <button class="sso sso-google" onclick="signInGoogle()">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.2-4.8 3.2-7.9z"/><path fill="#34A853" d="M12 23c2.9 0 5.4-1 7.2-2.6l-3.6-2.7c-1 .7-2.3 1.1-3.6 1.1-2.8 0-5.1-1.9-6-4.4H2.3v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M6 14.4a6.6 6.6 0 0 1 0-4.2V7.4H2.3a11 11 0 0 0 0 9.8L6 14.4z"/><path fill="#EA4335" d="M12 5.6c1.6 0 3 .5 4.1 1.6l3.1-3.1A11 11 0 0 0 12 1 11 11 0 0 0 2.3 7.4L6 10.2C6.9 7.6 9.2 5.6 12 5.6z"/></svg>
         Continuer avec Google
       </button>
-      <button class="sso sso-apple" onclick="afterSSO('Apple')">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.6c0-2.2 1.8-3.3 1.9-3.3-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.8-1.5 0-2.8.8-3.6 2.1-1.5 2.7-.4 6.6 1.1 8.8.7 1 1.6 2.2 2.7 2.2 1.1 0 1.5-.7 2.8-.7s1.6.7 2.8.7c1.1 0 1.9-1 2.6-2.1.8-1.2 1.1-2.3 1.2-2.4-.1 0-2.2-.9-2.2-3.3zM15 6.2c.6-.7 1-1.7.9-2.7-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6 1 .1 1.9-.5 2.5-1.2z"/></svg>
-        Continuer avec Apple
-      </button>
 
-      <div class="auth-sep"><span>ou</span></div>
+      <div class="auth-sep"><span>ou par email</span></div>
 
-      <label class="auth-field">
-        <span>Adresse email</span>
-        <input type="email" id="authEmail" placeholder="votre@email.fr" autocomplete="email">
-      </label>
-      <button class="btn btn-main" style="width:100%" onclick="afterSSO('email')">Continuer avec mon email</button>
+      <button class="btn btn-main" style="width:100%;margin-top:0" onclick="showAuthView('authViewRegister')">Créer un compte</button>
+      <button class="btn btn-ghost" style="width:100%;margin-top:10px" onclick="showAuthView('authViewLogin')">Se connecter</button>
 
-      <p class="auth-switch">Déjà un compte ? <a href="#" onclick="alert('Prototype : connexion');return false;">Se connecter</a></p>
-      <p class="auth-legal">En continuant, vous acceptez nos <a href="cguv.html" target="_blank">CGU</a> et notre <a href="politique-confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
+      <p class="auth-legal" style="margin-top:18px">En continuant, vous acceptez nos <a href="cguv.html" target="_blank">CGU</a> et notre <a href="politique-confidentialite.html" target="_blank">politique de confidentialité</a>.</p>
     </div>
 
-    <!-- ÉTAPE 2 : téléphone -->
-    <div class="auth-step" id="authStep2" style="display:none">
-      <div class="auth-brandline">
-        <div class="auth-checkic">✓</div>
+    <!-- Vue : Inscription étape 1 — identité + mot de passe -->
+    <div class="auth-step" id="authViewRegister" style="display:none">
+      <button class="auth-back" onclick="showAuthView('authViewChoice')">← Retour</button>
+      <h3 class="auth-title">Créer mon compte</h3>
+      <p class="auth-sub">Étape 1 sur 2 — Vos informations personnelles</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label class="auth-field"><span>Prénom</span><input type="text" id="regPrenom" placeholder="Jean" autocomplete="given-name"></label>
+        <label class="auth-field"><span>Nom</span><input type="text" id="regNom" placeholder="Dupont" autocomplete="family-name"></label>
       </div>
-      <h3 class="auth-title">Dernière étape</h3>
-      <p class="auth-sub">Votre numéro de mobile permet aux assureurs partenaires de vous recontacter avec leurs offres. C'est ce qui rend le service utile.</p>
-
-      <label class="auth-field">
-        <span>Numéro de mobile</span>
-        <input type="tel" id="authPhone" placeholder="06 12 34 56 78" autocomplete="tel" inputmode="tel">
+      <label class="auth-field"><span>Adresse email</span><input type="email" id="regEmail" placeholder="votre@email.fr" autocomplete="email"></label>
+      <label class="auth-field" style="position:relative">
+        <span>Mot de passe</span>
+        <input type="password" id="regPassword" placeholder="8 caractères minimum" autocomplete="new-password">
+        <button type="button" class="pwd-toggle" onclick="togglePwd('regPassword',this)" aria-label="Voir le mot de passe">👁</button>
       </label>
-
-      <label class="consent-mini">
-        <input type="checkbox" id="phoneConsent" onchange="document.getElementById('finishBtn').disabled=!this.checked">
-        <span class="cm-box" aria-hidden="true"></span>
-        <span>J'accepte d'être recontacté par les assureurs partenaires de MonContrat.app au sujet de leurs offres.</span>
+      <label class="auth-field" style="position:relative">
+        <span>Confirmer le mot de passe</span>
+        <input type="password" id="regPassword2" placeholder="Répétez votre mot de passe" autocomplete="new-password">
+        <button type="button" class="pwd-toggle" onclick="togglePwd('regPassword2',this)" aria-label="Voir le mot de passe">👁</button>
       </label>
-
-      <button class="btn btn-main" style="width:100%" id="finishBtn" disabled onclick="finishSignup()">Terminer l'inscription</button>
-      <button class="auth-skip" onclick="finishSignup(true)">Plus tard</button>
+      <div class="auth-err" id="regErr1"></div>
+      <button class="btn btn-main" style="width:100%" onclick="goRegisterStep2()">Continuer →</button>
+      <p class="auth-switch">Déjà un compte ? <a href="#" onclick="showAuthView('authViewLogin');return false">Se connecter</a></p>
     </div>
+
+    <!-- Vue : Inscription étape 2 — coordonnées -->
+    <div class="auth-step" id="authViewRegister2" style="display:none">
+      <button class="auth-back" onclick="showAuthView('authViewRegister')">← Retour</button>
+      <h3 class="auth-title">Dernière étape</h3>
+      <p class="auth-sub">Étape 2 sur 2 — Vos coordonnées</p>
+      <label class="auth-field"><span>Code postal</span><input type="text" id="regCP" placeholder="06000" inputmode="numeric" maxlength="5" autocomplete="postal-code"></label>
+      <label class="auth-field"><span>Numéro de mobile</span><input type="tel" id="regPhone" placeholder="06 12 34 56 78" autocomplete="tel" inputmode="tel"></label>
+      <label class="consent-mini">
+        <input type="checkbox" id="regConsent">
+        <span class="cm-box" aria-hidden="true"></span>
+        <span>J'accepte d'être recontacté par les assureurs partenaires de MonContrat.app pour recevoir des offres adaptées. <i>(facultatif)</i></span>
+      </label>
+      <div class="auth-err" id="regErr2"></div>
+      <button class="btn btn-main" style="width:100%" id="regFinalBtn" onclick="finishRegister()">Créer mon compte</button>
+      <button class="auth-skip" onclick="finishRegister(true)">Passer cette étape</button>
+    </div>
+
+    <!-- Vue : Connexion -->
+    <div class="auth-step" id="authViewLogin" style="display:none">
+      <button class="auth-back" onclick="showAuthView('authViewChoice')">← Retour</button>
+      <h3 class="auth-title">Se connecter</h3>
+      <p class="auth-sub">Bon retour sur MonContrat.app.</p>
+      <label class="auth-field"><span>Email</span><input type="email" id="loginEmail" placeholder="votre@email.fr" autocomplete="email"></label>
+      <label class="auth-field" style="position:relative">
+        <span>Mot de passe</span>
+        <input type="password" id="loginPassword" placeholder="Votre mot de passe" autocomplete="current-password">
+        <button type="button" class="pwd-toggle" onclick="togglePwd('loginPassword',this)" aria-label="Voir le mot de passe">👁</button>
+      </label>
+      <div class="auth-err" id="loginErr"></div>
+      <button class="btn btn-main" style="width:100%" onclick="doEmailLogin()">Se connecter</button>
+      <p class="auth-switch"><a href="#" onclick="showAuthView('authViewReset');return false">Mot de passe oublié ?</a></p>
+      <p class="auth-switch">Pas encore de compte ? <a href="#" onclick="showAuthView('authViewRegister');return false">Créer un compte</a></p>
+    </div>
+
+    <!-- Vue : Mot de passe oublié -->
+    <div class="auth-step" id="authViewReset" style="display:none">
+      <button class="auth-back" onclick="showAuthView('authViewLogin')">← Retour</button>
+      <h3 class="auth-title">Réinitialiser</h3>
+      <p class="auth-sub">Entrez votre email, nous vous envoyons un lien de réinitialisation.</p>
+      <label class="auth-field"><span>Email</span><input type="email" id="resetEmail" placeholder="votre@email.fr" autocomplete="email"></label>
+      <div class="auth-err" id="resetErr"></div>
+      <div class="auth-ok" id="resetOk" style="display:none"></div>
+      <button class="btn btn-main" style="width:100%" onclick="doPasswordReset()">Envoyer le lien</button>
+    </div>
+
+    <!-- Vue : Email de vérification envoyé -->
+    <div class="auth-step" id="authViewVerify" style="display:none">
+      <div class="auth-brandline"><div class="auth-checkic" style="background:var(--accent)">✉</div></div>
+      <h3 class="auth-title">Vérifiez votre email</h3>
+      <p class="auth-sub">Un email de confirmation a été envoyé à <strong id="verifyEmailDisplay"></strong>. Cliquez sur le lien pour activer votre compte.</p>
+      <p style="text-align:center;font-size:13px;color:var(--soft);margin-top:16px">Vous pouvez fermer cette fenêtre et vérifier votre boîte mail.</p>
+      <button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="hideAuth()">Fermer</button>
+    </div>
+
   </div>
 </div>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, updateProfile } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDgY9s8tv6qG7f0fWHEeUpa6wJGjf6ZhuM",
+    authDomain: "moncontrat.firebaseapp.com",
+    projectId: "moncontrat",
+    storageBucket: "moncontrat.firebasestorage.app",
+    messagingSenderId: "770067071270",
+    appId: "1:770067071270:web:4614ca8716478be80c41e7",
+    measurementId: "G-3C5RTSQS4W"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  // Expose sur window pour le JS non-module existant
+  window._mcAuth = auth;
+  window._mcDb = db;
+  window._mcProvider = provider;
+  window._mcSignInWithPopup = signInWithPopup;
+  window._mcSignOut = signOut;
+  window._mcCreateUserWithEmailAndPassword = createUserWithEmailAndPassword;
+  window._mcSignInWithEmailAndPassword = signInWithEmailAndPassword;
+  window._mcSendEmailVerification = sendEmailVerification;
+  window._mcSendPasswordResetEmail = sendPasswordResetEmail;
+  window._mcUpdateProfile = updateProfile;
+  window._mcDoc = doc;
+  window._mcSetDoc = setDoc;
+  window._mcGetDoc = getDoc;
+  window._mcServerTimestamp = serverTimestamp;
+
+  // Surveille l'état de connexion : met à jour le bouton nav
+  onAuthStateChanged(auth, (user) => {
+    window._mcCurrentUser = user;
+    const btn = document.getElementById('navClientBtn');
+    if (btn) {
+      if (user) {
+        const initials = (user.displayName || user.email || 'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        btn.textContent = initials;
+        btn.title = user.displayName || user.email;
+      } else {
+        btn.textContent = 'Mon espace';
+      }
+    }
+  });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
@@ -1412,7 +1521,7 @@ function toolUrl(title,icon){
   return 'analyser.html';
 }
 function isUserLogged(){
-  return localStorage.getItem('mc_logged')==='1';
+  return !!(window._mcCurrentUser);
 }
 function routeProtected(url){
   if(isUserLogged()){
@@ -1433,33 +1542,172 @@ function goAnalyser(){
   const ton=encodeURIComponent(currentTone||'Classique');
   window.location.href='analyser.html?ton='+ton;
 }
+/* ============ AUTH — navigation entre vues ============ */
+function showAuthView(id){
+  document.querySelectorAll('.auth-step').forEach(s=>s.style.display='none');
+  document.getElementById(id).style.display='block';
+}
 function openLogin(){
-  // réinitialise sur l'étape 1
-  document.getElementById('authStep1').style.display='block';
-  document.getElementById('authStep2').style.display='none';
-  document.getElementById('phoneConsent').checked=false;
-  document.getElementById('finishBtn').disabled=true;
+  showAuthView('authViewChoice');
   document.getElementById('authModal').classList.add('show');
 }
-function hideAuth(){document.getElementById('authModal').classList.remove('show');}
-function closeAuth(e){if(e.target.id==='authModal')hideAuth();}
-function afterSSO(provider){
-  // ici, en prod : déclenche l'auth Google/Apple/email via Supabase.
-  // Une fois le compte créé/connecté → étape téléphone.
-  document.getElementById('authStep1').style.display='none';
-  document.getElementById('authStep2').style.display='block';
+function hideAuth(){ document.getElementById('authModal').classList.remove('show'); }
+function closeAuth(e){ if(e.target.id==='authModal') hideAuth(); }
+
+function showErr(id, msg){ const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function hideErr(id){ document.getElementById(id).classList.remove('show'); }
+
+function togglePwd(inputId, btn){
+  const inp = document.getElementById(inputId);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.style.opacity = show ? '1' : '.5';
 }
-function finishSignup(skipped){
-  hideAuth();
-  localStorage.setItem('mc_logged','1');
-  const pending = localStorage.getItem('mc_pending_url');
-  if(pending){
-    localStorage.removeItem('mc_pending_url');
-    window.location.href = pending;
-    return;
+
+/* ============ GOOGLE ============ */
+async function signInGoogle(){
+  try {
+    const result = await window._mcSignInWithPopup(window._mcAuth, window._mcProvider);
+    const user = result.user;
+    const userRef = window._mcDoc(window._mcDb, 'users', user.uid);
+    const snap = await window._mcGetDoc(userRef);
+    if(!snap.exists()){
+      await window._mcSetDoc(userRef, {
+        prenom: (user.displayName||'').split(' ')[0],
+        nom: (user.displayName||'').split(' ').slice(1).join(' '),
+        full_name: user.displayName || '',
+        email: user.email,
+        photo_url: user.photoURL || '',
+        plan: 'free',
+        credits_left: 3,
+        credits_total: 3,
+        created_at: window._mcServerTimestamp()
+      });
+    }
+    hideAuth();
+    redirectAfterAuth();
+  } catch(err){
+    console.error(err);
+    alert('Connexion Google échouée. Vérifiez que les popups sont autorisées.');
   }
-  if(skipped){alert('Prototype : inscription terminée (numéro à compléter plus tard depuis l\'espace client).');}
-  else{alert('Prototype : inscription terminée, numéro de mobile enregistré avec consentement.');}
+}
+
+/* ============ INSCRIPTION EMAIL — étape 1 vers étape 2 ============ */
+function goRegisterStep2(){
+  hideErr('regErr1');
+  const prenom   = document.getElementById('regPrenom').value.trim();
+  const nom      = document.getElementById('regNom').value.trim();
+  const email    = document.getElementById('regEmail').value.trim();
+  const pwd      = document.getElementById('regPassword').value;
+  const pwd2     = document.getElementById('regPassword2').value;
+  if(!prenom || !nom)      return showErr('regErr1','Prénom et nom sont obligatoires.');
+  if(!email)               return showErr('regErr1','Adresse email obligatoire.');
+  if(pwd.length < 8)       return showErr('regErr1','Le mot de passe doit faire au moins 8 caractères.');
+  if(pwd !== pwd2)         return showErr('regErr1','Les deux mots de passe ne correspondent pas.');
+  showAuthView('authViewRegister2');
+}
+
+/* ============ INSCRIPTION EMAIL — finalisation ============ */
+async function finishRegister(skipped){
+  hideErr('regErr2');
+  const prenom   = document.getElementById('regPrenom').value.trim();
+  const nom      = document.getElementById('regNom').value.trim();
+  const email    = document.getElementById('regEmail').value.trim();
+  const pwd      = document.getElementById('regPassword').value;
+  const cp       = skipped ? '' : document.getElementById('regCP').value.trim();
+  const phone    = skipped ? '' : document.getElementById('regPhone').value.trim();
+  const consent  = skipped ? false : document.getElementById('regConsent').checked;
+
+  const btn = document.getElementById('regFinalBtn');
+  btn.disabled = true; btn.textContent = 'Création en cours…';
+
+  try {
+    // 1 — Créer le compte Firebase Auth
+    const cred = await window._mcCreateUserWithEmailAndPassword(window._mcAuth, email, pwd);
+    const user = cred.user;
+
+    // 2 — Mettre à jour le displayName
+    await window._mcUpdateProfile(user, { displayName: prenom + ' ' + nom });
+
+    // 3 — Envoyer l'email de vérification
+    await window._mcSendEmailVerification(user);
+
+    // 4 — Sauvegarder le profil complet dans Firestore
+    await window._mcSetDoc(window._mcDoc(window._mcDb, 'users', user.uid), {
+      prenom,
+      nom,
+      full_name: prenom + ' ' + nom,
+      email,
+      code_postal: cp,
+      phone,
+      consent_partner: consent,
+      photo_url: '',
+      plan: 'free',
+      credits_left: 3,
+      credits_total: 3,
+      created_at: window._mcServerTimestamp()
+    });
+
+    // 5 — Afficher la vue de confirmation email
+    document.getElementById('verifyEmailDisplay').textContent = email;
+    showAuthView('authViewVerify');
+
+  } catch(err){
+    console.error(err);
+    btn.disabled = false; btn.textContent = 'Créer mon compte';
+    const msgs = {
+      'auth/email-already-in-use': 'Cette adresse email est déjà utilisée. <a href="#" onclick="showAuthView(\'authViewLogin\');return false">Connectez-vous</a>.',
+      'auth/invalid-email': 'Adresse email invalide.',
+      'auth/weak-password': 'Mot de passe trop faible (8 caractères minimum).',
+    };
+    showErr('regErr2', msgs[err.code] || 'Une erreur est survenue. Réessayez.');
+  }
+}
+
+/* ============ CONNEXION EMAIL ============ */
+async function doEmailLogin(){
+  hideErr('loginErr');
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPassword').value;
+  if(!email || !pwd) return showErr('loginErr','Email et mot de passe requis.');
+  try {
+    const cred = await window._mcSignInWithEmailAndPassword(window._mcAuth, email, pwd);
+    if(!cred.user.emailVerified){
+      await window._mcSignOut(window._mcAuth);
+      return showErr('loginErr','Votre email n\'est pas encore vérifié. Consultez votre boîte mail.');
+    }
+    hideAuth();
+    redirectAfterAuth();
+  } catch(err){
+    const msgs = {
+      'auth/user-not-found':  'Aucun compte trouvé avec cet email.',
+      'auth/wrong-password':  'Mot de passe incorrect.',
+      'auth/invalid-credential': 'Email ou mot de passe incorrect.',
+      'auth/too-many-requests': 'Trop de tentatives. Réessayez dans quelques minutes.',
+    };
+    showErr('loginErr', msgs[err.code] || 'Connexion impossible. Vérifiez vos identifiants.');
+  }
+}
+
+/* ============ MOT DE PASSE OUBLIÉ ============ */
+async function doPasswordReset(){
+  hideErr('resetErr');
+  document.getElementById('resetOk').style.display='none';
+  const email = document.getElementById('resetEmail').value.trim();
+  if(!email) return showErr('resetErr','Entrez votre adresse email.');
+  try {
+    await window._mcSendPasswordResetEmail(window._mcAuth, email);
+    document.getElementById('resetOk').textContent = 'Email envoyé ! Vérifiez votre boîte mail.';
+    document.getElementById('resetOk').style.display = 'block';
+  } catch(err){
+    showErr('resetErr', 'Adresse email introuvable ou invalide.');
+  }
+}
+
+/* ============ REDIRECTION POST-AUTH ============ */
+function redirectAfterAuth(){
+  const pending = localStorage.getItem('mc_pending_url');
+  if(pending){ localStorage.removeItem('mc_pending_url'); window.location.href = pending; }
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideModal();hideAuth&&hideAuth();closeMenu&&closeMenu();}});
 
