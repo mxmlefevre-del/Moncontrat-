@@ -24,8 +24,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .wrap{width:min(1080px,calc(100% - 48px));margin:0 auto}
 ::selection{background:var(--hl);color:var(--ink)}
 .mono-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
-
-/* NAV */
 .brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
 .brand .ext{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--accent)}
 .logo-glyph{width:32px;height:32px;flex:none}
@@ -37,8 +35,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,45,85,.33)}
 .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line-2)}
 .btn-ghost:hover{border-color:rgba(11,14,26,.3)}
-
-/* ===== OVERLAY SCAN (intro) ===== */
 .scan{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;transition:opacity .6s ease}
 .scan.done{opacity:0;pointer-events:none}
 .scan-doc{width:200px;height:250px;background:#fff;border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden;box-shadow:var(--card-shadow);padding:22px}
@@ -48,8 +44,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 @keyframes scanmove{0%{top:0}50%{top:calc(100% - 3px)}100%{top:0}}
 .scan-txt{font-family:var(--mono);font-size:13px;color:var(--mute);letter-spacing:.06em}
 .scan-txt b{color:var(--accent)}
-
-/* ===== HEADER RÉSULTAT ===== */
 .head{padding:48px 0 36px}
 .head-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:30px}
 .contract-id h1{font-family:var(--disp);font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;line-height:1.1}
@@ -57,8 +51,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .contract-id .meta span{display:inline-flex;align-items:center}
 .contract-id .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--soft);margin:0 4px}
 .tone-badge{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;border:1px solid var(--line-2);border-radius:999px;padding:8px 13px;color:var(--mute)}
-
-/* SCORE PANEL */
 .score-panel{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;background:linear-gradient(135deg,#fff,#FFF6F8);border:1px solid var(--line);border-radius:24px;padding:38px;box-shadow:var(--card-shadow)}
 .ring{width:150px;height:150px;position:relative;flex:none}
 .ring svg{transform:rotate(-90deg)}
@@ -73,23 +65,17 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .stat i{width:9px;height:9px;border-radius:50%;flex:none}
 .stat .n{font-family:var(--disp);font-weight:800;font-size:17px;margin-right:1px}
 .stat.r i{background:var(--risk)}.stat.w i{background:var(--warn)}.stat.g i{background:var(--ok)}
-
-/* ===== SECTIONS ===== */
 .section{padding:18px 0}
 .sec-head{display:flex;align-items:center;gap:12px;margin:34px 0 18px}
 .sec-head .idx{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.1em}
 .sec-head h3{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em}
 .sec-head .line{flex:1;height:1px;background:var(--line)}
-
-/* ALERTE majeure */
 .alert-major{background:linear-gradient(135deg,#FFF1F1,#FFE9EC);border:1px solid rgba(255,59,59,.25);border-left:4px solid var(--risk);border-radius:0 16px 16px 0;padding:24px 26px;display:flex;gap:18px;align-items:flex-start}
 .alert-major .ic{width:42px;height:42px;border-radius:11px;background:var(--risk);color:#fff;display:flex;align-items:center;justify-content:center;flex:none;font-size:22px;font-weight:800}
 .alert-major h4{font-family:var(--disp);font-weight:800;font-size:18px;letter-spacing:-.01em;margin-bottom:7px}
 .alert-major p{color:#5a3033;font-size:14.5px;line-height:1.6;font-weight:500}
 .alert-major .reco{margin-top:12px;background:rgba(255,255,255,.7);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.55}
 .alert-major .reco b{color:var(--risk)}
-
-/* GARANTIES */
 .guarantees{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .g-item{display:flex;align-items:center;gap:13px;border:1px solid var(--line);border-radius:13px;padding:15px 17px;background:#fff;transition:border-color .2s}
 .g-item:hover{border-color:var(--line-2)}
@@ -100,8 +86,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .g-body small{font-family:var(--mono);font-size:11px;color:var(--soft)}
 .g-item.absent .g-body small{color:var(--risk)}
 .g-item.check .g-body small{color:var(--warn)}
-
-/* POINTS (risques / vérifs / atouts) */
 .points{display:grid;gap:12px}
 .point{border:1px solid var(--line);border-radius:15px;padding:20px 22px;background:#fff;display:flex;gap:16px;align-items:flex-start}
 .point .pic{width:38px;height:38px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-size:19px}
@@ -116,16 +100,12 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .point.good .lvl{background:rgba(19,194,156,.14);color:#0A8E72}
 .point p{color:var(--mute);font-size:14.5px;line-height:1.6;font-weight:500}
 .point p .why{color:var(--ink);font-weight:600}
-
-/* INFO callout (service / déclarations) */
 .callout{border:1px solid var(--line);border-radius:16px;padding:24px 26px;background:var(--bg-2)}
 .callout.service{background:linear-gradient(135deg,#F4F7FF,#EFF3FF);border-color:rgba(61,91,245,.18)}
 .callout h4{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.01em;margin-bottom:9px;display:flex;align-items:center;gap:10px}
 .callout p{color:var(--mute);font-size:14.5px;line-height:1.65;font-weight:500}
 .decl-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .decl-list span{font-family:var(--mono);font-size:12px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--mute)}
-
-/* FRANCHISE bar */
 .franchise{display:flex;align-items:center;gap:24px;border:1px solid var(--line);border-radius:16px;padding:24px 26px;background:#fff;flex-wrap:wrap}
 .franchise .amt{font-family:var(--disp);font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1}
 .franchise .amt small{font-size:16px;color:var(--mute)}
@@ -135,8 +115,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .fr-scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--soft)}
 .fr-note{font-size:13.5px;color:var(--mute);line-height:1.55;font-weight:500;flex-basis:100%;margin-top:4px}
 .fr-note b{color:var(--ink)}
-
-/* CTA */
 .cta-final{margin:46px 0 30px;background:linear-gradient(160deg,#FF3D63,#E0234A);border-radius:24px;padding:44px;text-align:center;color:#fff;position:relative;overflow:hidden}
 .cta-final:before{content:"";position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 60%)}
 .cta-final h3{font-family:var(--disp);font-weight:800;font-size:clamp(30px,4.4vw,44px);letter-spacing:-.035em;line-height:1.05;margin-bottom:24px;position:relative}
@@ -164,7 +142,6 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .lead-fields input{width:100%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:14px 16px;font-family:inherit;font-size:15px;transition:.2s}
 .lead-fields input::placeholder{color:rgba(255,255,255,.6)}
 .lead-fields input:focus{outline:none;border-color:#fff;background:rgba(255,255,255,.2)}
-/* Relevé d'information (auto) */
 .ri-block{max-width:540px;margin:0 auto 18px;background:rgba(255,255,255,.1);border:1px dashed rgba(255,255,255,.4);border-radius:14px;padding:18px;text-align:left}
 .ri-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .ri-tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.22);color:#fff;padding:4px 9px;border-radius:999px}
@@ -183,16 +160,11 @@ a{text-decoration:none;color:inherit}button{font-family:inherit}
 .lead-status.ok{color:#fff}
 .lead-status.err{color:#FFD9D9}
 .cta-sub{display:block;margin-top:14px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.78);position:relative}
-
-/* disclaimer */
 .disclaimer{font-family:var(--mono);font-size:11.5px;color:var(--soft);line-height:1.7;text-align:center;max-width:680px;margin:0 auto;padding:30px 0 60px}
-
 footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
 .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--soft)}
-
 .reveal{opacity:0;transform:translateY(20px);animation:rise .7s ease forwards}
 @keyframes rise{to{opacity:1;transform:none}}
-
 @media(max-width:780px){
   .score-panel{grid-template-columns:1fr;justify-items:center;text-align:center;gap:24px;padding:30px}
   .score-verdict p{margin:0 auto}.score-stats{justify-content:center}
@@ -207,13 +179,11 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
 </style>
 </head>
 <body>
-
 <svg width="0" height="0" style="position:absolute"><defs>
   <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
   <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF2D55"/><stop offset="1" stop-color="#FF5F82"/></linearGradient>
 </defs></svg>
 
-<!-- ===== OVERLAY SCAN ===== -->
 <div class="scan" id="scan">
   <div class="scan-doc">
     <div class="scan-line"></div>
@@ -236,8 +206,6 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
 </nav>
 
 <main class="wrap" id="result" style="visibility:hidden">
-
-  <!-- HEADER -->
   <header class="head">
     <div class="head-top">
       <div class="contract-id">
@@ -247,8 +215,6 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
       </div>
       <span class="tone-badge" id="cTone"></span>
     </div>
-
-    <!-- SCORE -->
     <div class="score-panel">
       <div class="ring">
         <svg width="150" height="150" viewBox="0 0 150 150">
@@ -267,7 +233,6 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
 
   <div id="sections"></div>
 
-  <!-- CTA -->
   <section class="cta-final">
     <span class="cta-eyebrow">Le même niveau de garantie, moins cher</span>
     <h3>Vous pouvez payer moins cher.<br>En un seul clic.</h3>
@@ -277,14 +242,12 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
       <input type="email" id="leadEmail" placeholder="Votre email" autocomplete="email">
       <input type="tel" id="leadPhone" placeholder="Votre téléphone" autocomplete="tel">
     </div>
-
-    <!-- Relevé d'information : affiché uniquement pour les contrats AUTO -->
     <div class="ri-block" id="riBlock" style="display:none">
       <div class="ri-head">
         <span class="ri-tag">Recommandé pour l'auto</span>
         <b>Ajoutez votre relevé d'information</b>
       </div>
-      <p class="ri-txt">Ce document (à demander à votre assureur actuel) indique votre bonus-malus et votre historique. Le joindre permet aux partenaires de vous faire une offre <b>précise, sans mauvaise surprise</b>. Vous pouvez l'envoyer plus tard, mais c'est plus rapide maintenant.</p>
+      <p class="ri-txt">Ce document (à demander à votre assureur actuel) indique votre bonus-malus et votre historique. Le joindre permet aux partenaires de vous faire une offre <b>précise, sans mauvaise surprise</b>.</p>
       <input type="file" id="riInput" accept="application/pdf" style="display:none" onchange="onRiFile(this.files[0])">
       <button type="button" class="ri-btn" id="riBtn" onclick="document.getElementById('riInput').click()">
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
@@ -296,7 +259,6 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
         <button type="button" class="ri-remove" onclick="clearRi()" aria-label="Retirer">×</button>
       </div>
     </div>
-
     <label class="consent" id="consentLabel">
       <input type="checkbox" id="consent" onchange="toggleConsent()">
       <span class="consent-box" aria-hidden="true"></span>
@@ -321,83 +283,40 @@ footer{border-top:1px solid var(--line);padding:34px 0;background:var(--bg-2)}
 </div></div></footer>
 
 <script>
-/* =========================================================
-   DONNÉES D'EXEMPLE — c'est le format JSON que l'IA produira.
-   (Ici un contrat habitation MAISON fictif, ton "Simplifié")
-   ========================================================= */
 const ANALYSIS = {
-  contrat:{
-    titre:"Assurance habitation — Maison",
-    assureur_type:"Compagnie en ligne",      // sert au bloc service (pas de marque)
-    formule:"Multirisque habitation",
-    type_bien:"Maison",                       // Maison | Appartement | Studio
-    pieces:"5 pièces",
-    statut:"Propriétaire occupant",
-    reference:"N° 884-201-B",
-    pages:34
-  },
-  ton:"Simplifié",
-  score:62,
+  contrat:{titre:"Assurance habitation — Maison",formule:"Multirisque habitation",type_bien:"Maison",pieces:"5 pièces",statut:"Propriétaire occupant",reference:"N° 884-201-B",pages:34},
+  ton:"Simplifié",score:62,
   verdict_titre:"Une base correcte, mais des trous à combler",
-  verdict_texte:"Votre contrat couvre l'essentiel, mais plusieurs garanties importantes pour une maison sont absentes ou à vérifier. Rien de dramatique — surtout des points faciles à corriger avant le prochain sinistre.",
-
+  verdict_texte:"Votre contrat couvre l'essentiel, mais plusieurs garanties importantes pour une maison sont absentes ou à vérifier.",
   garanties:[
-    {nom:"Vol et vandalisme", etat:"ok", detail:"Garantie présente"},
-    {nom:"Incendie / explosion", etat:"ok", detail:"Garantie présente"},
-    {nom:"Dégât des eaux", etat:"ok", detail:"Garantie présente"},
-    {nom:"Catastrophes naturelles", etat:"ok", detail:"Garantie présente"},
-    {nom:"Responsabilité civile", etat:"ok", detail:"Garantie présente"},
-    {nom:"Événements climatiques / tempête", etat:"ok", detail:"Garantie présente"},
-    {nom:"Extérieur / jardin", etat:"absent", detail:"Non souscrite"},
-    {nom:"Canalisations enterrées / perte d'eau", etat:"absent", detail:"Non souscrite"},
-    {nom:"Objets de valeur", etat:"absent", detail:"Non souscrite"},
-    {nom:"Bris de glace", etat:"check", detail:"À vérifier"}
+    {nom:"Vol et vandalisme",etat:"ok",detail:"Garantie présente"},
+    {nom:"Incendie / explosion",etat:"ok",detail:"Garantie présente"},
+    {nom:"Dégât des eaux",etat:"ok",detail:"Garantie présente"},
+    {nom:"Catastrophes naturelles",etat:"ok",detail:"Garantie présente"},
+    {nom:"Responsabilité civile",etat:"ok",detail:"Garantie présente"},
+    {nom:"Extérieur / jardin",etat:"absent",detail:"Non souscrite"},
+    {nom:"Objets de valeur",etat:"absent",detail:"Non souscrite"},
+    {nom:"Bris de glace",etat:"check",detail:"À vérifier"}
   ],
-
-  // Alerte majeure éventuelle (usage). null si rien à signaler.
   alerte_usage:null,
-
-  // Points d'analyse (risques / vérifs / atouts)
   points:[
-    {type:"risk", niveau:"Risque", titre:"Pas de garantie extérieur / jardin",
-     texte:"Sur une maison, la clôture, le portail et le mobilier de jardin ne sont pas couverts sans cette garantie. <span class='why'>Concrètement : un portail arraché par la tempête ou du mobilier de jardin volé resterait à votre charge.</span>"},
-    {type:"risk", niveau:"Risque", titre:"Canalisations enterrées non couvertes",
-     texte:"Sur une maison, le compteur et les canalisations sont souvent à l'extérieur. <span class='why'>Sans cette garantie, une fuite enterrée et la surconsommation d'eau qui en découle ne sont pas prises en charge.</span> À souscrire quasi systématiquement, sauf si déjà couvert par votre fournisseur d'eau."},
-    {type:"warn", niveau:"À vérifier", titre:"Aucune garantie objets de valeur",
-     texte:"Cette garantie joue souvent <span class='why'>dès le premier euro</span> : sans elle, même un bijou de faible valeur n'est pas indemnisé en cas de vol, incendie ou dégât des eaux. Pensez aussi à conserver factures ou expertises : les bijoux et objets d'art ne sont indemnisés que sur justificatif."},
-    {type:"good", niveau:"Atout", titre:"Le socle essentiel est bien là",
-     texte:"Vol, incendie, dégât des eaux, catastrophes naturelles et responsabilité civile sont présents. C'est la base d'une bonne protection, et elle est solide."}
+    {type:"risk",niveau:"Risque",titre:"Pas de garantie extérieur / jardin",texte:"Sur une maison, la clôture, le portail et le mobilier de jardin ne sont pas couverts sans cette garantie. <span class='why'>Concrètement : un portail arraché par la tempête resterait à votre charge.</span>"},
+    {type:"good",niveau:"Atout",titre:"Le socle essentiel est bien là",texte:"Vol, incendie, dégât des eaux, catastrophes naturelles et responsabilité civile sont présents."}
   ],
-
-  franchise:{ montant:300, min:150, max:200,
-    note:"Votre franchise de <b>300 €</b> dépasse la fourchette habituelle (150–200 €). Ce n'est pas anormal, mais cela augmente votre reste à charge à chaque sinistre. À mettre en balance avec le montant de votre cotisation." },
-
-  service:{
-    texte:"Votre contrat semble être géré sans agence physique ni interlocuteur dédié. Ce n'est pas un défaut de couverture en soi. Mais le jour où vous aurez un sinistre, pouvoir joindre une vraie personne qui connaît votre dossier change tout : la prise en charge est plus rapide et plus simple. Sur une plateforme sans interlocuteur fixe, les délais sont souvent plus longs et vous repartez de zéro à chaque appel."
-  },
-
+  franchise:{montant:300,min:150,max:200,note:"Votre franchise de <b>300 €</b> dépasse la fourchette habituelle (150–200 €)."},
+  service:{texte:"Un interlocuteur dédié change tout le jour d'un sinistre : prise en charge plus rapide, moins de stress."},
   declarations:["Adresse","Nombre de pièces","Cheminée / insert","Véranda","Panneaux photovoltaïques","Piscine","Dépendances / garage"],
-
-  disclaimer:"Cette analyse est fournie à titre informatif, à partir des éléments présents dans le document transmis. Elle ne constitue pas un conseil en assurance personnalisé. Vérifiez toujours vos déclarations et conditions auprès de votre assureur."
+  disclaimer:"Cette analyse est fournie à titre informatif. Elle ne constitue pas un conseil en assurance personnalisé."
 };
 
-/* =========================================================
-   RENDU
-   ========================================================= */
-// Données réelles si elles existent (venant de la page analyser),
-// sinon on garde l'exemple ci-dessus (utile pour tester la page seule).
 let A = ANALYSIS;
-try {
-  const real = sessionStorage.getItem('mc_analysis');
-  if (real) { A = JSON.parse(real); }
-} catch(e) { /* on garde l'exemple */ }
+try { const real=sessionStorage.getItem('mc_analysis'); if(real){A=JSON.parse(real);} } catch(e){}
 
 const $=id=>document.getElementById(id);
 const icons={ok:"✓",absent:"✕",check:"?"};
 
 function render(){
   const c=A.contrat||{};
-  // header
   $("cTitle").textContent=c.titre||"Analyse de votre contrat";
   $("cMeta").innerHTML=[c.formule,(c.type_bien||'')+(c.pieces?(" · "+c.pieces):''),c.statut,c.reference]
     .filter(x=>x&&x.trim&&x.trim()).map(x=>`<span>${x}</span>`).join('<span class="dot"></span>');
@@ -405,7 +324,6 @@ function render(){
   $("verdictTitle").textContent=A.verdict_titre||"";
   $("verdictText").textContent=A.verdict_texte||"";
 
-  // stats
   const pts=A.points||[];
   const nR=pts.filter(p=>p.type==='risk').length;
   const nW=pts.filter(p=>p.type==='warn').length;
@@ -415,55 +333,56 @@ function render(){
     <div class="stat w"><i></i><span class="n">${nW}</span> à vérifier</div>
     <div class="stat g"><i></i><span class="n">${nG}</span> atout${nG>1?'s':''}</div>`;
 
-  // sections
   let html='';
-  // alerte usage si présente
-  if(A.alerte_usage){
+
+  // ✅ CORRECTION : alerte_usage uniquement si titre ET texte sont définis
+  if(A.alerte_usage && A.alerte_usage.titre && A.alerte_usage.texte){
     html+=`<section class="section reveal"><div class="alert-major">
       <div class="ic">!</div><div>
         <h4>${A.alerte_usage.titre}</h4><p>${A.alerte_usage.texte}</p>
-      <div class="reco"><b>Recommandation —</b> ${A.alerte_usage.reco}</div></div></div></section>`;
+        ${A.alerte_usage.reco ? `<div class="reco"><b>Recommandation —</b> ${A.alerte_usage.reco}</div>` : ''}
+      </div></div></section>`;
   }
-  // garanties
+
   if((A.garanties||[]).length){
     html+=`<section class="section reveal"><div class="sec-head"><span class="idx">01</span><h3>Garanties</h3><div class="line"></div></div>
       <div class="guarantees">${A.garanties.map(g=>`
         <div class="g-item ${g.etat}"><div class="g-ic">${icons[g.etat]||'?'}</div>
         <div class="g-body"><b>${g.nom}</b><small>${g.detail||''}</small></div></div>`).join('')}</div></section>`;
   }
-  // points
+
   if(pts.length){
     html+=`<section class="section reveal"><div class="sec-head"><span class="idx">02</span><h3>Ce qu'on a repéré</h3><div class="line"></div></div>
       <div class="points">${pts.map(p=>{
         const ic={risk:"⚠️",warn:"🔍",good:"✓",info:"ℹ️"}[p.type]||"ℹ️";
         return `<div class="point ${p.type}"><div class="pic">${ic}</div><div>
-        <h4>${p.titre}<span class="lvl">${p.niveau||''}</span></h4><p>${p.texte}</p></div></div>`;}).join('')}</div></section>`;
+        <h4>${p.titre}<span class="lvl">${p.niveau||''}</span></h4><p>${p.texte}</p></div></div>`;
+      }).join('')}</div></section>`;
   }
-  // franchise
+
   if(A.franchise && typeof A.franchise.montant==='number'){
     const pct=Math.min(100,Math.max(0,(A.franchise.montant/400)*100));
     html+=`<section class="section reveal"><div class="sec-head"><span class="idx">03</span><h3>Franchise</h3><div class="line"></div></div>
-      <div class="franchise"><div class="amt">${A.franchise.montant}€<small></small></div>
+      <div class="franchise"><div class="amt">${A.franchise.montant}€</div>
       <div class="fr-gauge"><div class="fr-track"><div class="fr-cursor" style="left:${pct}%"></div></div>
       <div class="fr-scale"><span>0€</span><span>fourchette 150–200€</span><span>400€+</span></div></div>
       <div class="fr-note">${A.franchise.note||''}</div></div></section>`;
   }
-  // service
+
   if(A.service && A.service.texte){
     html+=`<section class="section reveal"><div class="sec-head"><span class="idx">04</span><h3>Service &amp; gestion</h3><div class="line"></div></div>
       <div class="callout service"><h4>👤 Un interlocuteur humain, ça compte</h4><p>${A.service.texte}</p></div></section>`;
   }
-  // déclarations
+
   if(A.declarations && A.declarations.length){
     html+=`<section class="section reveal"><div class="sec-head"><span class="idx">05</span><h3>À vérifier vous-même</h3><div class="line"></div></div>
-      <div class="callout"><h4>📋 Vos déclarations</h4><p>On ne peut pas vérifier ces points sans échanger avec vous : assurez-vous qu'ils correspondent à la réalité. Une déclaration inexacte peut réduire votre indemnisation.</p>
+      <div class="callout"><h4>📋 Vos déclarations</h4><p>Assurez-vous que ces points correspondent à la réalité. Une déclaration inexacte peut réduire votre indemnisation.</p>
       <div class="decl-list">${A.declarations.map(d=>`<span>${d}</span>`).join('')}</div></div></section>`;
   }
 
   $("sections").innerHTML=html;
-  $("disclaimer").textContent=A.disclaimer||"Cette analyse est fournie à titre informatif, à partir des éléments présents dans le document transmis. Elle ne constitue pas un conseil en assurance personnalisé.";
+  $("disclaimer").textContent=A.disclaimer||"Cette analyse est fournie à titre informatif. Elle ne constitue pas un conseil en assurance personnalisé.";
 
-  // animation score
   const score=typeof A.score==='number'?A.score:0;
   setTimeout(()=>{
     const off=402-(402*score/100);
@@ -472,20 +391,17 @@ function render(){
   },300);
 }
 
-/* pré-remplir l'email si l'utilisateur avait coché l'option sur la page analyser */
 try{
   if(sessionStorage.getItem('mc_lead_optin')==='1'){
     setTimeout(()=>{const c=document.getElementById('consent');if(c){c.checked=true;toggleConsent();}},300);
   }
 }catch(e){}
 
-/* afficher le relevé d'information uniquement pour les contrats auto */
 if(A.type_analyse==='auto'){
   const ri=document.getElementById('riBlock');
   if(ri)ri.style.display='block';
 }
 
-/* gestion du relevé d'information (auto) */
 let riFile=null;
 function onRiFile(file){
   if(!file)return;
@@ -503,12 +419,12 @@ function clearRi(){
   document.getElementById('riBtn').style.display='inline-flex';
 }
 
-/* consentement RGPD : le bouton ne s'active qu'une fois la case cochée */
 function toggleConsent(){
   const ok=$("consent").checked;
   $("ctaGo").disabled=!ok;
   $("consentLabel").classList.toggle("checked",ok);
 }
+
 async function sendDossier(){
   if(!$("consent").checked){return;}
   const name=$("leadName").value.trim();
@@ -516,24 +432,18 @@ async function sendDossier(){
   const phone=$("leadPhone").value.trim();
   const status=$("leadStatus");
   status.className='lead-status';status.textContent='';
-
   if(!email||!email.includes('@')){
     status.className='lead-status err';status.textContent="Merci d'indiquer un email valide.";return;
   }
   const btn=$("ctaGo");btn.disabled=true;btn.textContent='Envoi en cours…';
-
   try{
-    // joindre le relevé d'information s'il est présent (auto)
-    let ri_base64=null, ri_filename=null;
+    let ri_base64=null,ri_filename=null;
     if(riFile){
       ri_base64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej();r.readAsDataURL(riFile);});
       ri_filename=riFile.name;
     }
-
-    const res=await fetch('/api/lead',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({full_name:name,email,phone,consent_partner:true,contract_type:(A.type_analyse||null),ri_base64,ri_filename})
-    });
+    const res=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({full_name:name,email,phone,consent_partner:true,contract_type:(A.type_analyse||null),ri_base64,ri_filename})});
     const data=await res.json();
     if(!res.ok||!data.ok)throw new Error(data.error||"Échec de l'envoi.");
     status.className='lead-status ok';
@@ -547,7 +457,6 @@ async function sendDossier(){
   }
 }
 
-/* intro scan puis affichage */
 const steps=["Lecture du contrat","Repérage des garanties","Analyse des franchises","Vérification de l'usage","Génération du diagnostic"];
 let si=0;
 const txt=$("scanTxt");
@@ -559,7 +468,6 @@ setTimeout(()=>{
   render();
 },3200);
 
-/* si reduced motion : pas de scan */
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){
   clearInterval(cycle);$("scan").style.display="none";$("result").style.visibility="visible";render();
 }
