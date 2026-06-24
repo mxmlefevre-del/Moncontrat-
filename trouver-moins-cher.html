@@ -726,15 +726,27 @@ async function submitDossier(){
 
   try{
     const mc=window._mc;
-    const fileUrls=[];
+
+    // Convertir les fichiers en base64 (pas de Firebase Storage = pas de CORS)
+    const fichiers=[];
     for(const file of selectedFiles){
       try{
-        const storRef=mc.ref(mc.storage,`leads/${user.uid}/${Date.now()}_${file.name}`);
-        const snap=await mc.uploadBytes(storRef,file);
-        const url=await mc.getDownloadURL(snap.ref);
-        fileUrls.push({name:file.name,url});
-      }catch(e){console.warn('Upload non bloquant:',e);}
+        const b64=await new Promise((res,rej)=>{
+          const r=new FileReader();
+          r.onload=()=>res(r.result); // data:...;base64,...
+          r.onerror=rej;
+          r.readAsDataURL(file);
+        });
+        // Ne stocker que les petits fichiers en base64 dans Firestore (<500ko)
+        // Pour les gros fichiers, stocker juste le nom
+        if(file.size < 500*1024){
+          fichiers.push({name:file.name,size:file.size,type:file.type,data:b64});
+        } else {
+          fichiers.push({name:file.name,size:file.size,type:file.type,data:null,note:'Fichier trop volumineux pour stockage inline'});
+        }
+      }catch(e){console.warn('Lecture fichier:',e);fichiers.push({name:file.name,erreur:true});}
     }
+
     await mc.addDoc(mc.collection(mc.db,'leads'),{
       uid:user.uid,
       prenom:document.getElementById('fieldPrenom').value.trim(),
@@ -744,7 +756,7 @@ async function submitDossier(){
       code_postal:document.getElementById('fieldCP').value.trim(),
       assurances:assurancesFinales,
       message:document.getElementById('fieldMessage').value.trim(),
-      urgente,rgpd_consent:true,fichiers:fileUrls,statut:'nouveau',
+      urgente,rgpd_consent:true,fichiers,statut:'nouveau',
       date:mc.serverTimestamp()
     });
     document.getElementById('formArea').style.display='none';

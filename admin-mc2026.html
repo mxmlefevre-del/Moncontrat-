@@ -574,11 +574,24 @@ function renderLeads(filter=''){
 
   tbody.innerHTML = list.map((l,i)=>{
     const docs = l.fichiers||[];
-    const docsHtml = docs.length ? docs.map(f=>`
-      <a class="doc-link" href="${f.url}" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-        ${f.name}
-      </a>`).join('') : '<span style="color:var(--soft);font-size:12.5px">Aucun document transmis</span>';
+    const docsHtml = docs.length ? docs.map(f=>{
+      if(f.data){
+        return `<a class="doc-link" href="${f.data}" download="${f.name}">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          ${f.name} <span style="opacity:.5;font-size:10px">${f.size?Math.round(f.size/1024)+'ko':''}</span>
+        </a>`;
+      } else if(f.url){
+        return `<a class="doc-link" href="${f.url}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          ${f.name}
+        </a>`;
+      } else {
+        return `<span class="doc-link" style="opacity:.5;cursor:default">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          ${f.name} (fichier volumineux — non stocké)
+        </span>`;
+      }
+    }).join('') : '<span style="color:var(--soft);font-size:12.5px">Aucun document transmis</span>';
 
     const assurHtml = (l.assurances||[]).map(a=>`<span class="assur-pill">${a}</span>`).join('');
 
