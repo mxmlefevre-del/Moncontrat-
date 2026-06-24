@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="color-scheme" content="light only" />
 <title>Trouver moins cher — MonContrat.app</title>
 <meta name="description" content="Transmettez votre dossier. Nos partenaires assureurs vous rappellent sous 48h avec une offre moins chère." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,231 +14,329 @@
   import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
   import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
-
   const firebaseConfig = {
-    apiKey: "AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",
-    authDomain: "moncontrat.firebaseapp.com",
-    projectId: "moncontrat",
-    storageBucket: "moncontrat.firebasestorage.app",
-    messagingSenderId: "770067071270",
-    appId: "1:770067071270:web:4614ca8716478be80c41e7"
+    apiKey:"AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",authDomain:"moncontrat.firebaseapp.com",
+    projectId:"moncontrat",storageBucket:"moncontrat.firebasestorage.app",
+    messagingSenderId:"770067071270",appId:"1:770067071270:web:4614ca8716478be80c41e7"
   };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
-  window._mc = { auth, db, storage, collection, addDoc, serverTimestamp, doc, getDoc, ref, uploadBytes, getDownloadURL };
-
-  let authResolved = false;
-  onAuthStateChanged(auth, async (user) => {
-    window._mcUser = user;
-    if (!authResolved) {
-      authResolved = true;
-      if (!user) {
-        localStorage.setItem('mc_pending_url', 'trouver-moins-cher.html');
-        window.location.href = 'index.html#login';
-        return;
-      }
-      try {
-        const profSnap = await getDoc(doc(db, 'users', user.uid, 'profil', 'info'));
-        const userSnap = await getDoc(doc(db, 'users', user.uid));
-        const p = profSnap.exists() ? profSnap.data() : {};
-        const u = userSnap.exists() ? userSnap.data() : {};
-        const prenom = p.firstName || u.prenom || (user.displayName||'').split(' ')[0] || '';
-        const nom    = p.lastName  || u.nom    || (user.displayName||'').split(' ').slice(1).join(' ') || '';
-        const phone  = p.phone || u.phone || '';
-        const cp     = p.address || u.code_postal || '';
-        setField('fieldPrenom', prenom);
-        setField('fieldNom',    nom);
-        setField('fieldEmail',  user.email || '');
-        setField('fieldPhone',  phone);
-        setField('fieldCP',     cp);
-        // marquer les champs préremplis
-        ['fieldPrenom','fieldNom','fieldEmail','fieldPhone','fieldCP'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el && el.value) el.dataset.prefilled = '1';
+  const app=initializeApp(firebaseConfig);
+  const auth=getAuth(app);const db=getFirestore(app);const storage=getStorage(app);
+  window._mc={auth,db,storage,collection,addDoc,serverTimestamp,doc,getDoc,ref,uploadBytes,getDownloadURL};
+  let authResolved=false;
+  onAuthStateChanged(auth,async(user)=>{
+    window._mcUser=user;
+    if(!authResolved){
+      authResolved=true;
+      if(!user){localStorage.setItem('mc_pending_url','trouver-moins-cher.html');window.location.href='index.html#login';return;}
+      try{
+        const profSnap=await getDoc(doc(db,'users',user.uid,'profil','info'));
+        const userSnap=await getDoc(doc(db,'users',user.uid));
+        const p=profSnap.exists()?profSnap.data():{};
+        const u=userSnap.exists()?userSnap.data():{};
+        const prenom=p.firstName||u.prenom||(user.displayName||'').split(' ')[0]||'';
+        const nom=p.lastName||u.nom||(user.displayName||'').split(' ').slice(1).join(' ')||'';
+        setField('fieldPrenom',prenom);setField('fieldNom',nom);
+        setField('fieldEmail',user.email||'');
+        setField('fieldPhone',p.phone||u.phone||'');
+        setField('fieldCP',p.address||u.code_postal||'');
+        ['fieldPrenom','fieldNom','fieldEmail','fieldPhone','fieldCP'].forEach(id=>{
+          const el=document.getElementById(id);if(el&&el.value)el.dataset.prefilled='1';
         });
-      } catch(e) { console.warn(e); }
-    } else {
-      if (!user) { localStorage.setItem('mc_pending_url','trouver-moins-cher.html'); window.location.href='index.html#login'; }
-    }
+      }catch(e){console.warn(e);}
+    }else{if(!user){localStorage.setItem('mc_pending_url','trouver-moins-cher.html');window.location.href='index.html#login';}}
   });
 </script>
 
 <style>
 :root{
-  --bg:#FFFFFF; --bg-2:#F7F8FC; --ink:#0B0E1A; --mute:#5E6478; --soft:#9AA0B4;
-  --accent:#FF2D55; --accent-2:#FF5F82; --hl:#FFBFCD; --hl-soft:rgba(255,45,85,.07);
-  --ok:#18C998; --risk:#FF5C5C; --warn:#FFB020;
-  --line:rgba(11,14,26,.09); --line-2:rgba(11,14,26,.14);
-  --card-shadow:0 24px 70px rgba(20,30,70,.10);
+  --ink:#0B0E1A;--mute:#5E6478;--soft:#9AA0B4;
+  --accent:#FF2D55;--accent-2:#FF5F82;--hl:#FFBFCD;--hl-soft:rgba(255,45,85,.07);
+  --ok:#18C998;--risk:#FF5C5C;
+  --line:rgba(11,14,26,.08);--line-2:rgba(11,14,26,.13);
   --disp:"Bricolage Grotesque",Inter,sans-serif;
   --body:Inter,-apple-system,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,monospace;
+  --night:#080B18;--night-2:#0F1225;--night-line:rgba(255,255,255,.08);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;background:#fff}
-body{font-family:var(--body);background:var(--bg-2);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
 a{text-decoration:none;color:inherit}
 button{font-family:inherit;cursor:pointer}
 
-/* NAV */
-nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;height:64px}
+/* ── NAV ── */
+nav{background:rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;height:64px}
 .nav-inner{width:min(1240px,calc(100% - 48px));margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-size:18px;font-weight:700;color:var(--ink)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
 .nav-logo svg{width:32px;height:32px}
 .ext{color:var(--accent)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .2s}
-.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-back{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;background:transparent;color:var(--mute);border:1px solid var(--line-2);transition:.18s;cursor:pointer}
+.btn-back:hover{color:var(--ink);border-color:var(--ink)}
 
-/* LAYOUT */
-.page{width:min(760px,calc(100% - 48px));margin:0 auto;padding:48px 0 100px}
+/* ── HERO SOMBRE ── */
+.hero-section{
+  background:var(--night);
+  position:relative;overflow:hidden;
+  padding:64px 0 72px;
+  margin-bottom:0;
+}
+.hero-section::before{
+  content:'';position:absolute;
+  top:-200px;right:-200px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(255,45,85,.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-section::after{
+  content:'';position:absolute;
+  bottom:-120px;left:-100px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,95,130,.10) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-wrap{width:min(900px,calc(100% - 48px));margin:0 auto;position:relative;z-index:2}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 14px;margin-bottom:28px}
+.hero-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.hero-pill-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.hero-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+.hero-h1{font-family:var(--disp);font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-.045em;line-height:1.06;color:#fff}
+.hero-h1 em{font-style:normal;background:linear-gradient(90deg,#FF2D55,#FF7A9A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{margin-top:16px;font-size:15px;color:rgba(255,255,255,.55);line-height:1.7;font-weight:400;max-width:520px}
+.hero-sub strong{color:rgba(255,255,255,.85);font-weight:600}
+.hero-stats{display:flex;gap:20px;flex-wrap:wrap;margin-top:28px}
+.hero-stat{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.5)}
+.hero-stat svg{width:15px;height:15px;stroke:var(--ok);fill:none;stroke-width:2.5;flex-shrink:0}
+/* Badge 48h */
+.badge-48{background:linear-gradient(135deg,rgba(255,45,85,.15),rgba(255,45,85,.06));border:1px solid rgba(255,45,85,.3);border-radius:20px;padding:24px 28px;text-align:center;flex-shrink:0;backdrop-filter:blur(12px);animation:float48 4s ease-in-out infinite;}
+@keyframes float48{0%{transform:translateY(0px) rotate(0deg)}25%{transform:translateY(-12px) rotate(1.8deg)}55%{transform:translateY(-7px) rotate(-1.2deg)}75%{transform:translateY(-14px) rotate(1deg)}100%{transform:translateY(0px) rotate(0deg)}}
+.badge-48-num{font-family:var(--disp);font-size:52px;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1}
+.badge-48-num span{color:var(--accent)}
+.badge-48-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:6px}
+.badge-48-sub{font-size:12px;color:rgba(255,255,255,.35);margin-top:4px}
 
-/* HERO */
-.hero{margin-bottom:36px}
-.hero-top{display:flex;align-items:flex-start;gap:24px;margin-bottom:24px}
-.badge-48{flex-shrink:0;width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(255,45,85,.35);text-align:center}
-.badge-48 .h{font-family:var(--disp);font-size:26px;font-weight:800;line-height:1}
-.badge-48 .s{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.88;line-height:1.3;margin-top:3px}
-.hero-copy{}
-.kicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;margin-bottom:14px;box-shadow:0 4px 18px rgba(20,30,70,.06)}
-.kicker i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
-.hero h1{font-family:var(--disp);font-size:clamp(28px,4.5vw,46px);font-weight:800;letter-spacing:-.04em;line-height:1.1}
-.hero h1 .mark{background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat left 90%/100% 42%;padding:0 .06em}
-.hero-sub{margin-top:12px;font-size:14.5px;color:var(--mute);line-height:1.65;font-weight:500}
-.hero-sub strong{color:var(--ink)}
+/* ── LAYOUT FORM ── */
+.form-wrap{width:min(760px,calc(100% - 40px));margin:0 auto;padding:40px 0 100px;position:relative;z-index:1;background:linear-gradient(160deg,rgba(255,45,85,.04) 0%,rgba(255,150,175,.03) 30%,rgba(255,255,255,0) 60%),linear-gradient(340deg,rgba(255,95,130,.03) 0%,rgba(255,180,200,.04) 40%,rgba(255,255,255,0) 70%)}
 
-/* GARANTIES */
-.garanties{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px}
-.garantie{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--mute)}
-.garantie svg{width:16px;height:16px;stroke:var(--ok);fill:none;stroke-width:2.5;flex-shrink:0}
+/* ── STEP CARD ── */
+.step-card{background:#fff;border-radius:18px;border:1px solid rgba(11,14,26,.07);padding:30px;margin-bottom:16px;box-shadow:0 2px 12px rgba(11,14,26,.04),0 8px 32px rgba(11,14,26,.04)}
+.step-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.step-num{width:32px;height:32px;border-radius:10px;background:var(--night);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.04em}
+.step-title{font-family:var(--disp);font-size:17px;font-weight:700;letter-spacing:-.02em}
+.step-sub{font-size:13px;color:var(--soft);margin-top:2px;font-weight:400}
 
-/* URGENCE */
-.urgence-bar{background:linear-gradient(135deg,#FFF8E6,#FFF3D4);border:1.5px solid var(--warn);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:20px;transition:.2s}
-.urgence-bar:hover{border-color:#E09000;box-shadow:0 4px 16px rgba(255,176,32,.18)}
-.urgence-bar.on{background:linear-gradient(135deg,#FFF3D4,#FFE8A0);border-color:#E09000;box-shadow:0 4px 18px rgba(255,176,32,.22)}
-.urgence-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--warn);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;font-size:13px;font-weight:800}
-.urgence-bar.on .urgence-check{background:var(--warn);border-color:var(--warn);color:#fff}
-.urgence-text strong{font-size:14px;font-weight:700;color:#7A5000}
-.urgence-text span{display:block;font-size:12px;color:#9A6800;margin-top:2px}
-
-/* CARD */
-.card{background:#fff;border-radius:20px;border:1px solid var(--line);padding:32px;box-shadow:var(--card-shadow);margin-bottom:20px}
-.card-title{font-family:var(--disp);font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.card-num{width:28px;height:28px;border-radius:8px;background:var(--hl-soft);border:1px solid var(--hl);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.card-sub{font-size:13px;color:var(--soft);margin-bottom:20px}
-
-/* FORM */
-.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* ── FIELDS ── */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:560px){.field-grid{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:6px}
+.field{display:flex;flex-direction:column;gap:5px}
 .field.full{grid-column:1/-1}
-.field label{font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:4px}
-.req{color:var(--accent);font-size:14px}
-.field input,.field textarea{border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;font-family:var(--body);color:var(--ink);background:#fff;outline:none;transition:.2s;resize:none}
+.field label{font-size:11.5px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:3px}
+.req{color:var(--accent)}
+.field input,.field textarea{
+  border:1.5px solid rgba(11,14,26,.1);border-radius:10px;
+  padding:11px 14px;font-size:14px;font-family:var(--body);
+  color:var(--ink);background:#fff;outline:none;transition:.18s;resize:none;
+}
 .field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,45,85,.08)}
-.field input[readonly]{background:var(--bg-2);color:var(--mute);cursor:default}
+.field input[readonly]{background:#F7F8FC;color:var(--mute);cursor:default}
 .field input::placeholder,.field textarea::placeholder{color:var(--soft)}
-.field input.err-field{border-color:var(--risk)!important;box-shadow:0 0 0 3px rgba(255,92,92,.1)!important}
+.field input.err-field{border-color:var(--risk)!important;box-shadow:0 0 0 3px rgba(255,92,92,.08)!important}
 .field-err{font-size:11.5px;color:var(--risk);font-weight:600;display:none;margin-top:2px}
 .field-err.show{display:block}
 
-/* ASSUR CHIPS */
-.assur-section{margin-bottom:18px}
-.assur-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
-.assur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-@media(max-width:500px){.assur-grid{grid-template-columns:1fr 1fr}}
-.assur-chip{border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;font-size:12.5px;font-weight:600;cursor:pointer;background:#fff;transition:.15s;text-align:left;color:var(--ink);display:flex;align-items:flex-start;gap:7px;line-height:1.3}
-.assur-chip:hover{border-color:var(--accent);color:var(--accent)}
-.assur-chip.on{background:var(--hl-soft);border-color:var(--accent);color:var(--accent)}
-.assur-emoji{font-size:16px;flex-shrink:0;margin-top:1px}
-.assur-chip-body{}
-.assur-chip-title{font-weight:700;font-size:13px}
-.assur-chip-detail{font-size:11px;color:var(--soft);font-weight:400;margin-top:2px;line-height:1.4}
-.assur-chip.on .assur-chip-detail{color:var(--accent-2)}
+/* ── MULTI SELECT ── */
+.multi-select{position:relative}
+.ms-trigger{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border:1.5px solid rgba(11,14,26,.1);border-radius:12px;
+  padding:13px 16px;cursor:pointer;background:#fff;transition:.18s;
+  user-select:none;
+}
+.ms-trigger:hover{border-color:rgba(255,45,85,.4)}
+.ms-trigger.open{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,45,85,.08)}
+.ms-placeholder{font-size:14px;color:var(--soft);font-family:var(--body)}
+.ms-placeholder.has-value{color:var(--ink);font-weight:600}
+.ms-arrow{width:18px;height:18px;flex-shrink:0;color:var(--soft);transition:transform .2s}
+.ms-trigger.open .ms-arrow{transform:rotate(180deg);color:var(--accent)}
+.ms-dropdown{
+  display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:50;
+  background:#fff;border:1.5px solid rgba(11,14,26,.1);border-radius:14px;
+  box-shadow:0 12px 40px rgba(11,14,26,.12),0 4px 12px rgba(11,14,26,.06);
+  overflow:hidden;max-height:360px;overflow-y:auto;
+}
+.ms-dropdown.open{display:block}
+.ms-dropdown::-webkit-scrollbar{width:4px}
+.ms-dropdown::-webkit-scrollbar-track{background:transparent}
+.ms-dropdown::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:2px}
+.ms-group-label{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--soft);
+  padding:12px 16px 6px;background:#FAFBFD;
+  border-top:1px solid var(--line);
+}
+.ms-group-label:first-child{border-top:none}
+.ms-option{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 16px;cursor:pointer;transition:.12s;
+}
+.ms-option:hover{background:var(--hl-soft)}
+.ms-option input[type=checkbox]{
+  width:17px;height:17px;border-radius:5px;cursor:pointer;
+  accent-color:var(--accent);flex-shrink:0;
+}
+.ms-em{font-size:16px;flex-shrink:0;width:22px;text-align:center}
+.ms-opt-name{font-size:13.5px;font-weight:600;color:var(--ink);flex:1}
+.ms-opt-detail{font-size:11.5px;color:var(--soft);flex-shrink:0;text-align:right;max-width:160px}
+.ms-sep{height:1px;background:var(--line);margin:4px 0}
+/* Tags sélectionnés */
+.ms-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ms-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--hl-soft);border:1px solid rgba(255,45,85,.2);
+  border-radius:8px;padding:5px 10px;font-size:12.5px;font-weight:600;color:var(--accent);
+}
+.ms-tag-rm{background:none;border:none;color:var(--accent);cursor:pointer;font-size:15px;line-height:1;padding:0;opacity:.6}
+.ms-tag-rm:hover{opacity:1}
 
-/* CHAMP "AUTRE" */
-.autre-field{margin-top:10px;display:none}
-.autre-field.show{display:block}
+/* ── ASSUR CHIPS ── */
+.assur-block{margin-bottom:20px}
+.assur-block:last-child{margin-bottom:0}
+.assur-cat{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-bottom:8px;padding-left:2px}
+.chips-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:520px){.chips-row{grid-template-columns:1fr 1fr}}
+.chip{
+  border:1.5px solid rgba(11,14,26,.09);border-radius:12px;padding:12px 13px;
+  background:#fff;cursor:pointer;text-align:left;transition:.15s;
+  display:flex;flex-direction:column;gap:3px;
+}
+.chip:hover{border-color:rgba(255,45,85,.4);background:var(--hl-soft);transform:translateY(-1px);box-shadow:0 4px 14px rgba(255,45,85,.08)}
+.chip.on{border-color:var(--accent);background:linear-gradient(135deg,rgba(255,45,85,.06),rgba(255,45,85,.03));box-shadow:0 0 0 1px var(--accent)}
+.chip-top{display:flex;align-items:center;gap:7px}
+.chip-em{font-size:17px;line-height:1}
+.chip-name{font-family:var(--disp);font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.chip.on .chip-name{color:var(--accent)}
+.chip-detail{font-size:11px;color:var(--soft);line-height:1.4;padding-left:24px}
+.chip.on .chip-detail{color:rgba(255,45,85,.6)}
+.autre-reveal{margin-top:10px;display:none}
+.autre-reveal.show{display:block}
 
-/* UPLOAD ZONE */
-.upload-zone{border:2px dashed var(--line-2);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:.2s;background:#fff;position:relative}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--hl-soft)}
-.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-icon{width:52px;height:52px;border-radius:14px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.upload-icon svg{width:24px;height:24px;stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.upload-title{font-family:var(--disp);font-weight:700;font-size:15px;margin-bottom:5px}
-.upload-sub{color:var(--mute);font-size:13px;line-height:1.5}
-.upload-formats{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:9px;letter-spacing:.04em}
-.file-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.file-item{display:flex;align-items:center;gap:10px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);border-radius:10px;padding:9px 13px}
-.file-item svg{width:16px;height:16px;stroke:var(--accent);stroke-width:2;fill:none;flex-shrink:0}
-.file-item-name{flex:1;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.file-item-size{font-family:var(--mono);font-size:11px;color:var(--soft);flex-shrink:0}
-.file-remove{background:none;border:none;color:var(--soft);cursor:pointer;font-size:18px;padding:2px;line-height:1}
-.file-remove:hover{color:var(--accent)}
+/* ── UPLOAD ── */
+.drop-zone{
+  border:2px dashed rgba(11,14,26,.12);border-radius:14px;
+  padding:36px 24px;text-align:center;cursor:pointer;transition:.2s;
+  background:linear-gradient(135deg,#FAFBFF,#F7F8FC);position:relative;
+}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--accent);background:var(--hl-soft)}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{width:48px;height:48px;border-radius:13px;background:#fff;border:1px solid rgba(11,14,26,.09);box-shadow:0 4px 14px rgba(11,14,26,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.drop-icon svg{width:22px;height:22px;stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.drop-title{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--ink);margin-bottom:6px}
+.drop-sub{font-size:13px;color:var(--mute);line-height:1.6}
+.drop-formats{font-family:var(--mono);font-size:10.5px;color:var(--soft);margin-top:10px;letter-spacing:.06em}
+.file-list{display:flex;flex-direction:column;gap:7px;margin-top:12px}
+.file-item{display:flex;align-items:center;gap:10px;background:#F7F8FC;border:1px solid rgba(11,14,26,.07);border-radius:10px;padding:9px 13px}
+.file-item svg{width:15px;height:15px;stroke:var(--accent);stroke-width:2;fill:none;flex-shrink:0}
+.file-name{flex:1;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-size{font-family:var(--mono);font-size:10.5px;color:var(--soft);flex-shrink:0}
+.file-rm{background:none;border:none;color:var(--soft);cursor:pointer;font-size:18px;line-height:1;padding:0 2px}
+.file-rm:hover{color:var(--risk)}
 
-/* RGPD */
-.rgpd-card{border-radius:16px;background:linear-gradient(135deg,#FFF0F3 0%,#FFF8FA 60%,#FFF0F3 100%);border:1.5px solid var(--hl);padding:24px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
-.rgpd-card::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(255,45,85,.14),transparent 70%);border-radius:50%;pointer-events:none}
-.rgpd-card:hover{border-color:var(--accent);box-shadow:0 6px 24px rgba(255,45,85,.12)}
-.rgpd-inner{display:flex;gap:16px;align-items:flex-start}
-.rgpd-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--hl);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;margin-top:2px;font-size:13px;font-weight:800}
-.rgpd-check.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.rgpd-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.rgpd-title{font-family:var(--disp);font-size:15px;font-weight:700}
-.rgpd-badges{display:flex;gap:6px;flex-wrap:wrap}
-.rgpd-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
-.rgpd-badge.save{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff}
-.rgpd-badge.free{background:#EDFAF5;color:#0D9E72;border:1px solid rgba(18,194,152,.25)}
-.rgpd-text{font-size:13.5px;color:var(--mute);line-height:1.6}
-.rgpd-text strong{color:var(--ink)}
-.rgpd-guarantees{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}
-.rgpd-guarantee{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--ok);font-weight:600}
-.rgpd-guarantee svg{width:13px;height:13px;stroke:var(--ok);fill:none;stroke-width:2.5;flex-shrink:0}
+/* ── RGPD ── */
+.rgpd-wrap{
+  background:linear-gradient(135deg,#FFF0F3,#FFF8FA 50%,#FFF0F3);
+  border:1.5px solid rgba(255,45,85,.2);border-radius:16px;
+  padding:22px;cursor:pointer;transition:.2s;position:relative;overflow:hidden;
+  margin-bottom:12px;
+}
+.rgpd-wrap::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,45,85,.12),transparent 70%);pointer-events:none}
+.rgpd-wrap:hover{border-color:rgba(255,45,85,.4);box-shadow:0 6px 24px rgba(255,45,85,.1)}
+.rgpd-wrap.checked{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 8px 28px rgba(255,45,85,.12)}
+.rgpd-row{display:flex;gap:14px;align-items:flex-start;position:relative;z-index:1}
+.rgpd-box{width:22px;height:22px;border-radius:6px;border:2px solid rgba(255,45,85,.3);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.18s;margin-top:2px}
+.rgpd-wrap.checked .rgpd-box{background:var(--accent);border-color:var(--accent)}
+.rgpd-check-icon{display:none;width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none}
+.rgpd-wrap.checked .rgpd-check-icon{display:block}
+.rgpd-content{}
+.rgpd-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+.rgpd-title{font-family:var(--disp);font-size:15px;font-weight:700;letter-spacing:-.01em}
+.rgpd-tags{display:flex;gap:5px;flex-wrap:wrap}
+.rtag{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
+.rtag-save{background:linear-gradient(135deg,var(--accent),#C91A40);color:#fff}
+.rtag-free{background:rgba(24,201,152,.1);color:#0D9E72;border:1px solid rgba(24,201,152,.25)}
+.rgpd-text{font-size:13px;color:var(--mute);line-height:1.65}
+.rgpd-text strong{color:var(--ink);font-weight:600}
+.rgpd-guarantees{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.rgpd-g{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;color:var(--ok);font-weight:600}
+.rgpd-g svg{width:12px;height:12px;stroke:var(--ok);fill:none;stroke-width:2.5}
 
-/* SUBMIT */
-.submit-wrap{margin-top:28px}
-.btn-submit{width:100%;padding:18px;font-size:16px;font-weight:800;border-radius:14px;background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;border:none;cursor:pointer;transition:.2s;box-shadow:0 12px 32px rgba(255,45,85,.3);display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--disp)}
-.btn-submit:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(255,45,85,.38)}
-.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.submit-legal{text-align:center;font-size:11.5px;color:var(--soft);margin-top:14px;line-height:1.6}
+/* ── URGENCE premium ── */
+.urgence-wrap{
+  background:var(--night-2);
+  border:1px solid var(--night-line);
+  border-radius:14px;padding:18px 20px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;transition:.2s;margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.urgence-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,45,85,.04),transparent 60%);pointer-events:none}
+.urgence-wrap:hover{border-color:rgba(255,45,85,.3);box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.urgence-wrap.on{border-color:rgba(255,45,85,.5);background:linear-gradient(135deg,rgba(255,45,85,.12),var(--night-2));box-shadow:0 0 0 1px rgba(255,45,85,.3),0 8px 28px rgba(0,0,0,.25)}
+.urg-toggle{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.18s}
+.urgence-wrap.on .urg-toggle{background:var(--accent);border-color:var(--accent)}
+.urg-check{display:none;width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none}
+.urgence-wrap.on .urg-check{display:block}
+.urg-icon{font-size:18px;flex-shrink:0}
+.urg-text strong{font-size:13.5px;font-weight:700;color:#fff}
+.urg-text span{display:block;font-size:12px;color:rgba(255,255,255,.38);margin-top:2px;line-height:1.5}
+
+/* ── SUBMIT ── */
+.submit-area{margin-top:6px}
+.err-msg{display:none;margin-bottom:14px;padding:11px 15px;border-radius:10px;background:rgba(255,59,59,.06);color:#C53030;border:1px solid rgba(255,59,59,.18);font-size:13px;font-weight:600}
+.err-msg.show{display:block}
+.btn-submit{
+  width:100%;padding:18px 24px;font-size:17px;font-weight:800;
+  border-radius:14px;background:linear-gradient(135deg,#FF2D55,#D11A3F);
+  color:#fff;border:none;cursor:pointer;transition:.2s;
+  box-shadow:0 8px 28px rgba(255,45,85,.35),0 2px 8px rgba(255,45,85,.2);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--disp);letter-spacing:-.01em;
+}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(255,45,85,.45),0 4px 12px rgba(255,45,85,.25)}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-legal{text-align:center;font-size:11px;color:var(--soft);margin-top:12px;line-height:1.7}
 .submit-legal a{color:var(--mute);text-decoration:underline}
 
-.err-msg{display:none;margin-top:14px;padding:12px 16px;border-radius:10px;background:rgba(255,59,59,.07);color:#D33;border:1px solid rgba(255,59,59,.22);font-size:13px;font-weight:600}
-.err-msg.show{display:block}
+/* ── SUCCESS ── */
+.success-panel{display:none;background:#fff;border-radius:20px;border:1px solid rgba(11,14,26,.07);padding:60px 40px;text-align:center;box-shadow:0 8px 40px rgba(11,14,26,.06)}
+.success-panel.show{display:block}
+.success-ring{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--ok),#0DAF85);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 12px 32px rgba(18,194,152,.3)}
+.success-ring svg{width:34px;height:34px;stroke:#fff;stroke-width:2.5;fill:none}
+.success-panel h2{font-family:var(--disp);font-size:30px;font-weight:800;letter-spacing:-.03em;margin-bottom:10px}
+.success-panel p{color:var(--mute);font-size:15px;line-height:1.65;max-width:400px;margin:0 auto}
+.tl{display:flex;flex-direction:column;gap:0;margin:32px auto;max-width:400px;text-align:left}
+.tl-row{display:flex;gap:16px;position:relative}
+.tl-row:not(:last-child)::before{content:'';position:absolute;left:14px;top:28px;bottom:-8px;width:1px;background:var(--line)}
+.tl-num{width:28px;height:28px;border-radius:50%;background:var(--hl-soft);border:1px solid var(--hl);color:var(--accent);font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0}
+.tl-body{padding:4px 0 20px;font-size:13.5px;color:var(--mute);line-height:1.55}
+.tl-body strong{color:var(--ink);font-weight:600;display:block;margin-bottom:2px}
 
-/* SUCCESS */
-.success-state{display:none;text-align:center;padding:60px 24px}
-.success-state.show{display:block}
-.success-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--ok),#0DAF85);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 12px 32px rgba(18,194,152,.3)}
-.success-icon svg{width:36px;height:36px;stroke:#fff;stroke-width:2.5;fill:none}
-.success-state h2{font-family:var(--disp);font-size:28px;font-weight:800;margin-bottom:12px}
-.success-state p{color:var(--mute);font-size:15px;line-height:1.6;max-width:400px;margin:0 auto}
-.success-timeline{display:flex;flex-direction:column;gap:12px;margin:28px auto;max-width:380px;text-align:left}
-.tl-item{display:flex;align-items:flex-start;gap:12px;font-size:13px}
-.tl-dot{width:22px;height:22px;border-radius:50%;background:var(--hl-soft);border:1px solid var(--hl);color:var(--accent);font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.tl-text{color:var(--mute);line-height:1.5}
-.tl-text strong{color:var(--ink)}
-
-/* TOAST */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:12px 22px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.22);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-@media(max-width:600px){
-  .hero-top{flex-direction:column;gap:16px;align-items:center;text-align:center}
-  .badge-48{width:72px;height:72px}
-  .badge-48 .h{font-size:21px}
-  .assur-grid{grid-template-columns:1fr 1fr}
-  .page{padding:28px 0 80px}
-  .card{padding:22px}
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .hero-grid{grid-template-columns:1fr}
+  .badge-48{display:flex;flex-direction:row;gap:12px;align-items:center;padding:16px 20px;border-radius:14px}
+  .badge-48-num{font-size:38px}
+  .hero-section{padding:44px 0 52px}
+  .form-wrap{padding:28px 0 80px}
+  .step-card{padding:22px}
+  .chips-row{grid-template-columns:1fr 1fr}
+  .success-panel{padding:40px 22px}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="index.html">
@@ -252,465 +349,412 @@ nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-
       </svg>
       MonContrat<span class="ext">.app</span>
     </a>
-    <a href="index.html" class="btn btn-ghost">← Accueil</a>
+    <button class="btn-back" onclick="history.back()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Retour
+    </button>
   </div>
 </nav>
 
-<div class="page">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-top">
-      <div class="badge-48">
-        <span class="h">48h</span>
-        <span class="s">Réponse<br>garantie</span>
-      </div>
-      <div class="hero-copy">
-        <div class="kicker"><i></i>Service 100% gratuit · sans engagement</div>
-        <h1>On s'occupe de tout.<br><span class="mark">Vous payez moins.</span></h1>
+<!-- HERO SOMBRE -->
+<section class="hero-section">
+  <div class="hero-wrap">
+    <div class="hero-pill">
+      <span class="hero-pill-dot"></span>
+      <span class="hero-pill-text">Service 100 % gratuit · sans engagement</span>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-h1">On s'occupe de tout.<br><em>Vous payez moins.</em></h1>
         <p class="hero-sub">
-          Vous n'avez rien à remplir. <strong>Transmettez-nous simplement vos documents</strong> : contrat actuel, devis, relevé d'information, relevé de sinistralité, carte grise… On analyse, on compare, on négocie pour vous. <strong>L'assureur a moins de 48h pour revenir vers vous</strong> à partir de maintenant.
+          Vous n'avez rien à remplir. <strong>Transmettez-nous simplement vos documents</strong> : contrat actuel, devis, relevé d'information, relevé de sinistralité, carte grise… On analyse, on compare, on négocie pour vous.
         </p>
-        <div class="garanties">
-          <div class="garantie">
+        <div class="hero-stats">
+          <div class="hero-stat">
             <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
             Zéro démarchage abusif
           </div>
-          <div class="garantie">
+          <div class="hero-stat">
             <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
             Économies moyennes 240 €/an
           </div>
-          <div class="garantie">
+          <div class="hero-stat">
             <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            Offre personnalisée
+            Offre sur-mesure garantie
           </div>
+        </div>
+      </div>
+      <div class="badge-48">
+        <div>
+          <div class="badge-48-num">48<span>h</span></div>
+          <div class="badge-48-label">Réponse max</div>
+          <div class="badge-48-sub">à partir de maintenant</div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div id="formArea">
+<!-- FORM -->
+<div class="form-wrap">
+<div id="formArea">
 
-    <!-- ÉTAPE 1 : Coordonnées -->
-    <div class="card">
-      <div class="card-title"><div class="card-num">1</div>Vos coordonnées</div>
-      <div class="card-sub">Vérifiez et complétez vos informations — l'assureur en aura besoin pour vous recontacter.</div>
-      <div class="field-grid">
-        <div class="field">
-          <label>Prénom <span class="req">*</span></label>
-          <input type="text" id="fieldPrenom" placeholder="Votre prénom" />
-          <span class="field-err" id="errPrenom">Champ obligatoire</span>
-        </div>
-        <div class="field">
-          <label>Nom <span class="req">*</span></label>
-          <input type="text" id="fieldNom" placeholder="Votre nom" />
-          <span class="field-err" id="errNom">Champ obligatoire</span>
-        </div>
-        <div class="field">
-          <label>Téléphone <span class="req">*</span></label>
-          <input type="tel" id="fieldPhone" placeholder="06 XX XX XX XX" />
-          <span class="field-err" id="errPhone">Téléphone obligatoire pour être rappelé</span>
-        </div>
-        <div class="field">
-          <label>Code postal <span class="req">*</span></label>
-          <input type="text" id="fieldCP" placeholder="06000" />
-          <span class="field-err" id="errCP">Champ obligatoire</span>
-        </div>
-        <div class="field full">
-          <label>Email</label>
-          <input type="email" id="fieldEmail" readonly placeholder="votre@email.fr" />
-        </div>
+  <!-- 1 · COORDONNÉES -->
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">Vos coordonnées</div>
+        <div class="step-sub">Vérifiez vos informations — l'assureur en aura besoin pour vous rappeler.</div>
       </div>
     </div>
-
-    <!-- ÉTAPE 2 : Type d'assurance -->
-    <div class="card">
-      <div class="card-title"><div class="card-num">2</div>Sur quel contrat souhaitez-vous faire des économies ?</div>
-      <div class="card-sub">Sélectionnez un ou plusieurs types — nous ciblons les bons partenaires.</div>
-
-      <div class="assur-section">
-        <div class="assur-label">Particuliers</div>
-        <div class="assur-grid">
-          <button class="assur-chip" onclick="toggleAssur(this,'Habitation')">
-            <span class="assur-emoji">🏠</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Habitation</div>
-              <div class="assur-chip-detail">MRH, appartement, maison, résidence secondaire</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'Auto / Moto')">
-            <span class="assur-emoji">🚗</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Auto / Moto</div>
-              <div class="assur-chip-detail">Tiers, tous risques, flotte de véhicules</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'Santé / Mutuelle')">
-            <span class="assur-emoji">🏥</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Santé / Mutuelle</div>
-              <div class="assur-chip-detail">Complémentaire santé individuelle ou familiale</div>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <div class="assur-section">
-        <div class="assur-label">Prévoyance & épargne</div>
-        <div class="assur-grid">
-          <button class="assur-chip" onclick="toggleAssur(this,'Prévoyance')">
-            <span class="assur-emoji">🛡️</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Prévoyance</div>
-              <div class="assur-chip-detail">GAV, assurance décès, assurance vie, retraite, emprunteur</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'Assurance emprunteur')">
-            <span class="assur-emoji">🏦</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Emprunteur</div>
-              <div class="assur-chip-detail">Délégation d'assurance de prêt immobilier</div>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <div class="assur-section">
-        <div class="assur-label">Professionnels</div>
-        <div class="assur-grid">
-          <button class="assur-chip" onclick="toggleAssur(this,'MRP / Locaux pro')">
-            <span class="assur-emoji">🏢</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">MRP / Locaux pro</div>
-              <div class="assur-chip-detail">Multirisque professionnelle, locaux, matériel, stock</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'RC Professionnelle')">
-            <span class="assur-emoji">⚖️</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">RC Pro</div>
-              <div class="assur-chip-detail">Responsabilité civile professionnelle, décennale</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'Cyber risques')">
-            <span class="assur-emoji">🔒</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Cyber risques</div>
-              <div class="assur-chip-detail">Protection données, ransomware, fraude informatique</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'Marchandises transportées')">
-            <span class="assur-emoji">🚚</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Marchandises</div>
-              <div class="assur-chip-detail">Transport de marchandises, flotte pro</div>
-            </div>
-          </button>
-          <button class="assur-chip" onclick="toggleAssur(this,'Santé collective')">
-            <span class="assur-emoji">👥</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Santé collective</div>
-              <div class="assur-chip-detail">Mutuelle d'entreprise, prévoyance collective</div>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <div class="assur-section" style="margin-bottom:0">
-        <div class="assur-grid" style="grid-template-columns:1fr">
-          <button class="assur-chip" id="autreChip" onclick="toggleAssur(this,'Autre');toggleAutre()">
-            <span class="assur-emoji">✏️</span>
-            <div class="assur-chip-body">
-              <div class="assur-chip-title">Autre</div>
-              <div class="assur-chip-detail">Un contrat qui ne figure pas dans la liste</div>
-            </div>
-          </button>
-        </div>
-        <div class="autre-field" id="autreField">
-          <div class="field" style="margin-top:10px">
-            <label>Précisez le type de contrat</label>
-            <input type="text" id="fieldAutre" placeholder="Ex : assurance bateau, scolaire, animaux…" />
-          </div>
-        </div>
-      </div>
-
-      <span class="field-err" id="errAssur" style="margin-top:12px;display:none">Sélectionnez au moins un type de contrat</span>
-    </div>
-
-    <!-- ÉTAPE 3 : Documents -->
-    <div class="card">
-      <div class="card-title"><div class="card-num">3</div>Vos documents <span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--soft);margin-left:6px">facultatif mais recommandé</span></div>
-      <div class="card-sub">Plus vous nous donnez de documents, plus l'offre sera précise. Pas de documents ? Pas de problème — transmettez ce que vous avez.</div>
-      <div class="upload-zone" id="dropZone">
-        <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="onFiles(this.files)" />
-        <div class="upload-icon">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
-        </div>
-        <div class="upload-title">Glissez vos fichiers ici</div>
-        <div class="upload-sub">Contrat actuel · Devis · Relevé d'information<br>Relevé de sinistralité · Carte grise · Avis d'échéance</div>
-        <div class="upload-formats">PDF · JPG · PNG · DOC — max 10 Mo par fichier</div>
-      </div>
-      <div class="file-list" id="fileList"></div>
-    </div>
-
-    <!-- ÉTAPE 4 : Message -->
-    <div class="card">
-      <div class="card-title"><div class="card-num">4</div>Un mot pour l'assureur <span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--soft);margin-left:6px">facultatif</span></div>
-      <div class="card-sub">Tarif actuel, situation particulière, sinistres passés, ce que vous cherchez… Tout contexte utile pour obtenir la meilleure offre.</div>
+    <div class="field-grid">
       <div class="field">
-        <textarea id="fieldMessage" rows="4" placeholder="Ex : je paie 1 100 €/an pour mon habitation à Nice, pas de sinistre depuis 7 ans. Je cherche le même niveau de garanties à meilleur prix…"></textarea>
+        <label>Prénom <span class="req">*</span></label>
+        <input type="text" id="fieldPrenom" placeholder="Votre prénom" />
+        <span class="field-err" id="errPrenom">Champ obligatoire</span>
+      </div>
+      <div class="field">
+        <label>Nom <span class="req">*</span></label>
+        <input type="text" id="fieldNom" placeholder="Votre nom" />
+        <span class="field-err" id="errNom">Champ obligatoire</span>
+      </div>
+      <div class="field">
+        <label>Téléphone <span class="req">*</span></label>
+        <input type="tel" id="fieldPhone" placeholder="06 XX XX XX XX" />
+        <span class="field-err" id="errPhone">Obligatoire pour être rappelé</span>
+      </div>
+      <div class="field">
+        <label>Code postal <span class="req">*</span></label>
+        <input type="text" id="fieldCP" placeholder="06000" />
+        <span class="field-err" id="errCP">Champ obligatoire</span>
+      </div>
+      <div class="field full">
+        <label>Email</label>
+        <input type="email" id="fieldEmail" readonly />
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 · TYPE DE CONTRAT -->
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">Sur quel contrat faire des économies ?</div>
+        <div class="step-sub">Vous pouvez en sélectionner plusieurs.</div>
       </div>
     </div>
 
-    <!-- RGPD -->
-    <div class="rgpd-card" id="rgpdCard" onclick="toggleRgpd()">
-      <div class="rgpd-inner">
-        <div class="rgpd-check" id="rgpdCheck"></div>
-        <div class="rgpd-body">
-          <div class="rgpd-head">
-            <div class="rgpd-title">Oui, je veux payer moins cher 💸</div>
-            <div class="rgpd-badges">
-              <span class="rgpd-badge save">Jusqu'à 300 €/an d'économies</span>
-              <span class="rgpd-badge free">Gratuit</span>
-            </div>
+    <div class="multi-select" id="multiSelect">
+      <div class="ms-trigger" id="msTrigger" onclick="toggleDropdown()">
+        <span class="ms-placeholder" id="msPlaceholder">Choisir un ou plusieurs contrats…</span>
+        <svg class="ms-arrow" id="msArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="ms-dropdown" id="msDropdown">
+        <div class="ms-group-label">Particuliers</div>
+        <label class="ms-option"><input type="checkbox" value="Habitation" onchange="onOptionChange(this)"><span class="ms-em">🏠</span><span class="ms-opt-name">Habitation</span><span class="ms-opt-detail">MRH, appartement, maison, résidence secondaire</span></label>
+        <label class="ms-option"><input type="checkbox" value="Auto / Moto" onchange="onOptionChange(this)"><span class="ms-em">🚗</span><span class="ms-opt-name">Auto / Moto</span><span class="ms-opt-detail">Tiers, tous risques, flotte de véhicules</span></label>
+        <label class="ms-option"><input type="checkbox" value="Santé / Mutuelle" onchange="onOptionChange(this)"><span class="ms-em">🏥</span><span class="ms-opt-name">Santé / Mutuelle</span><span class="ms-opt-detail">Complémentaire santé individuelle ou familiale</span></label>
+        <div class="ms-group-label">Prévoyance & épargne</div>
+        <label class="ms-option"><input type="checkbox" value="Prévoyance" onchange="onOptionChange(this)"><span class="ms-em">🛡️</span><span class="ms-opt-name">Prévoyance</span><span class="ms-opt-detail">GAV, décès, assurance vie, retraite, emprunteur</span></label>
+        <label class="ms-option"><input type="checkbox" value="Assurance emprunteur" onchange="onOptionChange(this)"><span class="ms-em">🏦</span><span class="ms-opt-name">Emprunteur</span><span class="ms-opt-detail">Délégation d'assurance de prêt immobilier</span></label>
+        <div class="ms-group-label">Professionnels</div>
+        <label class="ms-option"><input type="checkbox" value="MRP / Locaux pro" onchange="onOptionChange(this)"><span class="ms-em">🏢</span><span class="ms-opt-name">MRP / Locaux</span><span class="ms-opt-detail">Multirisque pro, matériel, stock, locaux</span></label>
+        <label class="ms-option"><input type="checkbox" value="RC Professionnelle" onchange="onOptionChange(this)"><span class="ms-em">⚖️</span><span class="ms-opt-name">RC Pro</span><span class="ms-opt-detail">Responsabilité civile pro, décennale</span></label>
+        <label class="ms-option"><input type="checkbox" value="Cyber risques" onchange="onOptionChange(this)"><span class="ms-em">🔒</span><span class="ms-opt-name">Cyber risques</span><span class="ms-opt-detail">Ransomware, fraude, protection données</span></label>
+        <label class="ms-option"><input type="checkbox" value="Marchandises transportées" onchange="onOptionChange(this)"><span class="ms-em">🚚</span><span class="ms-opt-name">Marchandises</span><span class="ms-opt-detail">Transport de marchandises, flotte pro</span></label>
+        <label class="ms-option"><input type="checkbox" value="Santé collective" onchange="onOptionChange(this)"><span class="ms-em">👥</span><span class="ms-opt-name">Santé collective</span><span class="ms-opt-detail">Mutuelle d'entreprise, prévoyance collective</span></label>
+        <label class="ms-option"><input type="checkbox" value="RC Décennale" onchange="onOptionChange(this)"><span class="ms-em">🏗️</span><span class="ms-opt-name">RC Décennale</span><span class="ms-opt-detail">Garantie décennale, constructeur, BTP</span></label>
+        <label class="ms-option"><input type="checkbox" value="Dommage ouvrage" onchange="onOptionChange(this)"><span class="ms-em">🔨</span><span class="ms-opt-name">Dommage ouvrage</span><span class="ms-opt-detail">Assurance maître d'ouvrage, travaux de construction</span></label>
+        <label class="ms-option"><input type="checkbox" value="Multirisque immeuble" onchange="onOptionChange(this)"><span class="ms-em">🏛️</span><span class="ms-opt-name">Multirisque immeuble</span><span class="ms-opt-detail">Copropriété, immeuble collectif, syndic</span></label>
+        <label class="ms-option"><input type="checkbox" value="Risque industriel" onchange="onOptionChange(this)"><span class="ms-em">🏭</span><span class="ms-opt-name">Risque industriel</span><span class="ms-opt-detail">Site industriel, bris de machine, perte d'exploitation</span></label>
+        <label class="ms-option"><input type="checkbox" value="Flotte automobile" onchange="onOptionChange(this)"><span class="ms-em">🚘</span><span class="ms-opt-name">Flotte automobile</span><span class="ms-opt-detail">Flotte de véhicules professionnels</span></label>
+        <div class="ms-sep"></div>
+        <label class="ms-option"><input type="checkbox" value="Autre" onchange="onOptionChange(this)"><span class="ms-em">✏️</span><span class="ms-opt-name">Autre</span><span class="ms-opt-detail">Un contrat qui ne figure pas dans la liste</span></label>
+      </div>
+    </div>
+    <div class="ms-tags" id="msTags"></div>
+    <span class="field-err" id="errAssur" style="margin-top:8px;display:none">Sélectionnez au moins un type de contrat</span>
+  </div>
+
+  <!-- 3 · DOCUMENTS -->
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">Vos documents <span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--soft);margin-left:4px">facultatif mais recommandé</span></div>
+        <div class="step-sub">Plus on a d'infos, plus l'offre sera précise. Pas de documents ? Pas de problème.</div>
+      </div>
+    </div>
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="onFiles(this.files)" />
+      <div class="drop-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      </div>
+      <div class="drop-title">Glissez vos fichiers ici</div>
+      <div class="drop-sub">Contrat actuel · Devis · Relevé d'information<br>Relevé de sinistralité · Carte grise · Avis d'échéance</div>
+      <div class="drop-formats">PDF · JPG · PNG · DOC — max 10 Mo par fichier</div>
+    </div>
+    <div class="file-list" id="fileList"></div>
+  </div>
+
+  <!-- 4 · MESSAGE -->
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-num">04</div>
+      <div>
+        <div class="step-title">Un mot pour l'assureur <span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--soft);margin-left:4px">facultatif</span></div>
+        <div class="step-sub">Tarif actuel, situation particulière, sinistres passés… Tout contexte utile.</div>
+      </div>
+    </div>
+    <div class="field">
+      <textarea id="fieldMessage" rows="4" placeholder="Ex : je paie 1 100 €/an pour mon habitation à Nice, pas de sinistre depuis 7 ans. Je cherche les mêmes garanties à meilleur prix…"></textarea>
+    </div>
+  </div>
+
+  <!-- RGPD -->
+  <div class="rgpd-wrap" id="rgpdCard" onclick="toggleRgpd()">
+    <div class="rgpd-row">
+      <div class="rgpd-box">
+        <svg class="rgpd-check-icon" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div class="rgpd-content">
+        <div class="rgpd-head">
+          <div class="rgpd-title">Oui, je veux payer moins cher 💸</div>
+          <div class="rgpd-tags">
+            <span class="rtag rtag-save">Jusqu'à 300 €/an</span>
+            <span class="rtag rtag-free">Gratuit</span>
           </div>
-          <div class="rgpd-text">
-            J'autorise MonContrat.app à transmettre mon dossier à <strong>des partenaires assureurs sélectionnés</strong> afin de recevoir des offres plus compétitives. Je comprends que je serai contacté(e) par téléphone ou email dans le cadre du suivi de mon dossier, et que je peux retirer mon accord à tout moment.
-          </div>
-          <div class="rgpd-guarantees">
-            <div class="rgpd-guarantee">
-              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-              Aucune revente de données
-            </div>
-            <div class="rgpd-guarantee">
-              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-              Désabonnement en 1 clic
-            </div>
-            <div class="rgpd-guarantee">
-              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-              Conforme RGPD
-            </div>
-          </div>
+        </div>
+        <div class="rgpd-text">
+          J'autorise MonContrat.app à transmettre mon dossier à <strong>des partenaires assureurs sélectionnés</strong> afin de recevoir des offres plus compétitives. Je comprends que je serai contacté(e) par téléphone ou email dans le cadre du suivi de mon dossier, et que je peux retirer mon accord à tout moment.
+        </div>
+        <div class="rgpd-guarantees">
+          <div class="rgpd-g"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Aucune revente de données</div>
+          <div class="rgpd-g"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Désabonnement en 1 clic</div>
+          <div class="rgpd-g"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Conforme RGPD</div>
         </div>
       </div>
     </div>
-    <span class="field-err" id="errRgpd" style="margin-top:8px;display:none">Veuillez accepter le consentement pour continuer</span>
+  </div>
+  <span class="field-err" id="errRgpd" style="display:none;margin-bottom:10px">Veuillez accepter le consentement pour continuer</span>
 
-    <!-- URGENCE -->
-    <div class="urgence-bar" id="urgenceBar" onclick="toggleUrgence()">
-      <div class="urgence-check" id="urgenceCheck">⚡</div>
-      <div class="urgence-text">
-        <strong>⚡ Demande urgente — traitement prioritaire</strong>
-        <span>Cochez si votre contrat arrive bientôt à échéance, si vous avez un sinistre en cours, ou si votre situation nécessite une réponse rapide.</span>
-      </div>
+  <!-- URGENCE -->
+  <div class="urgence-wrap" id="urgenceBar" onclick="toggleUrgence()">
+    <div class="urg-toggle">
+      <svg class="urg-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
     </div>
+    <div class="urg-icon">⚡</div>
+    <div class="urg-text">
+      <strong>Demande urgente — traitement prioritaire</strong>
+      <span>Cochez si votre contrat arrive bientôt à échéance, si vous avez un sinistre en cours, ou si votre situation nécessite une réponse rapide.</span>
+    </div>
+  </div>
 
+  <!-- SUBMIT -->
+  <div class="submit-area">
     <div class="err-msg" id="errMsg"></div>
-
-    <div class="submit-wrap">
-      <button class="btn-submit" id="submitBtn" onclick="submitDossier()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
-        Envoyer mon dossier — Gratuit
-      </button>
-      <div class="submit-legal">
-        En soumettant, vous acceptez nos <a href="cguv.html">CGU</a> et notre <a href="politique-confidentialite.html">politique de confidentialité</a>.
-        Vos données sont hébergées en Europe et ne sont jamais vendues à des tiers.
-      </div>
+    <button class="btn-submit" id="submitBtn" onclick="submitDossier()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+      Envoyer mon dossier — Gratuit
+    </button>
+    <div class="submit-legal">
+      En soumettant, vous acceptez nos <a href="cguv.html">CGU</a> et notre <a href="politique-confidentialite.html">politique de confidentialité</a>. Données hébergées en Europe, jamais revendues.
     </div>
   </div>
 
-  <!-- SUCCESS -->
-  <div class="card success-state" id="successState">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-    </div>
-    <h2>Dossier envoyé !</h2>
-    <p>Nos partenaires assureurs ont bien reçu votre dossier. Voici la suite :</p>
-    <div class="success-timeline">
-      <div class="tl-item">
-        <div class="tl-dot">1</div>
-        <div class="tl-text"><strong>Maintenant</strong> — votre dossier est transmis aux partenaires les plus pertinents.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot">2</div>
-        <div class="tl-text"><strong>Sous 48h ouvrées</strong> — un conseiller vous contacte avec une offre personnalisée.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot">3</div>
-        <div class="tl-text"><strong>Vous décidez</strong> — aucune obligation. Si l'offre ne convient pas, vous dites non.</div>
-      </div>
-    </div>
-    <a href="index.html" class="btn btn-ghost" style="margin-top:8px">← Retour à l'accueil</a>
-  </div>
+</div><!-- /formArea -->
 
+<!-- SUCCESS -->
+<div class="success-panel" id="successState">
+  <div class="success-ring"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+  <h2>Dossier envoyé !</h2>
+  <p>Nos partenaires assureurs ont bien reçu votre dossier. Voici ce qui se passe maintenant :</p>
+  <div class="tl">
+    <div class="tl-row">
+      <div class="tl-num">1</div>
+      <div class="tl-body"><strong>Maintenant</strong>Votre dossier est transmis aux partenaires les plus pertinents pour votre profil.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-num">2</div>
+      <div class="tl-body"><strong>Sous 48h ouvrées</strong>Un conseiller vous contacte avec une offre personnalisée.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-num">3</div>
+      <div class="tl-body"><strong>Vous décidez</strong>Aucune obligation. Si l'offre ne convient pas, vous dites non.</div>
+    </div>
+  </div>
+  <a href="index.html" class="btn-back" style="margin-top:4px">← Retour à l'accueil</a>
 </div>
+
+</div><!-- /form-wrap -->
 
 <div class="toast" id="toast"></div>
 
 <script>
-let selectedFiles = [];
-let selectedAssurances = [];
-let rgpdOk = false;
-let urgente = false;
-let autreVisible = false;
+let selectedFiles=[];
+let selectedAssurances=[];
+let rgpdOk=false;
+let urgente=false;
+let autreVisible=false;
 
-function setField(id, val) {
-  const el = document.getElementById(id);
-  if (el && val) el.value = val;
-}
+function setField(id,val){const el=document.getElementById(id);if(el&&val)el.value=val;}
 
 /* URGENCE */
-function toggleUrgence() {
-  urgente = !urgente;
-  document.getElementById('urgenceBar').classList.toggle('on', urgente);
-  const chk = document.getElementById('urgenceCheck');
-  chk.textContent = urgente ? '✓' : '⚡';
+function toggleUrgence(){
+  urgente=!urgente;
+  document.getElementById('urgenceBar').classList.toggle('on',urgente);
 }
 
-/* ASSURANCES */
-function toggleAssur(btn, label) {
-  btn.classList.toggle('on');
-  if (btn.classList.contains('on')) {
-    if (!selectedAssurances.includes(label)) selectedAssurances.push(label);
-  } else {
-    selectedAssurances = selectedAssurances.filter(x => x !== label);
+/* DROPDOWN MULTI-SELECT */
+function toggleDropdown(){
+  const trigger=document.getElementById('msTrigger');
+  const dd=document.getElementById('msDropdown');
+  const open=dd.classList.contains('open');
+  dd.classList.toggle('open',!open);
+  trigger.classList.toggle('open',!open);
+}
+document.addEventListener('click',function(e){
+  const ms=document.getElementById('multiSelect');
+  if(ms&&!ms.contains(e.target)){
+    document.getElementById('msDropdown').classList.remove('open');
+    document.getElementById('msTrigger').classList.remove('open');
   }
+});
+function onOptionChange(cb){
+  const val=cb.value;
+  if(cb.checked){if(!selectedAssurances.includes(val))selectedAssurances.push(val);}
+  else{selectedAssurances=selectedAssurances.filter(x=>x!==val);}
+  renderTags();
   document.getElementById('errAssur').classList.remove('show');
 }
-function toggleAutre() {
-  autreVisible = document.getElementById('autreChip').classList.contains('on');
-  const f = document.getElementById('autreField');
-  f.classList.toggle('show', autreVisible);
-  if (!autreVisible) document.getElementById('fieldAutre').value = '';
+function removeTag(val){
+  selectedAssurances=selectedAssurances.filter(x=>x!==val);
+  const cb=document.querySelector(`#msDropdown input[value="${val}"]`);
+  if(cb)cb.checked=false;
+  renderTags();
 }
+function renderTags(){
+  const tagsEl=document.getElementById('msTags');
+  const placeholder=document.getElementById('msPlaceholder');
+  if(selectedAssurances.length===0){
+    placeholder.textContent='Choisir un ou plusieurs contrats…';
+    placeholder.classList.remove('has-value');
+    tagsEl.innerHTML='';
+  }else{
+    const n=selectedAssurances.length;
+    placeholder.textContent=n===1?'1 contrat sélectionné':n+' contrats sélectionnés';
+    placeholder.classList.add('has-value');
+    tagsEl.innerHTML=selectedAssurances.map(v=>`
+      <span class="ms-tag">${v}<button class="ms-tag-rm" onclick="removeTag('${v.replace(/'/g,"\'")}')">×</button></span>
+    `).join('');
+  }
+}
+/* stub pour compatibilité */
+function toggleChip(){}
+function toggleAutre(){}
 
 /* FICHIERS */
-function onFiles(files) {
-  Array.from(files).forEach(f => {
-    if (f.size > 10 * 1024 * 1024) { showToast('Fichier trop lourd (max 10 Mo) : ' + f.name, true); return; }
-    if (selectedFiles.find(x => x.name === f.name && x.size === f.size)) return;
+function onFiles(files){
+  Array.from(files).forEach(f=>{
+    if(f.size>10*1024*1024){showToast('Fichier trop lourd (max 10 Mo) : '+f.name,true);return;}
+    if(selectedFiles.find(x=>x.name===f.name&&x.size===f.size))return;
     selectedFiles.push(f);
   });
-  renderFileList();
+  renderFiles();
 }
-function removeFile(i) { selectedFiles.splice(i, 1); renderFileList(); }
-function renderFileList() {
-  document.getElementById('fileList').innerHTML = selectedFiles.map((f, i) => `
+function removeFile(i){selectedFiles.splice(i,1);renderFiles();}
+function renderFiles(){
+  document.getElementById('fileList').innerHTML=selectedFiles.map((f,i)=>`
     <div class="file-item">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-      <span class="file-item-name">${f.name}</span>
-      <span class="file-item-size">${(f.size/1024/1024).toFixed(1)} Mo</span>
-      <button class="file-remove" onclick="removeFile(${i})">×</button>
+      <span class="file-name">${f.name}</span>
+      <span class="file-size">${(f.size/1024/1024).toFixed(1)} Mo</span>
+      <button class="file-rm" onclick="removeFile(${i})">×</button>
     </div>`).join('');
 }
 
 /* DRAG DROP */
-const dz = document.getElementById('dropZone');
-['dragover','dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag'); }));
-['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('drag'); }));
-dz.addEventListener('drop', e => { if (e.dataTransfer.files.length) onFiles(e.dataTransfer.files); });
+const dz=document.getElementById('dropZone');
+['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+dz.addEventListener('drop',e=>{if(e.dataTransfer.files.length)onFiles(e.dataTransfer.files);});
 
 /* RGPD */
-function toggleRgpd() {
-  rgpdOk = !rgpdOk;
-  document.getElementById('rgpdCheck').classList.toggle('on', rgpdOk);
-  document.getElementById('rgpdCheck').textContent = rgpdOk ? '✓' : '';
-  document.getElementById('rgpdCard').style.borderColor = rgpdOk ? 'var(--accent)' : 'var(--hl)';
-  document.getElementById('rgpdCard').style.boxShadow = rgpdOk ? '0 6px 24px rgba(255,45,85,.14)' : '';
-  if (rgpdOk) document.getElementById('errRgpd').classList.remove('show');
+function toggleRgpd(){
+  rgpdOk=!rgpdOk;
+  document.getElementById('rgpdCard').classList.toggle('checked',rgpdOk);
+  if(rgpdOk)document.getElementById('errRgpd').classList.remove('show');
 }
 
 /* VALIDATION */
-function validateField(id, errId, condition) {
-  const el = document.getElementById(id);
-  const err = document.getElementById(errId);
-  const invalid = condition(el.value.trim()) && !el.dataset.prefilled;
-  el.classList.toggle('err-field', invalid);
-  if (err) err.classList.toggle('show', invalid);
-  return !invalid;
+function validateField(id,errId,cond){
+  const el=document.getElementById(id);
+  const err=document.getElementById(errId);
+  const bad=cond(el.value.trim())&&!el.dataset.prefilled;
+  el.classList.toggle('err-field',bad);
+  if(err)err.classList.toggle('show',bad);
+  return !bad;
 }
 
-function showToast(msg, isErr = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = isErr ? '#D33' : 'var(--ink)';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+function showToast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.background=isErr?'#C53030':'var(--ink)';
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);
 }
 
 /* SUBMIT */
-async function submitDossier() {
-  // Validation
-  let ok = true;
-  ok = validateField('fieldPrenom','errPrenom', v => !v) && ok;
-  ok = validateField('fieldNom',   'errNom',    v => !v) && ok;
-  ok = validateField('fieldPhone', 'errPhone',  v => !v) && ok;
-  ok = validateField('fieldCP',    'errCP',     v => !v) && ok;
+async function submitDossier(){
+  let ok=true;
+  ok=validateField('fieldPrenom','errPrenom',v=>!v)&&ok;
+  ok=validateField('fieldNom','errNom',v=>!v)&&ok;
+  ok=validateField('fieldPhone','errPhone',v=>!v)&&ok;
+  ok=validateField('fieldCP','errCP',v=>!v)&&ok;
+  if(selectedAssurances.length===0){document.getElementById('errAssur').classList.add('show');ok=false;}
+  if(!rgpdOk){document.getElementById('errRgpd').classList.add('show');ok=false;}
+  if(!ok){document.querySelector('.err-field,.field-err.show')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
 
-  if (selectedAssurances.length === 0) {
-    document.getElementById('errAssur').classList.add('show');
-    ok = false;
-  }
-  if (!rgpdOk) {
-    document.getElementById('errRgpd').classList.add('show');
-    ok = false;
-  }
-  if (!ok) {
-    document.querySelector('.err-field, .field-err.show')?.scrollIntoView({ behavior:'smooth', block:'center' });
-    return;
-  }
+  const user=window._mcUser;
+  if(!user){showToast('Vous devez être connecté.',true);return;}
 
-  const user = window._mcUser;
-  if (!user) { showToast('Vous devez être connecté.', true); return; }
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Envoi en cours…`;
 
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Envoi en cours…`;
+  const assurancesFinales=[...selectedAssurances];
 
-  const assurancesFinales = [...selectedAssurances];
-  if (autreVisible) {
-    const autre = document.getElementById('fieldAutre').value.trim();
-    if (autre) assurancesFinales.push('Autre : ' + autre);
-  }
-
-  try {
-    const mc = window._mc;
-    const fileUrls = [];
-    for (const file of selectedFiles) {
-      try {
-        const storRef = mc.ref(mc.storage, `leads/${user.uid}/${Date.now()}_${file.name}`);
-        const snap = await mc.uploadBytes(storRef, file);
-        const url = await mc.getDownloadURL(snap.ref);
-        fileUrls.push({ name: file.name, url });
-      } catch(e) { console.warn('Upload non bloquant:', e); }
+  try{
+    const mc=window._mc;
+    const fileUrls=[];
+    for(const file of selectedFiles){
+      try{
+        const storRef=mc.ref(mc.storage,`leads/${user.uid}/${Date.now()}_${file.name}`);
+        const snap=await mc.uploadBytes(storRef,file);
+        const url=await mc.getDownloadURL(snap.ref);
+        fileUrls.push({name:file.name,url});
+      }catch(e){console.warn('Upload non bloquant:',e);}
     }
-
-    await mc.addDoc(mc.collection(mc.db, 'leads'), {
-      uid: user.uid,
-      prenom: document.getElementById('fieldPrenom').value.trim(),
-      nom: document.getElementById('fieldNom').value.trim(),
-      email: document.getElementById('fieldEmail').value.trim() || user.email,
-      phone: document.getElementById('fieldPhone').value.trim(),
-      code_postal: document.getElementById('fieldCP').value.trim(),
-      assurances: assurancesFinales,
-      message: document.getElementById('fieldMessage').value.trim(),
-      urgente,
-      rgpd_consent: true,
-      fichiers: fileUrls,
-      statut: 'nouveau',
-      date: mc.serverTimestamp()
+    await mc.addDoc(mc.collection(mc.db,'leads'),{
+      uid:user.uid,
+      prenom:document.getElementById('fieldPrenom').value.trim(),
+      nom:document.getElementById('fieldNom').value.trim(),
+      email:document.getElementById('fieldEmail').value.trim()||user.email,
+      phone:document.getElementById('fieldPhone').value.trim(),
+      code_postal:document.getElementById('fieldCP').value.trim(),
+      assurances:assurancesFinales,
+      message:document.getElementById('fieldMessage').value.trim(),
+      urgente,rgpd_consent:true,fichiers:fileUrls,statut:'nouveau',
+      date:mc.serverTimestamp()
     });
-
-    document.getElementById('formArea').style.display = 'none';
-    const s = document.getElementById('successState');
-    s.classList.add('show');
-    s.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  } catch(err) {
+    document.getElementById('formArea').style.display='none';
+    const s=document.getElementById('successState');
+    s.classList.add('show');s.scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(err){
     console.error(err);
-    btn.disabled = false;
-    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Envoyer mon dossier — Gratuit`;
-    showToast('Une erreur est survenue. Réessayez.', true);
+    btn.disabled=false;
+    btn.innerHTML=`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Envoyer mon dossier — Gratuit`;
+    showToast('Une erreur est survenue. Réessayez.',true);
   }
 }
 </script>
