@@ -212,8 +212,6 @@ tr:hover td{background:#FAFBFF}
   .sidebar{display:none}.main{margin-left:0}
 }
 </style>
-  <link rel="icon" href="favicon-32.png" type="image/png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
 
@@ -772,7 +770,7 @@ function saveNotifEmail(){
   const email = document.getElementById('notifEmail').value.trim();
   if(!email){ showToast('Entrez un email valide'); return; }
   localStorage.setItem('mc_admin_notif_email', email);
-  showToast('Email alerte enregistré ✓');
+  showToast('Email d'alerte enregistré ✓');
 }
 function loadNotifEmail(){
   const saved = localStorage.getItem('mc_admin_notif_email');
