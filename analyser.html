@@ -38,12 +38,21 @@
   window._mcIncrement = increment;
   window._mcServerTimestamp = serverTimestamp;
 
+  let authResolved = false;
+  let authResolved = false;
   onAuthStateChanged(auth, (user) => {
     window._mcCurrentUser = user;
-    if (!user) {
-      // Non connecté → rediriger vers index avec flag
-      localStorage.setItem('mc_pending_url', 'analyser.html');
-      window.location.href = 'index.html#login';
+    if (!authResolved) {
+      authResolved = true;
+      if (!user) {
+        localStorage.setItem('mc_pending_url', 'analyser.html');
+        window.location.href = 'index.html#login';
+      }
+    } else {
+      if (!user) {
+        localStorage.setItem('mc_pending_url', 'analyser.html');
+        window.location.href = 'index.html#login';
+      }
     }
   });
 </script>
