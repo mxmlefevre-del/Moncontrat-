@@ -770,7 +770,7 @@ function saveNotifEmail(){
   const email = document.getElementById('notifEmail').value.trim();
   if(!email){ showToast('Entrez un email valide'); return; }
   localStorage.setItem('mc_admin_notif_email', email);
-  showToast('Email d'alerte enregistré ✓');
+  showToast('Email alerte enregistré ✓');
 }
 function loadNotifEmail(){
   const saved = localStorage.getItem('mc_admin_notif_email');
