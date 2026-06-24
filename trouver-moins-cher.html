@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Trouver moins cher — MonContrat.app</title>
+<meta name="description" content="Transmettez votre dossier. Nos partenaires assureurs vous rappellent sous 48h avec une offre moins chère." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",
+    authDomain: "moncontrat.firebaseapp.com",
+    projectId: "moncontrat",
+    storageBucket: "moncontrat.firebasestorage.app",
+    messagingSenderId: "770067071270",
+    appId: "1:770067071270:web:4614ca8716478be80c41e7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+  window._mc = { auth, db, storage, collection, addDoc, serverTimestamp, doc, getDoc, ref, uploadBytes, getDownloadURL };
+
+  let authResolved = false;
+  onAuthStateChanged(auth, async (user) => {
+    window._mcUser = user;
+    if (!authResolved) {
+      authResolved = true;
+      if (!user) {
+        localStorage.setItem('mc_pending_url', 'trouver-moins-cher.html');
+        window.location.href = 'index.html#login';
+        return;
+      }
+      try {
+        const profSnap = await getDoc(doc(db, 'users', user.uid, 'profil', 'info'));
+        const userSnap = await getDoc(doc(db, 'users', user.uid));
+        const p = profSnap.exists() ? profSnap.data() : {};
+        const u = userSnap.exists() ? userSnap.data() : {};
+        const prenom = p.firstName || u.prenom || (user.displayName||'').split(' ')[0] || '';
+        const nom    = p.lastName  || u.nom    || (user.displayName||'').split(' ').slice(1).join(' ') || '';
+        const phone  = p.phone || u.phone || '';
+        const cp     = p.address || u.code_postal || '';
+        setField('fieldPrenom', prenom);
+        setField('fieldNom',    nom);
+        setField('fieldEmail',  user.email || '');
+        setField('fieldPhone',  phone);
+        setField('fieldCP',     cp);
+        // marquer les champs préremplis
+        ['fieldPrenom','fieldNom','fieldEmail','fieldPhone','fieldCP'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.value) el.dataset.prefilled = '1';
+        });
+      } catch(e) { console.warn(e); }
+    } else {
+      if (!user) { localStorage.setItem('mc_pending_url','trouver-moins-cher.html'); window.location.href='index.html#login'; }
+    }
+  });
+</script>
+
+<style>
+:root{
+  --bg:#FFFFFF; --bg-2:#F7F8FC; --ink:#0B0E1A; --mute:#5E6478; --soft:#9AA0B4;
+  --accent:#FF2D55; --accent-2:#FF5F82; --hl:#FFBFCD; --hl-soft:rgba(255,45,85,.07);
+  --ok:#18C998; --risk:#FF5C5C; --warn:#FFB020;
+  --line:rgba(11,14,26,.09); --line-2:rgba(11,14,26,.14);
+  --card-shadow:0 24px 70px rgba(20,30,70,.10);
+  --disp:"Bricolage Grotesque",Inter,sans-serif;
+  --body:Inter,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#fff}
+body{font-family:var(--body);background:var(--bg-2);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+
+/* NAV */
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;height:64px}
+.nav-inner{width:min(1240px,calc(100% - 48px));margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-size:18px;font-weight:700;color:var(--ink)}
+.nav-logo svg{width:32px;height:32px}
+.ext{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .2s}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* LAYOUT */
+.page{width:min(760px,calc(100% - 48px));margin:0 auto;padding:48px 0 100px}
+
+/* HERO */
+.hero{margin-bottom:36px}
+.hero-top{display:flex;align-items:flex-start;gap:24px;margin-bottom:24px}
+.badge-48{flex-shrink:0;width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(255,45,85,.35);text-align:center}
+.badge-48 .h{font-family:var(--disp);font-size:26px;font-weight:800;line-height:1}
+.badge-48 .s{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.88;line-height:1.3;margin-top:3px}
+.hero-copy{}
+.kicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;margin-bottom:14px;box-shadow:0 4px 18px rgba(20,30,70,.06)}
+.kicker i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.hero h1{font-family:var(--disp);font-size:clamp(28px,4.5vw,46px);font-weight:800;letter-spacing:-.04em;line-height:1.1}
+.hero h1 .mark{background:linear-gradient(0deg,var(--hl),var(--hl)) no-repeat left 90%/100% 42%;padding:0 .06em}
+.hero-sub{margin-top:12px;font-size:14.5px;color:var(--mute);line-height:1.65;font-weight:500}
+.hero-sub strong{color:var(--ink)}
+
+/* GARANTIES */
+.garanties{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px}
+.garantie{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--mute)}
+.garantie svg{width:16px;height:16px;stroke:var(--ok);fill:none;stroke-width:2.5;flex-shrink:0}
+
+/* URGENCE */
+.urgence-bar{background:linear-gradient(135deg,#FFF8E6,#FFF3D4);border:1.5px solid var(--warn);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:20px;transition:.2s}
+.urgence-bar:hover{border-color:#E09000;box-shadow:0 4px 16px rgba(255,176,32,.18)}
+.urgence-bar.on{background:linear-gradient(135deg,#FFF3D4,#FFE8A0);border-color:#E09000;box-shadow:0 4px 18px rgba(255,176,32,.22)}
+.urgence-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--warn);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;font-size:13px;font-weight:800}
+.urgence-bar.on .urgence-check{background:var(--warn);border-color:var(--warn);color:#fff}
+.urgence-text strong{font-size:14px;font-weight:700;color:#7A5000}
+.urgence-text span{display:block;font-size:12px;color:#9A6800;margin-top:2px}
+
+/* CARD */
+.card{background:#fff;border-radius:20px;border:1px solid var(--line);padding:32px;box-shadow:var(--card-shadow);margin-bottom:20px}
+.card-title{font-family:var(--disp);font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.card-num{width:28px;height:28px;border-radius:8px;background:var(--hl-soft);border:1px solid var(--hl);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-sub{font-size:13px;color:var(--soft);margin-bottom:20px}
+
+/* FORM */
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.field-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:4px}
+.req{color:var(--accent);font-size:14px}
+.field input,.field textarea{border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;font-family:var(--body);color:var(--ink);background:#fff;outline:none;transition:.2s;resize:none}
+.field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,45,85,.08)}
+.field input[readonly]{background:var(--bg-2);color:var(--mute);cursor:default}
+.field input::placeholder,.field textarea::placeholder{color:var(--soft)}
+.field input.err-field{border-color:var(--risk)!important;box-shadow:0 0 0 3px rgba(255,92,92,.1)!important}
+.field-err{font-size:11.5px;color:var(--risk);font-weight:600;display:none;margin-top:2px}
+.field-err.show{display:block}
+
+/* ASSUR CHIPS */
+.assur-section{margin-bottom:18px}
+.assur-label{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.assur-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+@media(max-width:500px){.assur-grid{grid-template-columns:1fr 1fr}}
+.assur-chip{border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;font-size:12.5px;font-weight:600;cursor:pointer;background:#fff;transition:.15s;text-align:left;color:var(--ink);display:flex;align-items:flex-start;gap:7px;line-height:1.3}
+.assur-chip:hover{border-color:var(--accent);color:var(--accent)}
+.assur-chip.on{background:var(--hl-soft);border-color:var(--accent);color:var(--accent)}
+.assur-emoji{font-size:16px;flex-shrink:0;margin-top:1px}
+.assur-chip-body{}
+.assur-chip-title{font-weight:700;font-size:13px}
+.assur-chip-detail{font-size:11px;color:var(--soft);font-weight:400;margin-top:2px;line-height:1.4}
+.assur-chip.on .assur-chip-detail{color:var(--accent-2)}
+
+/* CHAMP "AUTRE" */
+.autre-field{margin-top:10px;display:none}
+.autre-field.show{display:block}
+
+/* UPLOAD ZONE */
+.upload-zone{border:2px dashed var(--line-2);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;transition:.2s;background:#fff;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--hl-soft)}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{width:52px;height:52px;border-radius:14px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.upload-icon svg{width:24px;height:24px;stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.upload-title{font-family:var(--disp);font-weight:700;font-size:15px;margin-bottom:5px}
+.upload-sub{color:var(--mute);font-size:13px;line-height:1.5}
+.upload-formats{font-family:var(--mono);font-size:11px;color:var(--soft);margin-top:9px;letter-spacing:.04em}
+.file-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.file-item{display:flex;align-items:center;gap:10px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.18);border-radius:10px;padding:9px 13px}
+.file-item svg{width:16px;height:16px;stroke:var(--accent);stroke-width:2;fill:none;flex-shrink:0}
+.file-item-name{flex:1;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-item-size{font-family:var(--mono);font-size:11px;color:var(--soft);flex-shrink:0}
+.file-remove{background:none;border:none;color:var(--soft);cursor:pointer;font-size:18px;padding:2px;line-height:1}
+.file-remove:hover{color:var(--accent)}
+
+/* RGPD */
+.rgpd-card{border-radius:16px;background:linear-gradient(135deg,#FFF0F3 0%,#FFF8FA 60%,#FFF0F3 100%);border:1.5px solid var(--hl);padding:24px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.rgpd-card::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(255,45,85,.14),transparent 70%);border-radius:50%;pointer-events:none}
+.rgpd-card:hover{border-color:var(--accent);box-shadow:0 6px 24px rgba(255,45,85,.12)}
+.rgpd-inner{display:flex;gap:16px;align-items:flex-start}
+.rgpd-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--hl);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;margin-top:2px;font-size:13px;font-weight:800}
+.rgpd-check.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.rgpd-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.rgpd-title{font-family:var(--disp);font-size:15px;font-weight:700}
+.rgpd-badges{display:flex;gap:6px;flex-wrap:wrap}
+.rgpd-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
+.rgpd-badge.save{background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff}
+.rgpd-badge.free{background:#EDFAF5;color:#0D9E72;border:1px solid rgba(18,194,152,.25)}
+.rgpd-text{font-size:13.5px;color:var(--mute);line-height:1.6}
+.rgpd-text strong{color:var(--ink)}
+.rgpd-guarantees{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px}
+.rgpd-guarantee{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--ok);font-weight:600}
+.rgpd-guarantee svg{width:13px;height:13px;stroke:var(--ok);fill:none;stroke-width:2.5;flex-shrink:0}
+
+/* SUBMIT */
+.submit-wrap{margin-top:28px}
+.btn-submit{width:100%;padding:18px;font-size:16px;font-weight:800;border-radius:14px;background:linear-gradient(135deg,var(--accent),#E0234A);color:#fff;border:none;cursor:pointer;transition:.2s;box-shadow:0 12px 32px rgba(255,45,85,.3);display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--disp)}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(255,45,85,.38)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.submit-legal{text-align:center;font-size:11.5px;color:var(--soft);margin-top:14px;line-height:1.6}
+.submit-legal a{color:var(--mute);text-decoration:underline}
+
+.err-msg{display:none;margin-top:14px;padding:12px 16px;border-radius:10px;background:rgba(255,59,59,.07);color:#D33;border:1px solid rgba(255,59,59,.22);font-size:13px;font-weight:600}
+.err-msg.show{display:block}
+
+/* SUCCESS */
+.success-state{display:none;text-align:center;padding:60px 24px}
+.success-state.show{display:block}
+.success-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--ok),#0DAF85);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 12px 32px rgba(18,194,152,.3)}
+.success-icon svg{width:36px;height:36px;stroke:#fff;stroke-width:2.5;fill:none}
+.success-state h2{font-family:var(--disp);font-size:28px;font-weight:800;margin-bottom:12px}
+.success-state p{color:var(--mute);font-size:15px;line-height:1.6;max-width:400px;margin:0 auto}
+.success-timeline{display:flex;flex-direction:column;gap:12px;margin:28px auto;max-width:380px;text-align:left}
+.tl-item{display:flex;align-items:flex-start;gap:12px;font-size:13px}
+.tl-dot{width:22px;height:22px;border-radius:50%;background:var(--hl-soft);border:1px solid var(--hl);color:var(--accent);font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.tl-text{color:var(--mute);line-height:1.5}
+.tl-text strong{color:var(--ink)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+  .hero-top{flex-direction:column;gap:16px;align-items:center;text-align:center}
+  .badge-48{width:72px;height:72px}
+  .badge-48 .h{font-size:21px}
+  .assur-grid{grid-template-columns:1fr 1fr}
+  .page{padding:28px 0 80px}
+  .card{padding:22px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg viewBox="0 0 34 34" fill="none">
+        <rect width="34" height="34" rx="9" fill="#FF2D55"/>
+        <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+        <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+        <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+        <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+      </svg>
+      MonContrat<span class="ext">.app</span>
+    </a>
+    <a href="index.html" class="btn btn-ghost">← Accueil</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="badge-48">
+        <span class="h">48h</span>
+        <span class="s">Réponse<br>garantie</span>
+      </div>
+      <div class="hero-copy">
+        <div class="kicker"><i></i>Service 100% gratuit · sans engagement</div>
+        <h1>On s'occupe de tout.<br><span class="mark">Vous payez moins.</span></h1>
+        <p class="hero-sub">
+          Vous n'avez rien à remplir. <strong>Transmettez-nous simplement vos documents</strong> : contrat actuel, devis, relevé d'information, relevé de sinistralité, carte grise… On analyse, on compare, on négocie pour vous. <strong>L'assureur a moins de 48h pour revenir vers vous</strong> à partir de maintenant.
+        </p>
+        <div class="garanties">
+          <div class="garantie">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            Zéro démarchage abusif
+          </div>
+          <div class="garantie">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            Économies moyennes 240 €/an
+          </div>
+          <div class="garantie">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            Offre personnalisée
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="formArea">
+
+    <!-- ÉTAPE 1 : Coordonnées -->
+    <div class="card">
+      <div class="card-title"><div class="card-num">1</div>Vos coordonnées</div>
+      <div class="card-sub">Vérifiez et complétez vos informations — l'assureur en aura besoin pour vous recontacter.</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Prénom <span class="req">*</span></label>
+          <input type="text" id="fieldPrenom" placeholder="Votre prénom" />
+          <span class="field-err" id="errPrenom">Champ obligatoire</span>
+        </div>
+        <div class="field">
+          <label>Nom <span class="req">*</span></label>
+          <input type="text" id="fieldNom" placeholder="Votre nom" />
+          <span class="field-err" id="errNom">Champ obligatoire</span>
+        </div>
+        <div class="field">
+          <label>Téléphone <span class="req">*</span></label>
+          <input type="tel" id="fieldPhone" placeholder="06 XX XX XX XX" />
+          <span class="field-err" id="errPhone">Téléphone obligatoire pour être rappelé</span>
+        </div>
+        <div class="field">
+          <label>Code postal <span class="req">*</span></label>
+          <input type="text" id="fieldCP" placeholder="06000" />
+          <span class="field-err" id="errCP">Champ obligatoire</span>
+        </div>
+        <div class="field full">
+          <label>Email</label>
+          <input type="email" id="fieldEmail" readonly placeholder="votre@email.fr" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : Type d'assurance -->
+    <div class="card">
+      <div class="card-title"><div class="card-num">2</div>Sur quel contrat souhaitez-vous faire des économies ?</div>
+      <div class="card-sub">Sélectionnez un ou plusieurs types — nous ciblons les bons partenaires.</div>
+
+      <div class="assur-section">
+        <div class="assur-label">Particuliers</div>
+        <div class="assur-grid">
+          <button class="assur-chip" onclick="toggleAssur(this,'Habitation')">
+            <span class="assur-emoji">🏠</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Habitation</div>
+              <div class="assur-chip-detail">MRH, appartement, maison, résidence secondaire</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'Auto / Moto')">
+            <span class="assur-emoji">🚗</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Auto / Moto</div>
+              <div class="assur-chip-detail">Tiers, tous risques, flotte de véhicules</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'Santé / Mutuelle')">
+            <span class="assur-emoji">🏥</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Santé / Mutuelle</div>
+              <div class="assur-chip-detail">Complémentaire santé individuelle ou familiale</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="assur-section">
+        <div class="assur-label">Prévoyance & épargne</div>
+        <div class="assur-grid">
+          <button class="assur-chip" onclick="toggleAssur(this,'Prévoyance')">
+            <span class="assur-emoji">🛡️</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Prévoyance</div>
+              <div class="assur-chip-detail">GAV, assurance décès, assurance vie, retraite, emprunteur</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'Assurance emprunteur')">
+            <span class="assur-emoji">🏦</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Emprunteur</div>
+              <div class="assur-chip-detail">Délégation d'assurance de prêt immobilier</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="assur-section">
+        <div class="assur-label">Professionnels</div>
+        <div class="assur-grid">
+          <button class="assur-chip" onclick="toggleAssur(this,'MRP / Locaux pro')">
+            <span class="assur-emoji">🏢</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">MRP / Locaux pro</div>
+              <div class="assur-chip-detail">Multirisque professionnelle, locaux, matériel, stock</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'RC Professionnelle')">
+            <span class="assur-emoji">⚖️</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">RC Pro</div>
+              <div class="assur-chip-detail">Responsabilité civile professionnelle, décennale</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'Cyber risques')">
+            <span class="assur-emoji">🔒</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Cyber risques</div>
+              <div class="assur-chip-detail">Protection données, ransomware, fraude informatique</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'Marchandises transportées')">
+            <span class="assur-emoji">🚚</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Marchandises</div>
+              <div class="assur-chip-detail">Transport de marchandises, flotte pro</div>
+            </div>
+          </button>
+          <button class="assur-chip" onclick="toggleAssur(this,'Santé collective')">
+            <span class="assur-emoji">👥</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Santé collective</div>
+              <div class="assur-chip-detail">Mutuelle d'entreprise, prévoyance collective</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="assur-section" style="margin-bottom:0">
+        <div class="assur-grid" style="grid-template-columns:1fr">
+          <button class="assur-chip" id="autreChip" onclick="toggleAssur(this,'Autre');toggleAutre()">
+            <span class="assur-emoji">✏️</span>
+            <div class="assur-chip-body">
+              <div class="assur-chip-title">Autre</div>
+              <div class="assur-chip-detail">Un contrat qui ne figure pas dans la liste</div>
+            </div>
+          </button>
+        </div>
+        <div class="autre-field" id="autreField">
+          <div class="field" style="margin-top:10px">
+            <label>Précisez le type de contrat</label>
+            <input type="text" id="fieldAutre" placeholder="Ex : assurance bateau, scolaire, animaux…" />
+          </div>
+        </div>
+      </div>
+
+      <span class="field-err" id="errAssur" style="margin-top:12px;display:none">Sélectionnez au moins un type de contrat</span>
+    </div>
+
+    <!-- ÉTAPE 3 : Documents -->
+    <div class="card">
+      <div class="card-title"><div class="card-num">3</div>Vos documents <span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--soft);margin-left:6px">facultatif mais recommandé</span></div>
+      <div class="card-sub">Plus vous nous donnez de documents, plus l'offre sera précise. Pas de documents ? Pas de problème — transmettez ce que vous avez.</div>
+      <div class="upload-zone" id="dropZone">
+        <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="onFiles(this.files)" />
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+        </div>
+        <div class="upload-title">Glissez vos fichiers ici</div>
+        <div class="upload-sub">Contrat actuel · Devis · Relevé d'information<br>Relevé de sinistralité · Carte grise · Avis d'échéance</div>
+        <div class="upload-formats">PDF · JPG · PNG · DOC — max 10 Mo par fichier</div>
+      </div>
+      <div class="file-list" id="fileList"></div>
+    </div>
+
+    <!-- ÉTAPE 4 : Message -->
+    <div class="card">
+      <div class="card-title"><div class="card-num">4</div>Un mot pour l'assureur <span style="font-family:var(--mono);font-size:11px;font-weight:500;color:var(--soft);margin-left:6px">facultatif</span></div>
+      <div class="card-sub">Tarif actuel, situation particulière, sinistres passés, ce que vous cherchez… Tout contexte utile pour obtenir la meilleure offre.</div>
+      <div class="field">
+        <textarea id="fieldMessage" rows="4" placeholder="Ex : je paie 1 100 €/an pour mon habitation à Nice, pas de sinistre depuis 7 ans. Je cherche le même niveau de garanties à meilleur prix…"></textarea>
+      </div>
+    </div>
+
+    <!-- RGPD -->
+    <div class="rgpd-card" id="rgpdCard" onclick="toggleRgpd()">
+      <div class="rgpd-inner">
+        <div class="rgpd-check" id="rgpdCheck"></div>
+        <div class="rgpd-body">
+          <div class="rgpd-head">
+            <div class="rgpd-title">Oui, je veux payer moins cher 💸</div>
+            <div class="rgpd-badges">
+              <span class="rgpd-badge save">Jusqu'à 300 €/an d'économies</span>
+              <span class="rgpd-badge free">Gratuit</span>
+            </div>
+          </div>
+          <div class="rgpd-text">
+            J'autorise MonContrat.app à transmettre mon dossier à <strong>des partenaires assureurs sélectionnés</strong> afin de recevoir des offres plus compétitives. Je comprends que je serai contacté(e) par téléphone ou email dans le cadre du suivi de mon dossier, et que je peux retirer mon accord à tout moment.
+          </div>
+          <div class="rgpd-guarantees">
+            <div class="rgpd-guarantee">
+              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+              Aucune revente de données
+            </div>
+            <div class="rgpd-guarantee">
+              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+              Désabonnement en 1 clic
+            </div>
+            <div class="rgpd-guarantee">
+              <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+              Conforme RGPD
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="field-err" id="errRgpd" style="margin-top:8px;display:none">Veuillez accepter le consentement pour continuer</span>
+
+    <!-- URGENCE -->
+    <div class="urgence-bar" id="urgenceBar" onclick="toggleUrgence()">
+      <div class="urgence-check" id="urgenceCheck">⚡</div>
+      <div class="urgence-text">
+        <strong>⚡ Demande urgente — traitement prioritaire</strong>
+        <span>Cochez si votre contrat arrive bientôt à échéance, si vous avez un sinistre en cours, ou si votre situation nécessite une réponse rapide.</span>
+      </div>
+    </div>
+
+    <div class="err-msg" id="errMsg"></div>
+
+    <div class="submit-wrap">
+      <button class="btn-submit" id="submitBtn" onclick="submitDossier()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+        Envoyer mon dossier — Gratuit
+      </button>
+      <div class="submit-legal">
+        En soumettant, vous acceptez nos <a href="cguv.html">CGU</a> et notre <a href="politique-confidentialite.html">politique de confidentialité</a>.
+        Vos données sont hébergées en Europe et ne sont jamais vendues à des tiers.
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="card success-state" id="successState">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Dossier envoyé !</h2>
+    <p>Nos partenaires assureurs ont bien reçu votre dossier. Voici la suite :</p>
+    <div class="success-timeline">
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-text"><strong>Maintenant</strong> — votre dossier est transmis aux partenaires les plus pertinents.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-text"><strong>Sous 48h ouvrées</strong> — un conseiller vous contacte avec une offre personnalisée.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-text"><strong>Vous décidez</strong> — aucune obligation. Si l'offre ne convient pas, vous dites non.</div>
+      </div>
+    </div>
+    <a href="index.html" class="btn btn-ghost" style="margin-top:8px">← Retour à l'accueil</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let selectedFiles = [];
+let selectedAssurances = [];
+let rgpdOk = false;
+let urgente = false;
+let autreVisible = false;
+
+function setField(id, val) {
+  const el = document.getElementById(id);
+  if (el && val) el.value = val;
+}
+
+/* URGENCE */
+function toggleUrgence() {
+  urgente = !urgente;
+  document.getElementById('urgenceBar').classList.toggle('on', urgente);
+  const chk = document.getElementById('urgenceCheck');
+  chk.textContent = urgente ? '✓' : '⚡';
+}
+
+/* ASSURANCES */
+function toggleAssur(btn, label) {
+  btn.classList.toggle('on');
+  if (btn.classList.contains('on')) {
+    if (!selectedAssurances.includes(label)) selectedAssurances.push(label);
+  } else {
+    selectedAssurances = selectedAssurances.filter(x => x !== label);
+  }
+  document.getElementById('errAssur').classList.remove('show');
+}
+function toggleAutre() {
+  autreVisible = document.getElementById('autreChip').classList.contains('on');
+  const f = document.getElementById('autreField');
+  f.classList.toggle('show', autreVisible);
+  if (!autreVisible) document.getElementById('fieldAutre').value = '';
+}
+
+/* FICHIERS */
+function onFiles(files) {
+  Array.from(files).forEach(f => {
+    if (f.size > 10 * 1024 * 1024) { showToast('Fichier trop lourd (max 10 Mo) : ' + f.name, true); return; }
+    if (selectedFiles.find(x => x.name === f.name && x.size === f.size)) return;
+    selectedFiles.push(f);
+  });
+  renderFileList();
+}
+function removeFile(i) { selectedFiles.splice(i, 1); renderFileList(); }
+function renderFileList() {
+  document.getElementById('fileList').innerHTML = selectedFiles.map((f, i) => `
+    <div class="file-item">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+      <span class="file-item-name">${f.name}</span>
+      <span class="file-item-size">${(f.size/1024/1024).toFixed(1)} Mo</span>
+      <button class="file-remove" onclick="removeFile(${i})">×</button>
+    </div>`).join('');
+}
+
+/* DRAG DROP */
+const dz = document.getElementById('dropZone');
+['dragover','dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('drag'); }));
+dz.addEventListener('drop', e => { if (e.dataTransfer.files.length) onFiles(e.dataTransfer.files); });
+
+/* RGPD */
+function toggleRgpd() {
+  rgpdOk = !rgpdOk;
+  document.getElementById('rgpdCheck').classList.toggle('on', rgpdOk);
+  document.getElementById('rgpdCheck').textContent = rgpdOk ? '✓' : '';
+  document.getElementById('rgpdCard').style.borderColor = rgpdOk ? 'var(--accent)' : 'var(--hl)';
+  document.getElementById('rgpdCard').style.boxShadow = rgpdOk ? '0 6px 24px rgba(255,45,85,.14)' : '';
+  if (rgpdOk) document.getElementById('errRgpd').classList.remove('show');
+}
+
+/* VALIDATION */
+function validateField(id, errId, condition) {
+  const el = document.getElementById(id);
+  const err = document.getElementById(errId);
+  const invalid = condition(el.value.trim()) && !el.dataset.prefilled;
+  el.classList.toggle('err-field', invalid);
+  if (err) err.classList.toggle('show', invalid);
+  return !invalid;
+}
+
+function showToast(msg, isErr = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#D33' : 'var(--ink)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* SUBMIT */
+async function submitDossier() {
+  // Validation
+  let ok = true;
+  ok = validateField('fieldPrenom','errPrenom', v => !v) && ok;
+  ok = validateField('fieldNom',   'errNom',    v => !v) && ok;
+  ok = validateField('fieldPhone', 'errPhone',  v => !v) && ok;
+  ok = validateField('fieldCP',    'errCP',     v => !v) && ok;
+
+  if (selectedAssurances.length === 0) {
+    document.getElementById('errAssur').classList.add('show');
+    ok = false;
+  }
+  if (!rgpdOk) {
+    document.getElementById('errRgpd').classList.add('show');
+    ok = false;
+  }
+  if (!ok) {
+    document.querySelector('.err-field, .field-err.show')?.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const user = window._mcUser;
+  if (!user) { showToast('Vous devez être connecté.', true); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> Envoi en cours…`;
+
+  const assurancesFinales = [...selectedAssurances];
+  if (autreVisible) {
+    const autre = document.getElementById('fieldAutre').value.trim();
+    if (autre) assurancesFinales.push('Autre : ' + autre);
+  }
+
+  try {
+    const mc = window._mc;
+    const fileUrls = [];
+    for (const file of selectedFiles) {
+      try {
+        const storRef = mc.ref(mc.storage, `leads/${user.uid}/${Date.now()}_${file.name}`);
+        const snap = await mc.uploadBytes(storRef, file);
+        const url = await mc.getDownloadURL(snap.ref);
+        fileUrls.push({ name: file.name, url });
+      } catch(e) { console.warn('Upload non bloquant:', e); }
+    }
+
+    await mc.addDoc(mc.collection(mc.db, 'leads'), {
+      uid: user.uid,
+      prenom: document.getElementById('fieldPrenom').value.trim(),
+      nom: document.getElementById('fieldNom').value.trim(),
+      email: document.getElementById('fieldEmail').value.trim() || user.email,
+      phone: document.getElementById('fieldPhone').value.trim(),
+      code_postal: document.getElementById('fieldCP').value.trim(),
+      assurances: assurancesFinales,
+      message: document.getElementById('fieldMessage').value.trim(),
+      urgente,
+      rgpd_consent: true,
+      fichiers: fileUrls,
+      statut: 'nouveau',
+      date: mc.serverTimestamp()
+    });
+
+    document.getElementById('formArea').style.display = 'none';
+    const s = document.getElementById('successState');
+    s.classList.add('show');
+    s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch(err) {
+    console.error(err);
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg> Envoyer mon dossier — Gratuit`;
+    showToast('Une erreur est survenue. Réessayez.', true);
+  }
+}
+</script>
+</body>
+</html>
