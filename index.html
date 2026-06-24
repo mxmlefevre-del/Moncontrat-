@@ -927,9 +927,48 @@ button{
   }
 }
 
+
+/* ── TRUST ROW ── */
+.trust-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:24px}
+.trust-item{display:flex;align-items:flex-start;gap:14px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 18px rgba(11,14,26,.04)}
+.trust-icon{width:44px;height:44px;border-radius:12px;background:var(--hl-soft);border:1px solid rgba(255,45,85,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.trust-item b{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.trust-item span{font-size:12.5px;color:var(--mute);line-height:1.5}
+@media(max-width:900px){.trust-row{grid-template-columns:1fr 1fr;gap:12px}}
+@media(max-width:560px){.trust-row{grid-template-columns:1fr}}
+
+/* ── TESTIMONIALS ── */
+.testimonials-section{padding:80px 0;background:#fff}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.testimonial{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:0 4px 18px rgba(11,14,26,.04);transition:.2s}
+.testimonial:hover{box-shadow:0 12px 36px rgba(11,14,26,.08);transform:translateY(-2px)}
+.testimonial-stars{color:var(--accent);font-size:16px;letter-spacing:2px;margin-bottom:14px}
+.testimonial-text{font-size:14.5px;color:var(--mute);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:16px;flex-shrink:0}
+.testimonial-author strong{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.testimonial-author span{font-size:12px;color:var(--soft)}
+@media(max-width:900px){.testimonials-grid{grid-template-columns:1fr;gap:14px}.testimonials-section{padding:50px 0}}
+
+/* ── FOOTER V2 ── */
+.footer-v2{background:var(--night);color:#fff;padding:56px 0 0}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand{display:flex;flex-direction:column;gap:16px}
+.footer-brand .brand{color:#fff}
+.footer-brand .brand .ext{color:var(--accent)}
+.footer-tagline{font-size:13.5px;color:rgba(255,255,255,.4);line-height:1.65;max-width:280px}
+.footer-col{display:flex;flex-direction:column;gap:9px}
+.footer-col h4{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:6px}
+.footer-col a{font-size:13.5px;color:rgba(255,255,255,.55);transition:.15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:12.5px;color:rgba(255,255,255,.25)}
+.footer-made{font-size:12px}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:30px}.footer-brand{grid-column:1/-1}}
+@media(max-width:560px){.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column;gap:8px;text-align:center}}
+
 </style>
-  <link rel="icon" href="favicon-32.png" type="image/png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="/favicon-32.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 
@@ -956,7 +995,7 @@ button{
 
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a class="brand" href="#" aria-label="MonContrat.app">
+    <a class="brand" href="index.html" aria-label="MonContrat.app">
       <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
         <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
         <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
@@ -974,7 +1013,7 @@ button{
         <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
       <a class="btn btn-client" href="#" onclick="routeProtected('espace-client.html');return false">Espace client</a>
-      <button class="btn btn-main" onclick="openTool('Trouvez-moi moins cher','Gratuit','Transmettez votre contrat aux partenaires les plus pertinents.','free','money')">Trouvez moins cher</button>
+      <button class="btn btn-main" onclick="routeProtected('trouver-moins-cher.html')">Trouvez moins cher</button>
     </div>
   </div>
 </nav>
@@ -1022,7 +1061,7 @@ button{
         <button class="btn btn-ghost btn-big" onclick="routeProtected('comparateur.html')">Comparer deux contrats</button>
       </div>
       <div class="hero-badges">
-        <span>Sans carte bancaire</span><span>Retour partenaires 48h</span><span>Note 4,9/5</span>
+        <span>Sans carte bancaire</span><span>Réponse sous 48h</span><span>100% gratuit</span>
       </div>
     </div>
 
@@ -1077,18 +1116,27 @@ button{
   </div>
 </section>
 
-<!-- ====== MÉDIAS ====== -->
+<!-- ====== CONFIANCE ====== -->
 <section class="medias">
   <div class="wrap">
-    <span class="mono-label">Ils parlent d'assurance, on décortique pour vous</span>
-    <div class="marquee"><div class="marquee-track">
-      <span class="media-name">TF1</span><span class="media-name">M6</span><span class="media-name">BFM TV</span><span class="media-name">CNEWS</span><span class="media-name">Le Figaro</span>
-      <span class="media-name">TF1</span><span class="media-name">M6</span><span class="media-name">BFM TV</span><span class="media-name">CNEWS</span><span class="media-name">Le Figaro</span>
-    </div></div>
-    <div class="media-stats">
-      <span><b>4,9/5</b> avis utilisateurs</span>
-      <span><b>+1 300</b> opportunités détectées</span>
-      <span><b>48h</b> retour partenaires</span>
+    <span class="mono-label">Conçu par un professionnel de l'assurance</span>
+    <div class="trust-row">
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF2D55" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div><b>15 ans d'expertise assurance</b><span>Conçu par des professionnels du secteur</span></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF2D55" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+        <div><b>100% gratuit</b><span>Analyse, comparaison, résiliation — sans carte bancaire</span></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF2D55" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div><b>Réponse sous 48h</b><span>Un partenaire assureur revient vers vous rapidement</span></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF2D55" stroke-width="2" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <div><b>Conforme RGPD</b><span>Données hébergées en Europe, jamais revendues</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1176,7 +1224,7 @@ button{
       <div class="deal-action-card">
         <div class="deal-eyebrow">Gratuit · sans engagement</div>
         <p>30 secondes pour lancer la demande.</p>
-        <button class="btn btn-night btn-big deal-cta" onclick="openTool('Trouvez-moi moins cher','Gratuit','Transmettez votre contrat aux partenaires les plus pertinents.','free','money')">
+        <button class="btn btn-night btn-big deal-cta" onclick="routeProtected('trouver-moins-cher.html')">
           Trouver moins cher maintenant <span class="deal-cta-arrow">→</span>
         </button>
         <div class="deal-reassure">Retour sous 48 h ouvrées · garanties vérifiées</div>
@@ -1214,13 +1262,49 @@ button{
   </div>
 </section>
 
+<!-- ====== TÉMOIGNAGES ====== -->
+<section class="section testimonials-section">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center">
+      <span class="mono-label"><b>06</b> — Ce qu'ils en disent</span>
+      <h2 style="max-width:620px;margin:0 auto">Des utilisateurs, <span class="mark">des vrais.</span></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">J'ai découvert que ma franchise dégât des eaux était 3 fois plus élevée que la moyenne. En 30 secondes, c'était identifié. Je ne l'aurais jamais vu en lisant les 40 pages moi-même.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div><strong>Sophie M.</strong><span>Habitation — Nice</span></div>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">Le comparateur m'a montré ligne par ligne ce que mon ancienne assurance ne couvrait pas. J'ai changé et j'économise 280 € par an sur mon auto.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">T</div>
+          <div><strong>Thomas R.</strong><span>Auto — Antibes</span></div>
+        </div>
+      </div>
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">J'ai utilisé l'assistant sinistre après un vol. Il m'a dit exactement quoi faire, dans quel ordre, et quoi ne surtout pas dire à l'assureur. Très utile en situation de stress.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div><strong>Marc D.</strong><span>MRP — Cannes</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ====== METRICS ====== -->
 <section class="metrics-band">
   <div class="metrics">
-    <div class="metric"><strong><span class="count" data-to="6247">6 247</span></strong><small>contrats analysés</small></div>
-    <div class="metric"><strong><span class="count" data-to="49" data-fmt="rating">4,9/5</span></strong><small>note moyenne</small></div>
-    <div class="metric"><strong><span class="count" data-to="340">340</span><em>€</em></strong><small>économies moyennes</small></div>
-    <div class="metric"><strong><span class="count" data-to="30">30</span><em>s</em></strong><small>premier diagnostic</small></div>
+    <div class="metric"><strong>30<em>s</em></strong><small>pour analyser un contrat</small></div>
+    <div class="metric"><strong>4</strong><small>outils gratuits</small></div>
+    <div class="metric"><strong>48<em>h</em></strong><small>réponse assureur garantie</small></div>
+    <div class="metric"><strong>0<em>€</em></strong><small>aucun frais caché</small></div>
   </div>
 </section>
 
@@ -1235,22 +1319,50 @@ button{
 
 </main>
 
-<footer>
+<footer class="footer-v2">
   <div class="wrap">
-    <div class="foot">
-      <a class="brand" href="#" aria-label="MonContrat.app">
-        <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
-          <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
-          <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
-          <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
-          <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
-          <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
-        </svg>
-        MonContrat<span class="ext">.app</span>
-      </a>
-      <div class="foot-links"><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="politique-confidentialite.html">Confidentialité</a><a href="contact.html">Contact</a><a href="mentions-legales.html">Mentions légales</a></div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html" aria-label="MonContrat.app">
+          <svg class="logo-glyph" viewBox="0 0 34 34" aria-hidden="true">
+            <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#logoGrad)"/>
+            <rect x="8" y="8" width="18" height="18" rx="3" fill="#fff"/>
+            <rect x="11" y="12" width="12" height="3.4" rx="1.7" fill="#FFBFCD"/>
+            <rect x="11" y="18" width="9" height="2.2" rx="1.1" fill="#C9CEDE"/>
+            <rect x="11" y="22" width="11" height="2.2" rx="1.1" fill="#C9CEDE"/>
+          </svg>
+          MonContrat<span class="ext">.app</span>
+        </a>
+        <p class="footer-tagline">L'intelligence contractuelle appliquée à l'assurance. Conçu à Nice par un professionnel du secteur.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Outils</h4>
+        <a href="analyser.html">Analyser un contrat</a>
+        <a href="comparateur.html">Comparer deux contrats</a>
+        <a href="documents.html">Résilier un contrat</a>
+        <a href="assistant-sinistre.html">Assistant sinistre</a>
+        <a href="trouver-moins-cher.html">Trouver moins cher</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <a href="blog.html">Le Décodeur — Blog</a>
+        <a href="faq.html">FAQ</a>
+        <a href="tarifs.html">Tarifs</a>
+        <a href="contact.html">Contact</a>
+        <a href="roadmap.html">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cguv.html">CGU & CGV</a>
+        <a href="politique-confidentialite.html">Confidentialité</a>
+        <a href="politique-cookies.html">Cookies</a>
+      </div>
     </div>
-    <div class="foot-note">© 2026 moncontrat.app — L'intelligence contractuelle appliquée à l'assurance.</div>
+    <div class="footer-bottom">
+      <span>© 2026 MonContrat.app — Tous droits réservés.</span>
+      <span class="footer-made">Conçu avec ❤️ sur la Côte d'Azur</span>
+    </div>
   </div>
 </footer>
 
