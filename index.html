@@ -971,7 +971,7 @@ button{
       <button class="nav-phone" onclick="openMenu()" aria-label="Menu" aria-expanded="false" id="burgerBtn">
         <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
-      <a class="btn btn-client" href="espace-client.html">Espace client</a>
+      <a class="btn btn-client" href="#" onclick="routeProtected('espace-client.html');return false">Espace client</a>
       <button class="btn btn-main" onclick="openTool('Trouvez-moi moins cher','Gratuit','Transmettez votre contrat aux partenaires les plus pertinents.','free','money')">Trouvez moins cher</button>
     </div>
   </div>
@@ -1000,7 +1000,7 @@ button{
       <a href="politique-cookies.html">Cookies</a>
     </nav>
     <div class="menu-foot">
-      <a class="btn btn-client" style="width:100%" href="espace-client.html">Espace client</a>
+      <a class="btn btn-client" style="width:100%" href="#" onclick="closeMenu();routeProtected('espace-client.html');return false">Espace client</a>
       <button class="btn btn-main" style="width:100%;margin-top:10px" onclick="closeMenu();openTool('Trouvez-moi moins cher','Gratuit','Transmettez votre contrat aux partenaires les plus pertinents.','free','money')">Trouvez moins cher</button>
     </div>
   </aside>
@@ -1016,7 +1016,7 @@ button{
       <h1>Vous l'avez signé.<br><span class="mark">Vous ne l'avez jamais lu.</span></h1>
       <p class="hero-sub">On lit vos contrats d'assurance en 30 secondes : garanties, franchises, exclusions, etc.</p>
       <div class="hero-actions">
-        <button class="btn btn-main btn-big" onclick="location.href='analyser.html'">Analyser mon contrat — Gratuit</button>
+        <button class="btn btn-main btn-big" onclick="routeProtected('analyser.html')">Analyser mon contrat — Gratuit</button>
         <button class="btn btn-ghost btn-big" onclick="routeProtected('comparateur.html')">Comparer deux contrats</button>
       </div>
       <div class="hero-badges">
@@ -1227,7 +1227,7 @@ button{
   <div class="wrap">
     <h2 class="reveal">Votre contrat sait des choses <span class="mark">que vous ignorez.</span></h2>
     <p class="reveal">Analyse gratuite, résultat en 30 secondes, sans carte bancaire. Découvrez ce que vous avez vraiment signé.</p>
-    <button class="btn btn-main btn-big reveal" onclick="location.href='analyser.html'">Analyser mon contrat — Gratuit</button>
+    <button class="btn btn-main btn-big reveal" onclick="routeProtected('analyser.html')">Analyser mon contrat — Gratuit</button>
   </div>
 </section>
 
