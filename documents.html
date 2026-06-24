@@ -460,6 +460,17 @@ async function generate(){
 
     currentDoc = data.document;
     renderDoc(currentDoc);
+    // Tracking Firestore
+    const _cu = window._mcCurrentUser;
+    if(_cu && window._mcDb){
+      try{
+        await window._mcAddDoc(window._mcCollection(window._mcDb,'users',_cu.uid,'analyses'),{
+          type_analyse:'resiliation',
+          titre:'Lettre de résiliation — '+motif,
+          date: window._mcServerTimestamp()
+        });
+      }catch(e){ console.warn('tracking documents:',e); }
+    }
   }catch(err){
     document.getElementById('genLoading').classList.remove('show');
     showErr(err.message || "Une erreur est survenue. Réessayez.");

@@ -143,6 +143,28 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   .foot{justify-content:center;text-align:center}.foot-links{justify-content:center}
 }
 </style>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  const firebaseConfig = {
+    apiKey:"AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",authDomain:"moncontrat.firebaseapp.com",
+    projectId:"moncontrat",storageBucket:"moncontrat.firebasestorage.app",
+    messagingSenderId:"770067071270",appId:"1:770067071270:web:4614ca8716478be80c41e7"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  window._mcDb = db;
+  window._mcCollection = collection;
+  window._mcAddDoc = addDoc;
+  window._mcServerTimestamp = serverTimestamp;
+  let authResolved = false;
+  onAuthStateChanged(auth, (user) => {
+    window._mcCurrentUser = user;
+    if (!authResolved) { authResolved = true; }
+  });
+</script>
 </head>
 <body>
 
@@ -353,6 +375,19 @@ async function send(){
     if(!res.ok||!data.ok) throw new Error(data.error||"L'assistant est indisponible.");
     addMessage('bot', data.reply);
     history.push({role:'assistant', content:data.reply});
+    // Tracking Firestore (une seule fois au premier échange)
+    if(history.filter(m=>m.role==='assistant').length === 1){
+      const _cu = window._mcCurrentUser;
+      if(_cu && window._mcDb){
+        try{
+          await window._mcAddDoc(window._mcCollection(window._mcDb,'users',_cu.uid,'analyses'),{
+            type_analyse:'assistant_sinistre',
+            titre:'Assistant sinistre',
+            date: window._mcServerTimestamp()
+          });
+        }catch(e){ console.warn('tracking sinistre:',e); }
+      }
+    }
   }catch(err){
     hideTyping();
     addMessage('bot', "⚠️ "+(err.message||"Une erreur est survenue. Réessayez dans un instant."));

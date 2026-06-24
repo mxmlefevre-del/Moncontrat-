@@ -367,6 +367,17 @@ async function launch(){
     if(!rawRes.ok||!data.ok){ throw new Error(data.error||"La comparaison a échoué."); }
 
     sessionStorage.setItem('mc_compare',JSON.stringify(data.comparison));
+    // Tracking Firestore
+    const _cu = window._mcCurrentUser;
+    if(_cu && window._mcDb){
+      try{
+        await window._mcAddDoc(window._mcCollection(window._mcDb,'users',_cu.uid,'analyses'),{
+          type_analyse:'comparateur',
+          titre:'Comparaison de contrats',
+          date: window._mcServerTimestamp()
+        });
+      }catch(e){ console.warn('tracking comparateur:',e); }
+    }
     window.location.href='comparateur-resultat.html';
 
   }catch(err){
