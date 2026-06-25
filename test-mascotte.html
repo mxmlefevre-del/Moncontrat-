@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test mascotte</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      background: #FFF5F7;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    h2 { color: #FF2D55; margin-bottom: 20px; font-size: 16px; text-align: center; }
+
+    .grid { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+    .box { text-align: center; }
+    .box p { font-size: 11px; color: #666; margin-bottom: 6px; }
+
+    /* TEST 1 : mix-blend-mode multiply sur fond blanc */
+    .bg-white { background: white; padding: 10px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    .bg-white video { mix-blend-mode: multiply; width: 160px; display: block; }
+
+    /* TEST 2 : mix-blend-mode multiply sur fond rose */
+    .bg-pink { background: #FFE0E8; padding: 10px; border-radius: 12px; }
+    .bg-pink video { mix-blend-mode: multiply; width: 160px; display: block; }
+
+    /* TEST 3 : vidéo brute (fond blanc visible) */
+    .bg-plain { background: #1a1a2e; padding: 10px; border-radius: 12px; }
+    .bg-plain video { width: 160px; display: block; }
+
+    /* TEST 4 : WebM alpha */
+    .bg-alpha { background: #FFE0E8; padding: 10px; border-radius: 12px; }
+    .bg-alpha video { width: 160px; display: block; }
+
+    #log {
+      background: white;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🐕 Test mascotte — plusieurs méthodes</h2>
+
+<div class="grid">
+
+  <div class="box">
+    <p>① mix-blend-mode: multiply<br>sur fond blanc (simule transparence)</p>
+    <div class="bg-white">
+      <video id="v1" autoplay loop muted playsinline>
+        <source src="mascotte-notalpha.webm" type="video/webm">
+        <source src="mascotte-notalpha.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div class="box">
+    <p>② mix-blend-mode: multiply<br>sur fond rose</p>
+    <div class="bg-pink">
+      <video id="v2" autoplay loop muted playsinline>
+        <source src="mascotte-notalpha.webm" type="video/webm">
+        <source src="mascotte-notalpha.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div class="box">
+    <p>③ Vidéo brute<br>(fond blanc visible)</p>
+    <div class="bg-plain">
+      <video id="v3" autoplay loop muted playsinline>
+        <source src="mascotte-notalpha.webm" type="video/webm">
+        <source src="mascotte-notalpha.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <div class="box">
+    <p>④ WebM avec alpha<br>(vrai transparent)</p>
+    <div class="bg-alpha">
+      <video id="v4" autoplay loop muted playsinline>
+        <source src="mascotte-animated.webm" type="video/webm">
+      </video>
+    </div>
+  </div>
+
+</div>
+
+<div id="log">
+  <strong>Infos :</strong><br>
+  Navigateur: <span id="ua"></span><br>
+  Vidéo ① : <span id="s1">...</span><br>
+  Vidéo ④ (alpha) : <span id="s4">...</span>
+</div>
+
+<script>
+  document.getElementById('ua').textContent = navigator.userAgent.substring(0,80);
+
+  ['v1','v2','v3'].forEach(id => {
+    const v = document.getElementById(id);
+    v.addEventListener('loadeddata', () => document.getElementById('s1').textContent = '✅ Chargée');
+    v.addEventListener('error', () => document.getElementById('s1').textContent = '❌ Erreur');
+  });
+
+  const v4 = document.getElementById('v4');
+  v4.addEventListener('loadeddata', () => document.getElementById('s4').textContent = '✅ Alpha OK');
+  v4.addEventListener('error', () => document.getElementById('s4').textContent = '❌ Non supporté');
+</script>
+
+</body>
+</html>
