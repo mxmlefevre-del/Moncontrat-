@@ -345,7 +345,8 @@ footer{border-top:0.5px solid var(--line);padding:26px 0;background:var(--surfac
 </style>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
   apiKey:"AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",
@@ -355,55 +356,66 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+const auth = getAuth(app);
 
 window._mcDB   = db;
 window._mcAddDoc   = addDoc;
 window._mcCollection = collection;
 window._mcServerTimestamp = serverTimestamp;
 
+// Charger les données utilisateur directement depuis Firebase Auth + Firestore
+onAuthStateChanged(auth, async (user) => {
+  if(!user) return; // non connecté, les champs restent visibles
+
+  window._mcUser = { uid: user.uid };
+
+  // Email toujours disponible depuis Auth
+  let nom = user.displayName || '';
+  let email = user.email || '';
+  let phone = '';
+
+  // Enrichir avec Firestore
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if(snap.exists()) {
+      const d = snap.data();
+      if(d.prenom || d.nom) nom = ((d.prenom||'') + ' ' + (d.nom||'')).trim();
+      if(d.phone) phone = d.phone;
+    }
+  } catch(e) {}
+
+  window._mcUserData = { nom, email, phone };
+
+  // Mettre à jour l'affichage
+  const userInfo = document.getElementById('leadUserInfo');
+  const fallback = document.getElementById('leadFieldsFallback');
+  if(fallback) fallback.style.display = 'none';
+  if(userInfo) {
+    userInfo.classList.add('show');
+    userInfo.innerHTML =
+      '<div class="cta-user-avatar">👤</div>' +
+      '<div class="cta-user-info">' +
+        '<div class="cta-user-name">' + (nom || email) + '</div>' +
+        '<div class="cta-user-email">' + email + (phone ? ' · ' + phone : '') + '</div>' +
+      '</div>' +
+      '<div class="cta-user-check">✅</div>';
+  }
+  // Réactiver le bouton si consentement déjà coché
+  const ctaBtn = document.getElementById('ctaGo');
+  const consent = document.getElementById('consent');
+  if(ctaBtn && consent && consent.checked) ctaBtn.disabled = false;
+});
+
 </script>
 
 </head>
 <body>
 <script>
-// Lire les données utilisateur depuis sessionStorage — après chargement du DOM
+// Initialisation — Firebase Auth gère l'affichage utilisateur via onAuthStateChanged
+// Les champs sont visibles par défaut pour les non-connectés
 (function() {
-  function applyUserData() {
-    const uid   = sessionStorage.getItem('mc_user_uid')   || '';
-    const email = sessionStorage.getItem('mc_user_email') || '';
-    const nom   = sessionStorage.getItem('mc_user_name')  || '';
-    const phone = sessionStorage.getItem('mc_user_phone') || '';
-
-    const userInfo = document.getElementById('leadUserInfo');
-    const fallback = document.getElementById('leadFieldsFallback');
-
-    if(uid && email) {
-      window._mcUser = { uid };
-      window._mcUserData = { nom, email, phone };
-      if(fallback) fallback.style.display = 'none';
-      if(userInfo) {
-        userInfo.classList.add('show');
-        userInfo.innerHTML =
-          '<div class="cta-user-avatar">👤</div>' +
-          '<div class="cta-user-info">' +
-            '<div class="cta-user-name">' + (nom || email) + '</div>' +
-            '<div class="cta-user-email">' + email + (phone ? ' · ' + phone : '') + '</div>' +
-          '</div>' +
-          '<div class="cta-user-check">✅</div>';
-      }
-    } else {
-      window._mcUser = null;
-      window._mcUserData = null;
-      if(fallback) fallback.style.display = 'flex';
-      if(userInfo) userInfo.classList.remove('show');
-    }
-  }
-  // Exécuter après que le DOM soit prêt
-  if(document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyUserData);
-  } else {
-    applyUserData();
-  }
+  window._mcUser = null;
+  window._mcUserData = null;
 })();
 </script>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
