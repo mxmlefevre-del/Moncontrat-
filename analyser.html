@@ -346,6 +346,16 @@ async function launch(){
     // Stocker en session pour la page résultat
     sessionStorage.setItem('mc_analysis', JSON.stringify(data.analysis));
     sessionStorage.setItem('mc_lead_optin', document.getElementById('leadConsent').checked ? '1' : '0');
+    // Stocker le PDF pour le transmettre dans le lead depuis resultat.html
+    try {
+      const fullBase64 = 'data:application/pdf;base64,' + pdf_base64;
+      // Vérifier que ça tient en sessionStorage (~5Mo max)
+      if(pdf_base64.length < 4 * 1024 * 1024) {
+        sessionStorage.setItem('mc_pdf_base64', fullBase64);
+        sessionStorage.setItem('mc_pdf_name', currentFile.name);
+        sessionStorage.setItem('mc_pdf_size', currentFile.size);
+      }
+    } catch(e) { /* PDF trop lourd, on passe */ }
 
     // Sauvegarder dans Firestore si connecté
     const user = window._mcCurrentUser;

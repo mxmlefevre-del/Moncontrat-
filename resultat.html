@@ -305,6 +305,76 @@ footer{border-top:0.5px solid var(--line);padding:26px 0;background:var(--surfac
   .reveal{opacity:1!important;transform:none!important}
 }
 </style>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey:"AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",
+  authDomain:"moncontrat.firebaseapp.com",projectId:"moncontrat",
+  storageBucket:"moncontrat.firebasestorage.app",
+  messagingSenderId:"770067071270",appId:"1:770067071270:web:4614ca8716478be80c41e7"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+const auth = getAuth(app);
+
+window._mcDB   = db;
+window._mcAuth = auth;
+window._mcAddDoc   = addDoc;
+window._mcCollection = collection;
+window._mcServerTimestamp = serverTimestamp;
+
+onAuthStateChanged(auth, user => {
+  window._mcUser = user || null;
+  if(user) {
+    // Pré-remplir les champs avec les données du compte
+    const nameEl  = document.getElementById('leadName');
+    const emailEl = document.getElementById('leadEmail');
+    const phoneEl = document.getElementById('leadPhone');
+    const fieldsWrap = document.querySelector('.lead-fields');
+    const userInfo = document.getElementById('leadUserInfo');
+
+    // Récupérer données Firestore utilisateur
+    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(({doc, getDoc}) => {
+      getDoc(doc(db, 'users', user.uid)).then(snap => {
+        const data = snap.exists() ? snap.data() : {};
+        const nom   = data.prenom ? (data.prenom + ' ' + (data.nom||'')).trim() : (user.displayName || '');
+        const email = data.email  || user.email || '';
+        const phone = data.phone  || '';
+
+        window._mcUserData = { nom, email, phone };
+
+        if(fieldsWrap) fieldsWrap.style.display = 'none';
+        if(userInfo) {
+          userInfo.innerHTML = `
+            <div style="background:rgba(255,255,255,.15);border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:13.5px;text-align:left;display:flex;align-items:center;gap:12px;">
+              <span style="font-size:22px">✅</span>
+              <div>
+                <div style="font-weight:700;margin-bottom:2px">${nom || email}</div>
+                <div style="opacity:.75;font-size:12px">${email}${phone ? ' · ' + phone : ''}</div>
+              </div>
+            </div>`;
+          userInfo.style.display = 'block';
+        }
+      }).catch(() => {
+        // Fallback sur données Auth uniquement
+        window._mcUserData = { nom: user.displayName||'', email: user.email||'', phone: '' };
+        if(nameEl)  nameEl.value  = user.displayName||'';
+        if(emailEl) emailEl.value = user.email||'';
+      });
+    });
+  } else {
+    window._mcUserData = null;
+    const fieldsWrap = document.querySelector('.lead-fields');
+    const userInfo   = document.getElementById('leadUserInfo');
+    if(fieldsWrap) fieldsWrap.style.display = '';
+    if(userInfo)   userInfo.style.display   = 'none';
+  }
+});
+</script>
+
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
@@ -412,6 +482,7 @@ footer{border-top:0.5px solid var(--line);padding:26px 0;background:var(--surfac
     <span class="cta-eyebrow">Le même niveau de garantie, moins cher</span>
     <h3>Vous pouvez payer moins cher.<br>En un seul clic.</h3>
     <p>Laissez vos coordonnées : on transmet votre dossier aux assureurs partenaires — et c'est eux qui reviennent vers vous.</p>
+    <div id="leadUserInfo" style="display:none;max-width:480px;margin:0 auto;position:relative;"></div>
     <div class="lead-fields">
       <input type="text" id="leadName" placeholder="Votre nom complet" autocomplete="name">
       <input type="email" id="leadEmail" placeholder="Votre email" autocomplete="email">
@@ -718,17 +789,91 @@ function onRiFile(file){if(!file)return;if(file.type!=='application/pdf'){alert(
 function clearRi(){riFile=null;$("riInput").value='';$("riLoaded").classList.remove('show');$("riBtn").style.display='inline-flex';}
 function toggleConsent(){const ok=$("consent").checked;$("ctaGo").disabled=!ok;$("consentLabel").classList.toggle("checked",ok);}
 async function sendDossier(){
-  if(!$("consent").checked)return;
-  const email=$("leadEmail").value.trim();const status=$("leadStatus");
-  status.className='lead-status';status.textContent='';
-  if(!email||!email.includes('@')){status.className='lead-status err';status.textContent="Merci d'indiquer un email valide.";return;}
-  const btn=$("ctaGo");btn.disabled=true;btn.textContent='Envoi en cours…';
-  try{
-    let ri_base64=null,ri_filename=null;
-    if(riFile){ri_base64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej();r.readAsDataURL(riFile);});ri_filename=riFile.name;}
-    sessionStorage.setItem('mc_lead_prefill',JSON.stringify({nom:$("leadName").value.trim(),email,phone:$("leadPhone").value.trim(),type_contrat:A.type_analyse||A.contrat?.titre||'',ri_base64:ri_base64||null,ri_filename:ri_filename||null}));
-    window.location.href='trouver-moins-cher.html';
-  }catch(err){status.className='lead-status err';status.textContent=err.message||"Une erreur est survenue.";btn.disabled=false;btn.textContent='Trouvez-moi moins cher — Gratuit';}
+  if(!$("consent").checked) return;
+  const status = $("leadStatus");
+  status.className = 'lead-status';
+  status.textContent = '';
+  const btn = $("ctaGo");
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+
+  try {
+    let nom, email, phone;
+    if(window._mcUserData) {
+      nom   = window._mcUserData.nom;
+      email = window._mcUserData.email;
+      phone = window._mcUserData.phone;
+    } else {
+      nom   = $("leadName").value.trim();
+      email = $("leadEmail").value.trim();
+      phone = $("leadPhone").value.trim();
+    }
+
+    if(!email || !email.includes('@')) {
+      status.className = 'lead-status err';
+      status.textContent = "Merci d'indiquer un email valide.";
+      btn.disabled = false;
+      btn.textContent = 'Trouvez-moi moins cher — Gratuit';
+      return;
+    }
+
+    let fichiers = [];
+    // Récupérer le contrat analysé depuis sessionStorage
+    try {
+      const pdfData = sessionStorage.getItem('mc_pdf_base64');
+      const pdfName = sessionStorage.getItem('mc_pdf_name');
+      const pdfSize = parseInt(sessionStorage.getItem('mc_pdf_size') || '0');
+      if(pdfData && pdfName) {
+        fichiers.push({ name: pdfName, data: pdfData, size: pdfSize, type: 'contrat_analyse' });
+      }
+    } catch(e) {}
+    // Ajouter le relevé d'information si fourni
+    if(riFile) {
+      const ri_data = await new Promise((res,rej)=>{
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = () => rej();
+        r.readAsDataURL(riFile);
+      });
+      if(ri_data) fichiers.push({ name: riFile.name, data: ri_data, size: riFile.size, type: 'releve_information' });
+    }
+
+    if(window._mcDB && window._mcAddDoc && window._mcCollection) {
+      const leadData = {
+        prenom: nom.split(' ')[0] || nom,
+        nom: nom.split(' ').slice(1).join(' ') || '',
+        email, phone,
+        assurances: [A.type_analyse || A.contrat?.type_bien || A.contrat?.titre || 'Contrat analysé'],
+        urgente: false,
+        statut: 'nouveau',
+        message: 'Demande soumise depuis la page résultat — contrat déjà analysé par IA',
+        source: 'resultat',
+        uid: window._mcUser?.uid || null,
+        analyse_score: A.score || null,
+        type_contrat: A.type_analyse || A.contrat?.titre || '',
+        fichiers,
+        date: window._mcServerTimestamp ? window._mcServerTimestamp() : new Date().toISOString()
+      };
+      await window._mcAddDoc(window._mcCollection(window._mcDB, 'leads'), leadData);
+      btn.textContent = '✅ Dossier envoyé !';
+      status.className = 'lead-status ok';
+      status.textContent = 'Votre dossier a bien été transmis. Un conseiller vous contacte sous 48h.';
+      try { sessionStorage.setItem('mc_lead_optin', '1'); } catch(e){}
+    } else {
+      sessionStorage.setItem('mc_lead_prefill', JSON.stringify({
+        nom, email, phone,
+        type_contrat: A.type_analyse || A.contrat?.titre || '',
+        ri_base64: fichiers[0]?.data || null,
+        ri_filename: fichiers[0]?.name || null
+      }));
+      window.location.href = 'trouver-moins-cher.html';
+    }
+  } catch(err) {
+    status.className = 'lead-status err';
+    status.textContent = err.message || "Une erreur est survenue.";
+    btn.disabled = false;
+    btn.textContent = 'Trouvez-moi moins cher — Gratuit';
+  }
 }
 
 /* ── SCAN ── */
