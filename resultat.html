@@ -329,12 +329,18 @@ window._mcServerTimestamp = serverTimestamp;
 onAuthStateChanged(auth, user => {
   window._mcUser = user || null;
   if(user) {
-    // Pré-remplir les champs avec les données du compte
+    // Masquer les champs et montrer un loader pendant le chargement des données
     const nameEl  = document.getElementById('leadName');
     const emailEl = document.getElementById('leadEmail');
     const phoneEl = document.getElementById('leadPhone');
     const fieldsWrap = document.querySelector('.lead-fields');
     const userInfo = document.getElementById('leadUserInfo');
+    // Afficher un loader immédiatement
+    if(fieldsWrap) fieldsWrap.style.display = 'none';
+    if(userInfo) {
+      userInfo.innerHTML = `<div style="background:rgba(255,255,255,.1);border-radius:14px;padding:16px 20px;margin-bottom:14px;text-align:center;opacity:.7;font-size:13px;">Chargement de vos données…</div>`;
+      userInfo.style.display = 'block';
+    }
 
     // Récupérer données Firestore utilisateur
     import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(({doc, getDoc}) => {
@@ -345,24 +351,38 @@ onAuthStateChanged(auth, user => {
         const phone = data.phone  || '';
 
         window._mcUserData = { nom, email, phone };
+        // Réactiver le bouton si consent coché
+        const ctaBtn = document.getElementById('ctaGo');
+        if(ctaBtn && document.getElementById('consent')?.checked) ctaBtn.disabled = false;
 
         if(fieldsWrap) fieldsWrap.style.display = 'none';
         if(userInfo) {
           userInfo.innerHTML = `
-            <div style="background:rgba(255,255,255,.15);border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:13.5px;text-align:left;display:flex;align-items:center;gap:12px;">
-              <span style="font-size:22px">✅</span>
-              <div>
-                <div style="font-weight:700;margin-bottom:2px">${nom || email}</div>
-                <div style="opacity:.75;font-size:12px">${email}${phone ? ' · ' + phone : ''}</div>
+            <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:16px 20px;margin-bottom:14px;font-size:14px;text-align:left;display:flex;align-items:center;gap:14px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-weight:700;margin-bottom:3px;font-size:15px;">${nom || email}</div>
+                <div style="opacity:.8;font-size:13px;">${email}</div>
+                ${phone ? `<div style="opacity:.7;font-size:12px;margin-top:2px;">${phone}</div>` : ''}
               </div>
-            </div>`;
+              <div style="font-size:20px;">✅</div>
+            </div>
+            <p style="font-size:12px;opacity:.7;text-align:center;margin-bottom:10px;">Vos coordonnées sont pré-remplies depuis votre compte</p>`;
           userInfo.style.display = 'block';
         }
       }).catch(() => {
         // Fallback sur données Auth uniquement
         window._mcUserData = { nom: user.displayName||'', email: user.email||'', phone: '' };
-        if(nameEl)  nameEl.value  = user.displayName||'';
-        if(emailEl) emailEl.value = user.email||'';
+        // Réactiver le bouton si consent coché
+        const ctaBtn2 = document.getElementById('ctaGo');
+        if(ctaBtn2 && document.getElementById('consent')?.checked) ctaBtn2.disabled = false;
+        // Mettre à jour le bloc userInfo avec les données auth
+        const uInfo = document.getElementById('leadUserInfo');
+        if(uInfo) {
+          const _n = user.displayName||user.email||'';
+          const _e = user.email||'';
+          uInfo.innerHTML = `<div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:16px 20px;margin-bottom:14px;font-size:14px;text-align:left;display:flex;align-items:center;gap:14px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div><div style="flex:1;min-width:0;"><div style="font-weight:700;margin-bottom:3px;font-size:15px;">${_n}</div><div style="opacity:.8;font-size:13px;">${_e}</div></div><div style="font-size:20px;">✅</div></div><p style="font-size:12px;opacity:.7;text-align:center;margin-bottom:10px;">Vos coordonnées sont pré-remplies depuis votre compte</p>`;
+        }
       });
     });
   } else {
@@ -799,6 +819,14 @@ async function sendDossier(){
 
   try {
     let nom, email, phone;
+    if(window._mcUser && !window._mcUserData) {
+      // Firebase connecté mais données pas encore chargées
+      status.className = 'lead-status err';
+      status.textContent = 'Chargement en cours, réessayez dans un instant…';
+      btn.disabled = false;
+      btn.textContent = 'Trouvez-moi moins cher — Gratuit';
+      return;
+    }
     if(window._mcUserData) {
       nom   = window._mcUserData.nom;
       email = window._mcUserData.email;
