@@ -15,7 +15,7 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, collection, addDoc, doc, updateDoc, increment, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, doc, getDoc, updateDoc, increment, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyDgY9s8tv6qG7f0fWHEeUpa6wJGjf6ZhuM",
@@ -348,9 +348,22 @@ async function launch(){
     // Sauvegarder les données utilisateur pour resultat.html
     const _u = window._mcCurrentUser;
     if(_u) {
+      // Sauvegarder d'abord les données Auth (toujours disponibles)
       sessionStorage.setItem('mc_user_uid',   _u.uid || '');
       sessionStorage.setItem('mc_user_email', _u.email || '');
       sessionStorage.setItem('mc_user_name',  _u.displayName || '');
+      sessionStorage.setItem('mc_user_phone', '');
+      // Enrichir avec Firestore pour récupérer le vrai prénom/nom/téléphone
+      try {
+        const uSnap = await getDoc(doc(db, 'users', _u.uid));
+        if(uSnap.exists()) {
+          const ud = uSnap.data();
+          const fullName = ud.prenom ? (ud.prenom + ' ' + (ud.nom||'')).trim() : (_u.displayName||'');
+          sessionStorage.setItem('mc_user_name',  fullName);
+          sessionStorage.setItem('mc_user_email', ud.email || _u.email || '');
+          sessionStorage.setItem('mc_user_phone', ud.phone || '');
+        }
+      } catch(e) { /* non bloquant */ }
     }
     // Stocker le PDF pour le transmettre dans le lead depuis resultat.html
     try {
