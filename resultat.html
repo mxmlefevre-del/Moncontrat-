@@ -265,8 +265,9 @@ button{font-family:inherit;cursor:pointer}
 .cs-ic{width:22px;height:22px;border-radius:50%;background:#fff;color:var(--accent);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
 .cta-step b{font-family:var(--disp);font-size:13.5px;display:block;color:#fff;margin-bottom:2px}
 .cta-step small{font-size:11.5px;color:rgba(255,255,255,.7);line-height:1.4;display:block}
-.lead-status{max-width:480px;margin:10px auto 0;font-size:13.5px;font-weight:600;min-height:18px;position:relative}
-.lead-status.ok{color:#fff}.lead-status.err{color:#FFD1DC}
+.lead-status{max-width:480px;margin:12px auto 0;font-size:14px;font-weight:700;min-height:20px;position:relative;border-radius:10px;padding:0}
+.lead-status.ok{background:rgba(52,199,89,.25);border:1.5px solid rgba(52,199,89,.5);color:#fff;padding:12px 16px;text-align:center}
+.lead-status.err{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);color:#fff;padding:12px 16px;text-align:center}
 
 /* ── FOOTER ── */
 .disclaimer{font-family:var(--mono);font-size:10.5px;color:var(--soft);line-height:1.7;text-align:center;max-width:640px;margin:0 auto;padding:24px 0 52px}
@@ -326,65 +327,50 @@ window._mcAddDoc   = addDoc;
 window._mcCollection = collection;
 window._mcServerTimestamp = serverTimestamp;
 
+function _showUserBlock(nom, email, phone) {
+  const fieldsWrap = document.querySelector('.lead-fields');
+  const userInfo   = document.getElementById('leadUserInfo');
+  if(fieldsWrap) fieldsWrap.style.display = 'none';
+  if(userInfo) {
+    userInfo.style.display = 'block';
+    userInfo.innerHTML = `
+      <div style="background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:16px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👤</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:800;font-size:16px;color:#fff;margin-bottom:3px;">${nom || email}</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.85);">${email}</div>
+          ${phone ? `<div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px;">${phone}</div>` : ''}
+        </div>
+        <span style="font-size:22px;">✅</span>
+      </div>
+      <p style="font-size:12.5px;color:rgba(255,255,255,.75);text-align:center;margin-bottom:8px;font-weight:500;">✓ Coordonnées pré-remplies depuis votre compte</p>`;
+  }
+  const ctaBtn = document.getElementById('ctaGo');
+  if(ctaBtn && document.getElementById('consent')?.checked) ctaBtn.disabled = false;
+}
+
 onAuthStateChanged(auth, user => {
   window._mcUser = user || null;
   if(user) {
-    // Masquer les champs et montrer un loader pendant le chargement des données
-    const nameEl  = document.getElementById('leadName');
-    const emailEl = document.getElementById('leadEmail');
-    const phoneEl = document.getElementById('leadPhone');
-    const fieldsWrap = document.querySelector('.lead-fields');
-    const userInfo = document.getElementById('leadUserInfo');
-    // Afficher un loader immédiatement
-    if(fieldsWrap) fieldsWrap.style.display = 'none';
-    if(userInfo) {
-      userInfo.innerHTML = `<div style="background:rgba(255,255,255,.1);border-radius:14px;padding:16px 20px;margin-bottom:14px;text-align:center;opacity:.7;font-size:13px;">Chargement de vos données…</div>`;
-      userInfo.style.display = 'block';
-    }
+    // Utiliser immédiatement les données Auth (toujours disponibles)
+    const nomAuth   = user.displayName || '';
+    const emailAuth = user.email || '';
+    window._mcUserData = { nom: nomAuth, email: emailAuth, phone: '' };
+    _showUserBlock(nomAuth, emailAuth, '');
 
-    // Récupérer données Firestore utilisateur
-    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(({doc, getDoc}) => {
-      getDoc(doc(db, 'users', user.uid)).then(snap => {
-        const data = snap.exists() ? snap.data() : {};
-        const nom   = data.prenom ? (data.prenom + ' ' + (data.nom||'')).trim() : (user.displayName || '');
-        const email = data.email  || user.email || '';
-        const phone = data.phone  || '';
-
+    // Enrichir avec Firestore en arrière-plan
+    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js')
+      .then(({doc, getDoc}) => getDoc(doc(db, 'users', user.uid)))
+      .then(snap => {
+        if(!snap.exists()) return;
+        const d = snap.data();
+        const nom   = d.prenom ? (d.prenom + ' ' + (d.nom||'')).trim() : nomAuth;
+        const email = d.email  || emailAuth;
+        const phone = d.phone  || '';
         window._mcUserData = { nom, email, phone };
-        // Réactiver le bouton si consent coché
-        const ctaBtn = document.getElementById('ctaGo');
-        if(ctaBtn && document.getElementById('consent')?.checked) ctaBtn.disabled = false;
-
-        if(fieldsWrap) fieldsWrap.style.display = 'none';
-        if(userInfo) {
-          userInfo.innerHTML = `
-            <div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:16px 20px;margin-bottom:14px;font-size:14px;text-align:left;display:flex;align-items:center;gap:14px;">
-              <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-weight:700;margin-bottom:3px;font-size:15px;">${nom || email}</div>
-                <div style="opacity:.8;font-size:13px;">${email}</div>
-                ${phone ? `<div style="opacity:.7;font-size:12px;margin-top:2px;">${phone}</div>` : ''}
-              </div>
-              <div style="font-size:20px;">✅</div>
-            </div>
-            <p style="font-size:12px;opacity:.7;text-align:center;margin-bottom:10px;">Vos coordonnées sont pré-remplies depuis votre compte</p>`;
-          userInfo.style.display = 'block';
-        }
-      }).catch(() => {
-        // Fallback sur données Auth uniquement
-        window._mcUserData = { nom: user.displayName||'', email: user.email||'', phone: '' };
-        // Réactiver le bouton si consent coché
-        const ctaBtn2 = document.getElementById('ctaGo');
-        if(ctaBtn2 && document.getElementById('consent')?.checked) ctaBtn2.disabled = false;
-        // Mettre à jour le bloc userInfo avec les données auth
-        const uInfo = document.getElementById('leadUserInfo');
-        if(uInfo) {
-          const _n = user.displayName||user.email||'';
-          const _e = user.email||'';
-          uInfo.innerHTML = `<div style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:16px 20px;margin-bottom:14px;font-size:14px;text-align:left;display:flex;align-items:center;gap:14px;"><div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">👤</div><div style="flex:1;min-width:0;"><div style="font-weight:700;margin-bottom:3px;font-size:15px;">${_n}</div><div style="opacity:.8;font-size:13px;">${_e}</div></div><div style="font-size:20px;">✅</div></div><p style="font-size:12px;opacity:.7;text-align:center;margin-bottom:10px;">Vos coordonnées sont pré-remplies depuis votre compte</p>`;
-        }
-      });
-    });
+        _showUserBlock(nom, email, phone);
+      })
+      .catch(() => { /* Firestore inaccessible, on garde les données Auth */ });
   } else {
     window._mcUserData = null;
     const fieldsWrap = document.querySelector('.lead-fields');
