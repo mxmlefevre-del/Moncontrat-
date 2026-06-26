@@ -28,6 +28,10 @@ window._adminDB = db;
 window._adminQ  = { collection, getDocs, orderBy, query, doc, getDoc, updateDoc };
 window._adminAuth = auth;
 window._onAuthStateChanged = onAuthStateChanged;
+
+// Signal que Firebase est prêt
+window._firebaseReady = true;
+document.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <style>
@@ -446,11 +450,27 @@ function checkPwd(){
     unlocked = true;
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminApp').style.display = 'block';
-    loadAll().then(()=>{
-      loadNotifEmail();
-      lastLeadCount = allLeads.length;
-      startLeadPolling();
-    });
+
+    // Attendre que Firebase soit prêt avant de charger les données
+    const doLoad = () => {
+      loadAll().then(()=>{
+        loadNotifEmail();
+        lastLeadCount = allLeads.length;
+        startLeadPolling();
+      });
+    };
+
+    if(window._firebaseReady){
+      doLoad();
+    } else {
+      document.addEventListener('firebaseReady', doLoad, { once: true });
+      // Timeout de secours si Firebase ne répond pas
+      setTimeout(()=>{
+        if(!window._firebaseReady){
+          showToast('⚠️ Firebase non initialisé — rechargez la page');
+        }
+      }, 5000);
+    }
   } else {
     document.getElementById('loginErr').classList.add('show');
     document.getElementById('pwdInput').value = '';
@@ -496,10 +516,30 @@ let allUsers=[], allAnalyses=[], allLeads=[];
 async function loadAll(){
   const db = window._adminDB;
   const { collection, getDocs, orderBy, query } = window._adminQ;
+
+  if(!db){
+    showToast('⚠️ Firebase non disponible');
+    console.error('loadAll: window._adminDB est undefined');
+    return;
+  }
+
   try {
     // Users
-    const usersSnap = await getDocs(query(collection(db,'users'), orderBy('created_at','desc')));
+    let usersSnap;
+    try {
+      usersSnap = await getDocs(query(collection(db,'users'), orderBy('created_at','desc')));
+    } catch(e) {
+      console.error('Erreur chargement users:', e.code, e.message);
+      // Fallback sans orderBy si index manquant
+      usersSnap = await getDocs(collection(db,'users'));
+    }
     allUsers = usersSnap.docs.map(d=>({id:d.id,...d.data()}));
+    // Tri côté client si orderBy a échoué
+    allUsers.sort((a,b)=>{
+      const ta = a.created_at?.toDate?.()||new Date(0);
+      const tb = b.created_at?.toDate?.()||new Date(0);
+      return tb-ta;
+    });
 
     // Analyses (subcollection de chaque user)
     allAnalyses = [];
@@ -507,7 +547,7 @@ async function loadAll(){
       try{
         const aSnap = await getDocs(collection(db,'users',u.id,'analyses'));
         aSnap.docs.forEach(a=>allAnalyses.push({uid:u.id,userName:(u.prenom||'')+' '+(u.nom||''),userEmail:u.email,...a.data()}));
-      }catch(e){}
+      }catch(e){ console.warn('Analyses user '+u.id+':', e.code); }
     }
     allAnalyses.sort((a,b)=>{
       const ta = a.created_at?.toDate?.()||new Date(0);
@@ -516,8 +556,20 @@ async function loadAll(){
     });
 
     // Leads
-    const leadsSnap = await getDocs(query(collection(db,'leads'), orderBy('date','desc')));
+    let leadsSnap;
+    try {
+      leadsSnap = await getDocs(query(collection(db,'leads'), orderBy('date','desc')));
+    } catch(e) {
+      console.error('Erreur chargement leads:', e.code, e.message);
+      leadsSnap = await getDocs(collection(db,'leads'));
+    }
     allLeads = leadsSnap.docs.map(d=>({id:d.id,...d.data()}));
+    // Tri côté client si orderBy a échoué
+    allLeads.sort((a,b)=>{
+      const ta = a.date?.toDate?.()||new Date(a.date||0);
+      const tb = b.date?.toDate?.()||new Date(b.date||0);
+      return tb-ta;
+    });
 
     // KPIs
     document.getElementById('kpiUsers').textContent = allUsers.length;
@@ -537,8 +589,24 @@ async function loadAll(){
     document.getElementById('leadsCount').textContent = allLeads.length;
 
   } catch(e){
-    console.error(e);
-    showToast('Erreur de chargement Firebase');
+    console.error('Erreur loadAll:', e.code, e.message, e);
+    const msg = e.code === 'permission-denied'
+      ? '🔒 Accès refusé — vérifiez les règles Firestore'
+      : e.code === 'unavailable'
+      ? '📡 Firebase indisponible — vérifiez la connexion'
+      : `Erreur Firebase : ${e.code||e.message}`;
+    showToast(msg);
+    // Afficher l'erreur dans les tableaux au lieu du loader infini
+    ['recentUsersBody','usersBody'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:#FF2D55;font-family:monospace;font-size:12px">⚠️ ${msg}</td></tr>`;
+    });
+    ['recentLeadsBody','leadsBody'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:40px;color:#FF2D55;font-family:monospace;font-size:12px">⚠️ ${msg}</td></tr>`;
+    });
+    const ab=document.getElementById('analysesBody');
+    if(ab) ab.innerHTML=`<tr><td colspan="4" style="text-align:center;padding:40px;color:#FF2D55;font-family:monospace;font-size:12px">⚠️ ${msg}</td></tr>`;
   }
 }
 
