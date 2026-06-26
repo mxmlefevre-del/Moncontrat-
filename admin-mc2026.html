@@ -12,7 +12,7 @@
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, onAuthStateChanged, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
   apiKey:"AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",
@@ -29,9 +29,15 @@ window._adminQ  = { collection, getDocs, orderBy, query, doc, getDoc, updateDoc 
 window._adminAuth = auth;
 window._onAuthStateChanged = onAuthStateChanged;
 
-// Signal que Firebase est prêt
-window._firebaseReady = true;
-document.dispatchEvent(new Event('firebaseReady'));
+// Connexion anonyme automatique pour satisfaire les règles Firestore (request.auth != null)
+signInAnonymously(auth).then(() => {
+  window._firebaseReady = true;
+  document.dispatchEvent(new Event('firebaseReady'));
+}).catch(e => {
+  console.error('signInAnonymously failed:', e.code, e.message);
+  window._firebaseReady = true;
+  document.dispatchEvent(new Event('firebaseReady'));
+});
 </script>
 
 <style>
