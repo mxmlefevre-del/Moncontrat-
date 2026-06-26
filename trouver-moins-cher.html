@@ -39,7 +39,7 @@
         setField('fieldEmail',user.email||'');
         setField('fieldPhone',p.phone||u.phone||'');
         setField('fieldCP',p.address||u.code_postal||'');
-        ['fieldPrenom','fieldNom','fieldEmail','fieldPhone','fieldCP'].forEach(id=>{
+        ['fieldPrenom','fieldNom','fieldPhone','fieldCP'].forEach(id=>{
           const el=document.getElementById(id);if(el&&el.value)el.dataset.prefilled='1';
         });
       }catch(e){console.warn(e);}
@@ -432,8 +432,9 @@ nav{background:rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop
         <span class="field-err" id="errCP">Champ obligatoire</span>
       </div>
       <div class="field full">
-        <label>Email</label>
-        <input type="email" id="fieldEmail" readonly />
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="fieldEmail" placeholder="votre@email.com" />
+        <span class="field-err" id="errEmail">Email invalide</span>
       </div>
     </div>
   </div>
@@ -557,7 +558,7 @@ nav{background:rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop
   <!-- SUBMIT -->
   <div class="submit-area">
     <div class="err-msg" id="errMsg"></div>
-    <button class="btn-submit" id="submitBtn" onclick="submitDossier()">
+    <button class="btn-submit" id="submitBtn" onclick="submitDossier()" disabled>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
       Envoyer mon dossier — Gratuit
     </button>
@@ -688,6 +689,7 @@ function toggleRgpd(){
   rgpdOk=!rgpdOk;
   document.getElementById('rgpdCard').classList.toggle('checked',rgpdOk);
   if(rgpdOk)document.getElementById('errRgpd').classList.remove('show');
+  document.getElementById('submitBtn').disabled=!rgpdOk;
 }
 
 /* VALIDATION */
@@ -711,6 +713,7 @@ async function submitDossier(){
   let ok=true;
   ok=validateField('fieldPrenom','errPrenom',v=>!v)&&ok;
   ok=validateField('fieldNom','errNom',v=>!v)&&ok;
+  ok=validateField('fieldEmail','errEmail',v=>!v||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v))&&ok;
   ok=validateField('fieldPhone','errPhone',v=>!v)&&ok;
   ok=validateField('fieldCP','errCP',v=>!v)&&ok;
   if(selectedAssurances.length===0){document.getElementById('errAssur').classList.add('show');ok=false;}
