@@ -361,43 +361,51 @@ window._mcAddDoc   = addDoc;
 window._mcCollection = collection;
 window._mcServerTimestamp = serverTimestamp;
 
-// Lire les données utilisateur depuis sessionStorage (sauvegardées par analyser.html)
-(function() {
-  const uid   = sessionStorage.getItem('mc_user_uid')   || '';
-  const email = sessionStorage.getItem('mc_user_email') || '';
-  const nom   = sessionStorage.getItem('mc_user_name')  || '';
-  const phone = sessionStorage.getItem('mc_user_phone') || '';
-
-  const userInfo = document.getElementById('leadUserInfo');
-  const fallback = document.getElementById('leadFieldsFallback');
-
-  if(uid && email) {
-    window._mcUser = { uid };
-    window._mcUserData = { nom, email, phone };
-    // Connecté : afficher le bloc utilisateur dans le nouveau style dark
-    if(fallback) fallback.style.display = 'none';
-    if(userInfo) {
-      userInfo.classList.add('show');
-      userInfo.innerHTML = `
-        <div class="cta-user-avatar">👤</div>
-        <div class="cta-user-info">
-          <div class="cta-user-name">${nom || email}</div>
-          <div class="cta-user-email">${email}${phone ? ' · ' + phone : ''}</div>
-        </div>
-        <div class="cta-user-check">✅</div>`;
-    }
-  } else {
-    window._mcUser = null;
-    window._mcUserData = null;
-    // Non connecté : afficher les champs
-    if(fallback) fallback.style.display = 'flex';
-    if(userInfo) userInfo.classList.remove('show');
-  }
-})();
 </script>
 
 </head>
 <body>
+<script>
+// Lire les données utilisateur depuis sessionStorage — après chargement du DOM
+(function() {
+  function applyUserData() {
+    const uid   = sessionStorage.getItem('mc_user_uid')   || '';
+    const email = sessionStorage.getItem('mc_user_email') || '';
+    const nom   = sessionStorage.getItem('mc_user_name')  || '';
+    const phone = sessionStorage.getItem('mc_user_phone') || '';
+
+    const userInfo = document.getElementById('leadUserInfo');
+    const fallback = document.getElementById('leadFieldsFallback');
+
+    if(uid && email) {
+      window._mcUser = { uid };
+      window._mcUserData = { nom, email, phone };
+      if(fallback) fallback.style.display = 'none';
+      if(userInfo) {
+        userInfo.classList.add('show');
+        userInfo.innerHTML =
+          '<div class="cta-user-avatar">👤</div>' +
+          '<div class="cta-user-info">' +
+            '<div class="cta-user-name">' + (nom || email) + '</div>' +
+            '<div class="cta-user-email">' + email + (phone ? ' · ' + phone : '') + '</div>' +
+          '</div>' +
+          '<div class="cta-user-check">✅</div>';
+      }
+    } else {
+      window._mcUser = null;
+      window._mcUserData = null;
+      if(fallback) fallback.style.display = 'flex';
+      if(userInfo) userInfo.classList.remove('show');
+    }
+  }
+  // Exécuter après que le DOM soit prêt
+  if(document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyUserData);
+  } else {
+    applyUserData();
+  }
+})();
+</script>
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
   <defs>
     <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
