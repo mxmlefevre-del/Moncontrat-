@@ -384,16 +384,24 @@ onAuthStateChanged(auth, async (user) => {
       const d = snap.data();
       if(d.prenom || d.nom) nom = ((d.prenom||'') + ' ' + (d.nom||'')).trim();
       if(d.phone) phone = d.phone;
+      if(d.email) email = d.email || email;
     }
   } catch(e) {}
   window._mcUserData = { nom, email, phone };
-  // Pré-remplir le champ email + champs cachés
+  // Pré-remplir les champs visibles
   const ei = document.getElementById('leadEmail');
   const ni = document.getElementById('leadName');
   const pi = document.getElementById('leadPhone');
-  if(ei) ei.value = email;
-  if(ni) ni.value = nom;
-  if(pi) pi.value = phone;
+  if(ei && !ei.value) ei.value = email;
+  if(ni && !ni.value) ni.value = nom;
+  if(pi && !pi.value) pi.value = phone;
+  // Afficher le bloc "compte détecté"
+  const ub = document.getElementById('ctaUserBlock');
+  const un = document.getElementById('ctaUserName');
+  const ue = document.getElementById('ctaUserEmail');
+  if(ub) ub.classList.add('show');
+  if(un) un.textContent = nom || 'Compte connecté';
+  if(ue) ue.textContent = email;
 });
 
 </script>
@@ -564,15 +572,37 @@ window._mcUser = null; window._mcUserData = null;
       <!-- FORMULAIRE -->
       <div class="cta-right">
 
-        <!-- Email unique pré-rempli -->
-        <div>
-          <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Confirmez votre email</div>
-          <input type="email" id="leadEmail" placeholder="votre@email.fr" autocomplete="email"
-            style="width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;border-radius:11px;padding:13px 15px;font-family:inherit;font-size:15px;outline:none;transition:.2s"
-            onfocus="this.style.borderColor='rgba(255,45,85,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
+        <!-- Bloc compte détecté (masqué par défaut, affiché par Firebase) -->
+        <div class="cta-user-block" id="ctaUserBlock">
+          <div class="cta-user-avatar">👤</div>
+          <div class="cta-user-info">
+            <div class="cta-user-name" id="ctaUserName">—</div>
+            <div class="cta-user-email" id="ctaUserEmail">—</div>
+          </div>
+          <span class="cta-user-check">✓</span>
         </div>
-        <input type="hidden" id="leadName" value="">
-        <input type="hidden" id="leadPhone" value="">
+
+        <!-- Champs de contact -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div>
+            <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:7px">Nom complet</div>
+            <input type="text" id="leadName" placeholder="Prénom Nom" autocomplete="name"
+              style="width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;border-radius:11px;padding:13px 15px;font-family:inherit;font-size:14px;outline:none;transition:.2s"
+              onfocus="this.style.borderColor='rgba(255,45,85,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:7px">Email</div>
+            <input type="email" id="leadEmail" placeholder="votre@email.fr" autocomplete="email"
+              style="width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;border-radius:11px;padding:13px 15px;font-family:inherit;font-size:14px;outline:none;transition:.2s"
+              onfocus="this.style.borderColor='rgba(255,45,85,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
+          </div>
+          <div>
+            <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:7px">Téléphone</div>
+            <input type="tel" id="leadPhone" placeholder="06 00 00 00 00" autocomplete="tel"
+              style="width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;border-radius:11px;padding:13px 15px;font-family:inherit;font-size:14px;outline:none;transition:.2s"
+              onfocus="this.style.borderColor='rgba(255,45,85,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
+          </div>
+        </div>
 
         <!-- Documents complémentaires -->
         <div class="docs-block">
@@ -942,10 +972,10 @@ async function sendDossier(){
 
   try {
     let nom, email, phone;
-    // Lire depuis les champs (email pré-rempli par Firebase si connecté)
-    email = $("leadEmail") ? $("leadEmail").value.trim() : '';
-    nom   = $("leadName")  ? $("leadName").value.trim()  : '';
-    phone = $("leadPhone") ? $("leadPhone").value.trim() : '';
+    // Lire les champs visibles (pré-remplis par Firebase ou saisis manuellement)
+    email = ($("leadEmail") ? $("leadEmail").value.trim() : '') || (window._mcUserData?.email || '');
+    nom   = ($("leadName")  ? $("leadName").value.trim()  : '') || (window._mcUserData?.nom   || '');
+    phone = ($("leadPhone") ? $("leadPhone").value.trim() : '') || (window._mcUserData?.phone || '');
 
     if(!email || !email.includes('@')) {
       status.className = 'lead-status err';
@@ -999,6 +1029,8 @@ async function sendDossier(){
       btn.style.display = 'none';
       document.querySelector('.cta-go-sub').style.display = 'none';
       document.getElementById('consentLabel').style.display = 'none';
+      const ctaUB = document.getElementById('ctaUserBlock');
+      if(ctaUB) ctaUB.style.display = 'none';
       const successCard = document.getElementById('successCard');
       if(successCard) successCard.classList.add('show');
       try { sessionStorage.setItem('mc_lead_optin', '1'); } catch(e){}
