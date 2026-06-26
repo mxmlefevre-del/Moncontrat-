@@ -39,7 +39,6 @@
   window._mcServerTimestamp = serverTimestamp;
 
   let authResolved = false;
-  let authResolved = false;
   onAuthStateChanged(auth, (user) => {
     window._mcCurrentUser = user;
     if (!authResolved) {
