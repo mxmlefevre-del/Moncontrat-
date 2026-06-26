@@ -309,7 +309,6 @@ footer{border-top:0.5px solid var(--line);padding:26px 0;background:var(--surfac
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
   apiKey:"AIzaSyCGLSFkZEFCEgmWuTHuvXrOKtUqSv6CwtA",
@@ -319,66 +318,44 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
-const auth = getAuth(app);
 
 window._mcDB   = db;
-window._mcAuth = auth;
 window._mcAddDoc   = addDoc;
 window._mcCollection = collection;
 window._mcServerTimestamp = serverTimestamp;
 
-function _showUserBlock(nom, email, phone) {
-  const fieldsWrap = document.querySelector('.lead-fields');
-  const userInfo   = document.getElementById('leadUserInfo');
-  if(fieldsWrap) fieldsWrap.style.display = 'none';
-  if(userInfo) {
-    userInfo.style.display = 'block';
-    userInfo.innerHTML = `
-      <div style="background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:16px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px;">
-        <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👤</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-weight:800;font-size:16px;color:#fff;margin-bottom:3px;">${nom || email}</div>
-          <div style="font-size:13px;color:rgba(255,255,255,.85);">${email}</div>
-          ${phone ? `<div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:2px;">${phone}</div>` : ''}
-        </div>
-        <span style="font-size:22px;">✅</span>
-      </div>
-      <p style="font-size:12.5px;color:rgba(255,255,255,.75);text-align:center;margin-bottom:8px;font-weight:500;">✓ Coordonnées pré-remplies depuis votre compte</p>`;
-  }
-  const ctaBtn = document.getElementById('ctaGo');
-  if(ctaBtn && document.getElementById('consent')?.checked) ctaBtn.disabled = false;
-}
+// Lire les données utilisateur depuis sessionStorage (sauvegardées par analyser.html)
+(function() {
+  const uid   = sessionStorage.getItem('mc_user_uid')   || '';
+  const email = sessionStorage.getItem('mc_user_email') || '';
+  const nom   = sessionStorage.getItem('mc_user_name')  || '';
 
-onAuthStateChanged(auth, user => {
-  window._mcUser = user || null;
-  if(user) {
-    // Utiliser immédiatement les données Auth (toujours disponibles)
-    const nomAuth   = user.displayName || '';
-    const emailAuth = user.email || '';
-    window._mcUserData = { nom: nomAuth, email: emailAuth, phone: '' };
-    _showUserBlock(nomAuth, emailAuth, '');
+  if(uid && email) {
+    window._mcUser = { uid };
+    window._mcUserData = { nom, email, phone: '' };
 
-    // Enrichir avec Firestore en arrière-plan
-    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js')
-      .then(({doc, getDoc}) => getDoc(doc(db, 'users', user.uid)))
-      .then(snap => {
-        if(!snap.exists()) return;
-        const d = snap.data();
-        const nom   = d.prenom ? (d.prenom + ' ' + (d.nom||'')).trim() : nomAuth;
-        const email = d.email  || emailAuth;
-        const phone = d.phone  || '';
-        window._mcUserData = { nom, email, phone };
-        _showUserBlock(nom, email, phone);
-      })
-      .catch(() => { /* Firestore inaccessible, on garde les données Auth */ });
-  } else {
-    window._mcUserData = null;
+    // Afficher le bloc utilisateur
     const fieldsWrap = document.querySelector('.lead-fields');
     const userInfo   = document.getElementById('leadUserInfo');
-    if(fieldsWrap) fieldsWrap.style.display = '';
-    if(userInfo)   userInfo.style.display   = 'none';
+    if(fieldsWrap) fieldsWrap.style.display = 'none';
+    if(userInfo) {
+      userInfo.style.display = 'block';
+      userInfo.innerHTML = `
+        <div style="background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:16px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👤</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:800;font-size:16px;color:#fff;margin-bottom:3px;">${nom || email}</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.85);">${email}</div>
+          </div>
+          <span style="font-size:22px;">✅</span>
+        </div>
+        <p style="font-size:12.5px;color:rgba(255,255,255,.75);text-align:center;margin-bottom:8px;font-weight:500;">✓ Coordonnées pré-remplies depuis votre compte</p>`;
+    }
+  } else {
+    window._mcUser = null;
+    window._mcUserData = null;
   }
-});
+})();
 </script>
 
 </head>

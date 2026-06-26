@@ -346,6 +346,13 @@ async function launch(){
     // Stocker en session pour la page résultat
     sessionStorage.setItem('mc_analysis', JSON.stringify(data.analysis));
     sessionStorage.setItem('mc_lead_optin', document.getElementById('leadConsent').checked ? '1' : '0');
+    // Sauvegarder les données utilisateur pour resultat.html
+    const _u = window._mcCurrentUser;
+    if(_u) {
+      sessionStorage.setItem('mc_user_uid',   _u.uid || '');
+      sessionStorage.setItem('mc_user_email', _u.email || '');
+      sessionStorage.setItem('mc_user_name',  _u.displayName || '');
+    }
     // Stocker le PDF pour le transmettre dans le lead depuis resultat.html
     try {
       const fullBase64 = 'data:application/pdf;base64,' + pdf_base64;
