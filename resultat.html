@@ -228,12 +228,12 @@ button{font-family:inherit;cursor:pointer}
 /* ── CTA FINAL ── */
 /* ── CTA DARK ── */
 .cta-final{margin:44px 0 28px;background:#0D0F1A;border:1px solid rgba(255,45,85,.2);border-radius:24px;padding:0;text-align:left;color:#fff;position:relative;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5)}
-.cta-final::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 700px 400px at 80% 50%,rgba(255,45,85,.08),transparent 70%);pointer-events:none}
+.cta-final::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 700px 400px at 50% 30%,rgba(255,45,85,.08),transparent 70%);pointer-events:none}
 .cta-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.35);color:var(--accent);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
 .cta-badge svg{width:12px;height:12px;fill:var(--accent)}
-.cta-layout{display:grid;grid-template-columns:1fr 480px;gap:0;min-height:420px}
-.cta-left{padding:44px 40px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.06)}
-.cta-right{padding:36px 40px;background:rgba(255,255,255,.025);display:flex;flex-direction:column;gap:14px}
+.cta-layout{display:grid;grid-template-columns:1fr;gap:0}
+.cta-left{padding:44px 48px 36px;display:flex;flex-direction:column;gap:28px}
+.cta-right{padding:0 48px 44px;display:flex;flex-direction:column;gap:14px}
 .cta-eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);display:block;margin-bottom:14px}
 .cta-final h3{font-family:var(--disp);font-weight:800;font-size:clamp(28px,3.5vw,44px);letter-spacing:-.04em;line-height:1.02;margin-bottom:0;color:#fff}
 .cta-final h3 .accent-underline{color:var(--accent);position:relative;display:inline-block}
@@ -265,6 +265,16 @@ button{font-family:inherit;cursor:pointer}
 .lead-fields input::placeholder{color:rgba(255,255,255,.3)}
 .lead-fields input:focus{outline:none;border-color:rgba(255,45,85,.5);background:rgba(255,45,85,.05)}
 .ri-block{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);border-radius:12px;padding:14px;text-align:left}
+.docs-block{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.15);border-radius:12px;padding:16px;text-align:left;transition:.2s}
+.docs-block:hover{border-color:rgba(255,45,85,.35);background:rgba(255,45,85,.03)}
+.docs-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px}
+.docs-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.doc-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 10px;font-size:12px;color:rgba(255,255,255,.8);max-width:200px}
+.doc-chip-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.doc-chip-icon{font-size:13px;flex-shrink:0}
+.doc-chip-rm{background:none;border:none;color:rgba(255,255,255,.35);font-size:15px;padding:0 2px;cursor:pointer;flex-shrink:0;line-height:1;transition:.15s}
+.doc-chip-rm:hover{color:var(--accent)}
+.docs-hint{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:rgba(52,199,89,.8);margin-top:10px}
 .ri-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px}
 .ri-tag{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,45,85,.15);color:var(--accent);border:1px solid rgba(255,45,85,.25);padding:3px 8px;border-radius:999px}
 .ri-head b{font-family:var(--disp);font-weight:700;font-size:13.5px;color:#fff}
@@ -292,17 +302,18 @@ button{font-family:inherit;cursor:pointer}
 .cta-go-sub{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px}
 .cta-go-sub svg{width:11px;height:11px;stroke:currentColor;stroke-width:2;fill:none}
 .lead-status{font-size:13.5px;font-weight:600;min-height:16px;border-radius:9px;padding:0}
-.lead-status.ok{background:rgba(24,201,152,.12);border:1px solid rgba(24,201,152,.3);color:#18C998;padding:11px 14px;text-align:center}
 .lead-status.err{background:rgba(255,92,92,.1);border:1px solid rgba(255,92,92,.25);color:#FF7070;padding:11px 14px;text-align:center}
-@media(max-width:900px){
-  .cta-layout{grid-template-columns:1fr}
-  .cta-left{border-right:none;border-bottom:1px solid rgba(255,255,255,.06);padding:32px 28px}
-  .cta-right{padding:28px}
-}
+.success-card{display:none;background:linear-gradient(135deg,rgba(52,199,89,.12),rgba(52,199,89,.06));border:1px solid rgba(52,199,89,.35);border-radius:16px;padding:28px 24px;text-align:center;flex-direction:column;gap:16px;align-items:center}
+.success-card.show{display:flex}
+.success-icon{width:56px;height:56px;border-radius:50%;background:rgba(52,199,89,.15);border:2px solid rgba(52,199,89,.4);display:flex;align-items:center;justify-content:center;font-size:26px}
+.success-title{font-family:var(--disp);font-weight:800;font-size:20px;color:#34C759;letter-spacing:-.02em}
+.success-txt{font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.6;max-width:380px}
+.btn-find-more{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;font-family:var(--disp);font-weight:700;font-size:14px;padding:13px 22px;border-radius:12px;transition:.18s;cursor:pointer;text-decoration:none;margin-top:4px}
+.btn-find-more:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28);transform:translateY(-1px)}
+.btn-find-more svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;flex-shrink:0}
 @media(max-width:680px){
-  .cta-layout{grid-template-columns:1fr}
-  .cta-left{padding:24px 20px}
-  .cta-right{padding:20px}
+  .cta-left{padding:28px 22px 20px}
+  .cta-right{padding:0 22px 28px}
   .cta-final h3{font-size:clamp(24px,7vw,36px)}
 }
 
@@ -496,15 +507,15 @@ window._mcUser = null; window._mcUserData = null;
   <section class="cta-final reveal">
     <div class="cta-layout">
 
-      <!-- COLONNE GAUCHE -->
+      <!-- HEADER / TITRE -->
       <div class="cta-left">
         <div>
           <span class="cta-badge">
             <svg viewBox="0 0 12 12"><path d="M6 1l1.5 3H11l-2.5 2 1 3L6 7.5 3.5 9l1-3L2 4h3.5z"/></svg>
             TRANSMISSION EN 1 CLIC
           </span>
-          <h3 style="margin-top:18px">Envoyez votre dossier<br>à l'assureur <span class="accent-underline">en 1 clic</span></h3>
-          <p class="cta-sub-txt">Nous transmettons votre dossier complet à nos partenaires assureurs pour vous trouver la meilleure offre.</p>
+          <h3 style="margin-top:18px">On vous trouve moins cher<br><span class="accent-underline">en 1 clic</span></h3>
+          <p class="cta-sub-txt">(on a déjà tout).</p>
         </div>
 
         <div class="cta-reassurance">
@@ -513,17 +524,13 @@ window._mcUser = null; window._mcUserData = null;
             <span><strong style="color:rgba(255,255,255,.85)">100% sécurisé</strong> — Données cryptées et protégées</span>
           </div>
           <div class="cta-reass-item">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span><strong style="color:rgba(255,255,255,.85)">Rapide</strong> — Réponse sous 48h ouvrées</span>
-          </div>
-          <div class="cta-reass-item">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             <span><strong style="color:rgba(255,255,255,.85)">Sans engagement</strong> — Gratuit et sans obligation</span>
           </div>
         </div>
 
         <!-- Carte dossier -->
-        <div class="cta-dossier-card" style="margin-top:24px">
+        <div class="cta-dossier-card">
           <div class="cta-dossier-head">
             <span class="cta-dossier-title">Votre dossier</span>
             <span class="cta-dossier-lock">
@@ -554,12 +561,12 @@ window._mcUser = null; window._mcUserData = null;
         </div>
       </div>
 
-      <!-- COLONNE DROITE -->
+      <!-- FORMULAIRE -->
       <div class="cta-right">
 
         <!-- Email unique pré-rempli -->
         <div>
-          <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px">Confirmez votre email</div>
+          <div style="font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Confirmez votre email</div>
           <input type="email" id="leadEmail" placeholder="votre@email.fr" autocomplete="email"
             style="width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;border-radius:11px;padding:13px 15px;font-family:inherit;font-size:15px;outline:none;transition:.2s"
             onfocus="this.style.borderColor='rgba(255,45,85,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.12)'">
@@ -567,18 +574,22 @@ window._mcUser = null; window._mcUserData = null;
         <input type="hidden" id="leadName" value="">
         <input type="hidden" id="leadPhone" value="">
 
-        <!-- Relevé d'information -->
-        <div class="ri-block" id="riBlock" style="display:none">
-          <div class="ri-head"><span class="ri-tag">Recommandé</span><b>Ajoutez votre relevé d'information</b></div>
-          <p class="ri-txt">Joindre le relevé permet une offre <b>précise, sans mauvaise surprise</b>.</p>
-          <input type="file" id="riInput" accept="application/pdf" style="display:none" onchange="onRiFile(this.files[0])">
-          <button type="button" class="ri-btn" id="riBtn" onclick="document.getElementById('riInput').click()">
+        <!-- Documents complémentaires -->
+        <div class="docs-block">
+          <div class="docs-head">
+            <span class="ri-tag">Optionnel</span>
+            <b>Joindre des documents</b>
+          </div>
+          <p class="ri-txt">Relevé d'information, carte grise, permis, attestation… Plus on a d'infos, <b>plus l'offre sera précise</b>.</p>
+          <input type="file" id="docsInput" accept="application/pdf,image/*" multiple style="display:none" onchange="onDocsFiles(this.files)">
+          <button type="button" class="ri-btn" id="docsBtn" onclick="document.getElementById('docsInput').click()">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
-            Joindre mon relevé (PDF)
+            Ajouter des fichiers (PDF ou image)
           </button>
-          <div class="ri-loaded" id="riLoaded">
-            <span>📄</span><span class="ri-fname" id="riName">relevé.pdf</span>
-            <button type="button" class="ri-remove" onclick="clearRi()" aria-label="Retirer">×</button>
+          <div class="docs-chips" id="docsChips"></div>
+          <div class="docs-hint" id="docsHint" style="display:none">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Fichiers ajoutés — envoi inclus dans votre dossier
           </div>
         </div>
 
@@ -589,10 +600,15 @@ window._mcUser = null; window._mcUserData = null;
           <span class="consent-txt">J'accepte que moncontrat.app transmette mon dossier à ses partenaires assureurs afin d'être contacté(e) dans le cadre de ma demande. <a href="politique-confidentialite.html" target="_blank">Voir notre Politique de confidentialité.</a></span>
         </label>
 
+        <!-- Texte avant bouton -->
+        <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.65)">
+          🎯 <strong style="color:rgba(255,255,255,.88)">C'est à nous de jouer !</strong> On a moins de 48h maintenant pour vous trouver moins cher ou de meilleures garanties, voir les deux si on y arrive.
+        </div>
+
         <!-- Bouton -->
         <button class="btn-cta-go" id="ctaGo" disabled onclick="sendDossier()">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          ENVOYER MON DOSSIER À L'ASSUREUR
+          ENVOYER MON DOSSIER — GRATUIT
         </button>
 
         <!-- Sous-bouton -->
@@ -601,8 +617,19 @@ window._mcUser = null; window._mcUserData = null;
           Vos données sont sécurisées et ne seront jamais revendues.
         </div>
 
-        <!-- Statut -->
+        <!-- Statut erreur -->
         <div class="lead-status" id="leadStatus"></div>
+
+        <!-- Carte succès -->
+        <div class="success-card" id="successCard">
+          <div class="success-icon">✅</div>
+          <div class="success-title">Dossier transmis !</div>
+          <div class="success-txt">Votre dossier a bien été transmis à notre équipe. On a moins de 48h pour vous trouver mieux — on s'y met tout de suite.</div>
+          <a href="trouver-moins-cher.html" class="btn-find-more">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Trouver moins cher aussi pour d'autres contrats
+          </a>
+        </div>
 
       </div>
     </div>
@@ -875,10 +902,34 @@ function initReveal(){
 
 /* ── LEAD ── */
 try{if(sessionStorage.getItem('mc_lead_optin')==='1'){setTimeout(()=>{const c=$("consent");if(c){c.checked=true;toggleConsent();}},300);}}catch(e){}
-if(A.type_analyse==='auto'){const ri=$("riBlock");if(ri)ri.style.display='block';}
-let riFile=null;
-function onRiFile(file){if(!file)return;if(file.type!=='application/pdf'){alert("Merci de joindre un PDF.");return;}if(file.size>10*1024*1024){alert("Le fichier dépasse 10 Mo.");return;}riFile=file;$("riName").textContent=file.name;$("riLoaded").classList.add('show');$("riBtn").style.display='none';}
-function clearRi(){riFile=null;$("riInput").value='';$("riLoaded").classList.remove('show');$("riBtn").style.display='inline-flex';}
+let extraFiles = [];
+function getFileIcon(f){
+  if(f.type==='application/pdf') return '📄';
+  if(f.type.startsWith('image/')) return '🖼️';
+  return '📎';
+}
+function renderChips(){
+  const container = $("docsChips");
+  const hint = $("docsHint");
+  container.innerHTML = extraFiles.map((f,i)=>`
+    <div class="doc-chip">
+      <span class="doc-chip-icon">${getFileIcon(f)}</span>
+      <span class="doc-chip-name" title="${f.name}">${f.name}</span>
+      <button type="button" class="doc-chip-rm" onclick="removeDoc(${i})" aria-label="Retirer">×</button>
+    </div>`).join('');
+  if(hint) hint.style.display = extraFiles.length ? 'flex' : 'none';
+}
+function onDocsFiles(files){
+  for(const f of files){
+    if(f.size > 10*1024*1024){ alert(`${f.name} dépasse 10 Mo et ne peut pas être joint.`); continue; }
+    if(extraFiles.length >= 5){ alert("Maximum 5 fichiers joints."); break; }
+    // Éviter doublons
+    if(!extraFiles.find(e=>e.name===f.name && e.size===f.size)) extraFiles.push(f);
+  }
+  $("docsInput").value = '';
+  renderChips();
+}
+function removeDoc(i){ extraFiles.splice(i,1); renderChips(); }
 function toggleConsent(){const ok=$("consent").checked;$("ctaGo").disabled=!ok;$("consentLabel").classList.toggle("checked",ok);}
 async function sendDossier(){
   if(!$("consent").checked) return;
@@ -900,7 +951,7 @@ async function sendDossier(){
       status.className = 'lead-status err';
       status.textContent = "Merci d'indiquer un email valide.";
       btn.disabled = false;
-      btn.textContent = 'Trouvez-moi moins cher — Gratuit';
+      btn.textContent = 'ENVOYER MON DOSSIER — GRATUIT';
       return;
     }
 
@@ -914,15 +965,17 @@ async function sendDossier(){
         fichiers.push({ name: pdfName, data: pdfData, size: pdfSize, type: 'contrat_analyse' });
       }
     } catch(e) {}
-    // Ajouter le relevé d'information si fourni
-    if(riFile) {
-      const ri_data = await new Promise((res,rej)=>{
-        const r = new FileReader();
-        r.onload = () => res(r.result);
-        r.onerror = () => rej();
-        r.readAsDataURL(riFile);
-      });
-      if(ri_data) fichiers.push({ name: riFile.name, data: ri_data, size: riFile.size, type: 'releve_information' });
+    // Encoder et ajouter les fichiers complémentaires
+    for(const f of extraFiles){
+      try {
+        const fData = await new Promise((res,rej)=>{
+          const r = new FileReader();
+          r.onload = () => res(r.result);
+          r.onerror = () => rej();
+          r.readAsDataURL(f);
+        });
+        if(fData) fichiers.push({ name: f.name, data: fData, size: f.size, type: 'document_complementaire' });
+      } catch(e) {}
     }
 
     if(window._mcDB && window._mcAddDoc && window._mcCollection) {
@@ -943,8 +996,11 @@ async function sendDossier(){
       };
       await window._mcAddDoc(window._mcCollection(window._mcDB, 'leads'), leadData);
       btn.textContent = '✅ Dossier envoyé !';
-      status.className = 'lead-status ok';
-      status.textContent = 'Votre dossier a bien été transmis. Un conseiller vous contacte sous 48h.';
+      btn.style.display = 'none';
+      document.querySelector('.cta-go-sub').style.display = 'none';
+      document.getElementById('consentLabel').style.display = 'none';
+      const successCard = document.getElementById('successCard');
+      if(successCard) successCard.classList.add('show');
       try { sessionStorage.setItem('mc_lead_optin', '1'); } catch(e){}
     } else {
       sessionStorage.setItem('mc_lead_prefill', JSON.stringify({
@@ -959,7 +1015,7 @@ async function sendDossier(){
     status.className = 'lead-status err';
     status.textContent = err.message || "Une erreur est survenue.";
     btn.disabled = false;
-    btn.textContent = 'Trouvez-moi moins cher — Gratuit';
+    btn.textContent = 'ENVOYER MON DOSSIER — GRATUIT';
   }
 }
 
