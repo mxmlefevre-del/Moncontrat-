@@ -62,58 +62,59 @@ button{font-family:inherit;cursor:pointer}
 .nav-btn{background:var(--surface);color:var(--ink);border:0.5px solid var(--line-2);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;box-shadow:var(--shadow-sm);transition:opacity .15s}
 .nav-btn:hover{opacity:.75}
 
-/* ── HEADER ── */
-.head{padding:32px 0 24px}
-.head-eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin-bottom:6px}
-.head-title{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.5vw,32px);letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
-.head-meta{font-family:var(--mono);font-size:11px;color:var(--mute);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-.head-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--soft);display:inline-block}
-.tone-pill{display:inline-flex;align-items:center;border:0.5px solid var(--line-2);border-radius:999px;padding:5px 11px;font-family:var(--mono);font-size:10px;color:var(--mute);background:var(--surface);margin-left:4px}
+/* ── HERO DARK HEADER ── */
+.hero-dark{background:linear-gradient(145deg,#111118,#1A1A24);border-radius:24px;margin-bottom:14px;overflow:hidden;position:relative}
+.hero-dark::before{content:"";position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(255,45,85,.15),transparent 70%);pointer-events:none}
+.head{padding:32px 36px 0;position:relative;z-index:1}
+.head-eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.head-eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.head-title{font-family:var(--disp);font-weight:800;font-size:clamp(20px,3.2vw,30px);letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;color:#fff}
+.head-meta{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.35);display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding-bottom:28px;border-bottom:0.5px solid rgba(255,255,255,.08)}
+.head-meta .dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.25);display:inline-block}
+.tone-pill{display:inline-flex;align-items:center;border:0.5px solid rgba(255,255,255,.15);border-radius:999px;padding:4px 10px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.06);margin-left:4px}
 
-/* ── SCORE CARD ── */
-.score-card{background:rgba(255,255,255,.72);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border:0.5px solid rgba(60,60,67,.1);border-radius:24px;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,var(--shadow-md);overflow:hidden;margin-bottom:14px}
-.score-top{padding:32px 36px 26px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;border-bottom:0.5px solid rgba(60,60,67,.07)}
+/* ── SCORE TOP (dark) ── */
+.score-card{overflow:hidden;margin-bottom:14px}
+.score-top{padding:28px 36px 24px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;border-bottom:0.5px solid rgba(255,255,255,.08);position:relative;z-index:1}
 
 /* Ring */
 .ring-wrap{position:relative;width:140px;height:140px;flex:none}
 .ring-wrap svg{transform:rotate(-90deg)}
-.ring-bg-c{stroke:rgba(60,60,67,.08)}
+.ring-bg-c{stroke:rgba(255,255,255,.08)}
 .ring-fg-c{stroke:url(#ringG);stroke-linecap:round;stroke-dasharray:408;stroke-dashoffset:408;transition:stroke-dashoffset 1.6s cubic-bezier(.16,1,.3,1)}
-.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-.ring-num{font-family:var(--disp);font-weight:800;font-size:48px;letter-spacing:-.05em;line-height:1;color:var(--ink)}
-.ring-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(60,60,67,.35)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.ring-num{font-family:var(--disp);font-weight:800;font-size:52px;letter-spacing:-.05em;line-height:1;color:#fff}
+.ring-lbl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+/* Level badge sous le score */
+.level-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin-top:6px}
+.level-badge .ldot{width:6px;height:6px;border-radius:50%;flex:none}
+.level-badge.excellent{background:rgba(52,199,89,.18);color:#4CD964;border:0.5px solid rgba(52,199,89,.3)}.level-badge.excellent .ldot{background:#34C759}
+.level-badge.correct{background:rgba(255,149,0,.15);color:#FF9500;border:0.5px solid rgba(255,149,0,.28)}.level-badge.correct .ldot{background:#FF9500}
+.level-badge.ameliorer{background:rgba(255,59,48,.15);color:#FF6B6B;border:0.5px solid rgba(255,59,48,.28)}.level-badge.ameliorer .ldot{background:#FF3B30}
+.level-badge.insuffisant{background:rgba(255,59,48,.22);color:#FF3B30;border:0.5px solid rgba(255,59,48,.35)}.level-badge.insuffisant .ldot{background:#FF3B30}
 
 /* Verdict col */
 .verdict-col{display:flex;flex-direction:column;gap:0}
-.verdict-h{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.02em;color:var(--ink);margin-bottom:5px;line-height:1.3}
-.verdict-p{font-size:13.5px;line-height:1.6;color:var(--mute);max-width:310px}
+.verdict-h{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.02em;color:#fff;margin-bottom:6px;line-height:1.3}
+.verdict-p{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.55);max-width:310px}
 
-/* CTA col — FIXED */
+/* CTA col */
 .score-cta-col{display:flex;flex-direction:column;align-items:stretch;gap:8px;width:152px;flex:none;padding-top:2px}
-.eco-tag{
-  display:block;text-align:center;
-  font-family:var(--mono);font-size:9px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ok);
-  background:rgba(52,199,89,.08);
-  border-radius:999px;
-  padding:6px 12px;
-  border:0.5px solid rgba(52,199,89,.22);
-  white-space:nowrap;
-}
-.cta-main-btn{background:var(--accent);color:#fff;border:none;font-family:var(--disp);font-weight:800;font-size:14px;padding:14px 16px;border-radius:14px;text-align:center;line-height:1.3;box-shadow:0 4px 16px rgba(255,45,85,.28);transition:opacity .15s,transform .15s;position:relative;overflow:hidden}
+.eco-tag{display:block;text-align:center;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#4CD964;background:rgba(52,199,89,.12);border-radius:999px;padding:6px 12px;border:0.5px solid rgba(52,199,89,.25);white-space:nowrap}
+.cta-main-btn{background:var(--accent);color:#fff;border:none;font-family:var(--disp);font-weight:800;font-size:14px;padding:14px 16px;border-radius:14px;text-align:center;line-height:1.3;box-shadow:0 4px 20px rgba(255,45,85,.4);transition:opacity .15s,transform .15s;position:relative;overflow:hidden}
 .cta-main-btn::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent)}
 .cta-main-btn:hover{opacity:.88;transform:scale(.985)}
-.cta-fine{text-align:center;font-size:10px;color:rgba(60,60,67,.3);line-height:1.5}
+.cta-fine{text-align:center;font-size:10px;color:rgba(255,255,255,.25);line-height:1.5}
 
 /* Stats row */
-.score-stats-row{display:grid;grid-template-columns:1fr 0.5px 1fr 0.5px 1fr;background:rgba(255,255,255,.4)}
+.score-stats-row{display:grid;grid-template-columns:1fr 0.5px 1fr 0.5px 1fr;background:rgba(255,255,255,.04);position:relative;z-index:1}
 .stat-cell{padding:16px 16px 16px 40px;display:flex;flex-direction:column;gap:3px}
 .stat-cell:nth-child(3){padding-left:20px}.stat-cell:nth-child(5){padding-left:20px}
-.stat-divider{background:rgba(60,60,67,.08);align-self:stretch;margin:12px 0}
+.stat-divider{background:rgba(255,255,255,.08);align-self:stretch;margin:12px 0}
 .stat-val{font-family:var(--disp);font-weight:800;font-size:28px;letter-spacing:-.03em;line-height:1}
-.stat-val.r{color:var(--risk)}.stat-val.w{color:var(--warn)}.stat-val.g{color:var(--ok)}
-.stat-lbl{font-size:11px;color:var(--mute);font-weight:400}
+.stat-val.r{color:#FF6B6B}.stat-val.w{color:#FF9500}.stat-val.g{color:#4CD964}
+.stat-lbl{font-size:11px;color:rgba(255,255,255,.35);font-weight:400}
 
 /* ── SECTION HEADS ── */
 .section{padding:12px 0}
@@ -459,53 +460,59 @@ window._mcUser = null; window._mcUserData = null;
 
 <!-- MAIN -->
 <main class="wrap" id="result" style="visibility:hidden">
-  <header class="head">
-    <div class="head-eyebrow">Résultat d'analyse</div>
-    <h1 class="head-title" id="cTitle"></h1>
-    <div class="head-meta" id="cMeta"></div>
-  </header>
+  <!-- HERO DARK : header + score fusionnés -->
+  <div class="hero-dark reveal">
+    <header class="head">
+      <div class="head-eyebrow"><i></i>Résultat d'analyse</div>
+      <h1 class="head-title" id="cTitle"></h1>
+      <div class="head-meta" id="cMeta"></div>
+    </header>
 
-  <!-- Score card -->
-  <div class="score-card reveal">
-    <div class="score-top">
+    <!-- Score card intégré dans le hero -->
+    <div class="score-card">
+      <div class="score-top">
 
-      <!-- Anneau animé -->
-      <div class="ring-wrap">
-        <svg width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
-          <defs>
-            <linearGradient id="ringG" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#FF5F82"/>
-              <stop offset="100%" stop-color="#FF2D55"/>
-            </linearGradient>
-          </defs>
-          <circle class="ring-bg-c" cx="70" cy="70" r="65" fill="none" stroke-width="10"/>
-          <circle class="ring-fg-c" id="ring" cx="70" cy="70" r="65" fill="none" stroke-width="10"/>
-        </svg>
-        <div class="ring-center">
-          <span class="ring-num" id="scoreNum">0</span>
-          <span class="ring-lbl">/ 100</span>
+        <!-- Anneau animé -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0">
+          <div class="ring-wrap">
+            <svg width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+              <defs>
+                <linearGradient id="ringG" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#FF5F82"/>
+                  <stop offset="100%" stop-color="#FF2D55"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg-c" cx="70" cy="70" r="65" fill="none" stroke-width="10"/>
+              <circle class="ring-fg-c" id="ring" cx="70" cy="70" r="65" fill="none" stroke-width="10"/>
+            </svg>
+            <div class="ring-center">
+              <span class="ring-num" id="scoreNum">0</span>
+              <span class="ring-lbl">/ 100</span>
+            </div>
+          </div>
+          <div class="level-badge" id="levelBadge" style="display:none"><span class="ldot"></span><span id="levelLabel"></span></div>
+        </div>
+
+        <!-- Verdict -->
+        <div class="verdict-col">
+          <div class="verdict-h" id="verdictTitle"></div>
+          <div class="verdict-p" id="verdictText"></div>
+        </div>
+
+        <!-- CTA -->
+        <div class="score-cta-col">
+          <span class="eco-tag">Jusqu'à −30%</span>
+          <button class="cta-main-btn" onclick="document.querySelector('.cta-final').scrollIntoView({behavior:'smooth'})">Trouvez<br>moins cher</button>
+          <span class="cta-fine">Gratuit · sans engagement<br>aucune carte bancaire</span>
         </div>
       </div>
-
-      <!-- Verdict -->
-      <div class="verdict-col">
-        <div class="verdict-h" id="verdictTitle"></div>
-        <div class="verdict-p" id="verdictText"></div>
+      <div class="score-stats-row">
+        <div class="stat-cell"><span class="stat-val r" id="sv-r">—</span><span class="stat-lbl" id="sl-r">risque</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-cell"><span class="stat-val w" id="sv-w">—</span><span class="stat-lbl" id="sl-w">à vérifier</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-cell"><span class="stat-val g" id="sv-g">—</span><span class="stat-lbl" id="sl-g">atout</span></div>
       </div>
-
-      <!-- CTA -->
-      <div class="score-cta-col">
-        <span class="eco-tag">Jusqu'à −30%</span>
-        <button class="cta-main-btn" onclick="document.querySelector('.cta-final').scrollIntoView({behavior:'smooth'})">Trouvez<br>moins cher</button>
-        <span class="cta-fine">Gratuit · sans engagement<br>aucune carte bancaire</span>
-      </div>
-    </div>
-    <div class="score-stats-row">
-      <div class="stat-cell"><span class="stat-val r" id="sv-r">—</span><span class="stat-lbl" id="sl-r">risque</span></div>
-      <div class="stat-divider"></div>
-      <div class="stat-cell"><span class="stat-val w" id="sv-w">—</span><span class="stat-lbl" id="sl-w">à vérifier</span></div>
-      <div class="stat-divider"></div>
-      <div class="stat-cell"><span class="stat-val g" id="sv-g">—</span><span class="stat-lbl" id="sl-g">atout</span></div>
     </div>
   </div>
 
@@ -905,8 +912,24 @@ function render(){
   /* Animations */
   const score=typeof A.score==='number'?A.score:0;
   setTimeout(()=>{
+
+// Badge niveau
+function setLevelBadge(score) {
+  const badge = document.getElementById('levelBadge');
+  const label = document.getElementById('levelLabel');
+  if(!badge || !label) return;
+  let cls, txt;
+  if(score >= 80)      { cls='excellent';   txt='Excellent' }
+  else if(score >= 65) { cls='correct';     txt='Niveau correct' }
+  else if(score >= 45) { cls='ameliorer';   txt='À améliorer' }
+  else                 { cls='insuffisant'; txt='Insuffisant' }
+  badge.className = 'level-badge ' + cls;
+  label.textContent = txt;
+  badge.style.display = 'inline-flex';
+}
     // Anneau : circonférence = 2π×65 ≈ 408
     const CIRC=408;
+    setLevelBadge(score);
     document.getElementById('ring').style.strokeDashoffset=CIRC-(CIRC*score/100);
     let n=0;
     const t=setInterval(()=>{n+=2;if(n>=score){n=score;clearInterval(t);}$("scoreNum").textContent=n;},20);
